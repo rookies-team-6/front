@@ -13,6 +13,14 @@ export default defineConfig({
                 find: "@shared",
                 replacement: path.resolve(__dirname, "src/shared"),
             },
+            {
+                find: "@widgets",
+                replacement: path.resolve(__dirname, "src/widgets"),
+            },
+                        {
+                find: "@pages",
+                replacement: path.resolve(__dirname, "src/pages"),
+            }
         ],
     },
 });
