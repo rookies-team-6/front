@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { postRegisterData } from "@shared/Apis/register";
+import { postRegisterData } from "@shared/Apis/auth";
 
 
 // 최상위 Container 스타일 정의

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import theme from "@app/styles/theme";
-import { postLogin } from "@shared/Apis/login";
+import { postLogin } from "@shared/Apis/auth";
 
 const Wrapper = styled.div`
     display: flex;

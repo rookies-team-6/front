@@ -1,20 +1,57 @@
 import {http, HttpResponse} from "msw";
 
 interface Question {
-  id: number;
-  title: string;
-  content: string;
+    id: number;
+    title: string;
+    content: string;
 }
 
 interface SubmitBody {
-  answer: string;
+    answer: string;
+}
+
+interface LoginRequestBody {
+    email: string;
+    password: string;
+}
+
+interface RegisterFormContent {
+    name: string;
+    email: string;
+    password: string;
+    passwordConfirm: string;
 }
 
 export const handler = [
     //로그인
+    http.post("/api/login", async ({ request }) => {
+        const body = (await request.json()) as LoginRequestBody;
+    
+        // 여기선 단순 mock 응답, 실제론 인증 로직에 따라 응답 구성
+        return HttpResponse.json(
+            {
+                token: "mock-jwt-token",
+                email: body.email,
+                message: "로그인 성공",
+            },
+            {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            }
+        );
+    }),
 
     //회원가입
+    http.post('/api/registerforms', async({request}) => {
+        const body = (await request.json()) as RegisterFormContent;
 
+        return HttpResponse.json(body, {
+            status: 201,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }),
 
     //get요청 예시
     http.get('/api/questions', () => {
