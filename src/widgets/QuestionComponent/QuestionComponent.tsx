@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { postQuestionData } from "@shared/Apis/home";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -66,7 +67,7 @@ const QuestionComponent: React.FC = () => {
   const [answer, setAnswer] = useState("");
 
   const handleSubmit = () => {
-    alert(`제출된 답변: ${answer}`);
+    postQuestionData(answer)
     setAnswer("");
   };
 
