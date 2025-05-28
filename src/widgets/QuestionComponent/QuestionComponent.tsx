@@ -2,6 +2,37 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { postQuestionData } from "@shared/Apis/home";
 
+
+
+const QuestionComponent: React.FC = () => {
+  const [answer, setAnswer] = useState("");
+
+  const handleSubmit = () => {
+    postQuestionData(answer)
+    setAnswer("");
+  };
+
+  return (
+    <Wrapper>
+      <Title>질문 주제</Title>
+      <QuestionBox>
+        <div>질문내용</div>
+        <div>질문세부내용</div>
+      </QuestionBox>
+      <AnswerWrapper>
+        <Arrow>↳</Arrow>
+        <Input
+            type="text"
+            placeholder="답변 입력"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+        />
+        <SubmitButton onClick={handleSubmit}>제출</SubmitButton>
+      </AnswerWrapper>
+    </Wrapper>
+  );
+};
+
 const Wrapper = styled.div`
   width: 100%;
   max-width: 600px;
@@ -62,34 +93,5 @@ const SubmitButton = styled.button`
     background-color: #ff6e66;
   }
 `;
-
-const QuestionComponent: React.FC = () => {
-  const [answer, setAnswer] = useState("");
-
-  const handleSubmit = () => {
-    postQuestionData(answer)
-    setAnswer("");
-  };
-
-  return (
-    <Wrapper>
-      <Title>질문 주제</Title>
-      <QuestionBox>
-        <div>질문내용</div>
-        <div>질문세부내용</div>
-      </QuestionBox>
-      <AnswerWrapper>
-        <Arrow>↳</Arrow>
-        <Input
-            type="text"
-            placeholder="답변 입력"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-        />
-        <SubmitButton onClick={handleSubmit}>제출</SubmitButton>
-      </AnswerWrapper>
-    </Wrapper>
-  );
-};
 
 export default QuestionComponent;
