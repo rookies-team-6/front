@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import theme from "@app/styles/theme";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { postRegisterData } from "@shared/Apis/auth";
 
 const Container = styled.div`
   width: 57.22%;
   height: 80.47%;
   margin: auto;
-  background-color: #ffffff;
+  background-color: #fffcee;
 `;
 
 const Title = styled.h2`
@@ -67,10 +68,13 @@ const RegisterForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
+  const navigate = useNavigate();
+
   const handleRegister = async () => {
         try {
         const response = await postRegisterData({ name, email, password, passwordConfirm });
         console.log("회원가입 성공:", response);
+        navigate("/login");
         } catch (error) {
         console.error("회원가입 실패:", error);
         alert("회원가입에 실패했습니다.");
@@ -78,8 +82,7 @@ const RegisterForm: React.FC = () => {
   };
 
   const handleLogin = () => {
-        alert("로그인 페이지로 이동합니다."); // 임시 처리
-        // TODO: 필요시 로그인 라우터 이동
+        navigate("/login");
     };
 
   return (
