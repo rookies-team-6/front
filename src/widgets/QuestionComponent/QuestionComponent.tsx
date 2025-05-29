@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { postQuestionData } from "@shared/Apis/home";
 
@@ -6,6 +6,22 @@ import { postQuestionData } from "@shared/Apis/home";
 
 const QuestionComponent: React.FC = () => {
   const [answer, setAnswer] = useState("");
+  const [question, setQuestion] = useState("")
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      const resultQuestion = await getQuestionData();
+      
+    };
+
+    fetchData();
+  },[])
+
+  const getQuestionData = async() => {
+
+  }
+
+  
 
   const handleSubmit = () => {
     postQuestionData(answer)

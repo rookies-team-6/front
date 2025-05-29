@@ -3,6 +3,7 @@ import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import { getHeaderInfo } from "@shared/Apis/header";
 import type { HeaderInfo } from "@shared/Apis/header";
+import { UserModal } from "@widgets/Modal/UserModal/UserModal";
 
 const Header = () => {
     const [user, setUser] = useState<HeaderInfo>({
@@ -10,6 +11,7 @@ const Header = () => {
         type: "",
         score: "",
     });
+    const [isModalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,15 +36,27 @@ const Header = () => {
             <InfoText>{user.name}</InfoText>
             <InfoText>{user.type}</InfoText>
             <InfoText>{user.score}</InfoText>
-            <span
-            style={{ fontSize: "20px", cursor: "pointer", marginBottom: "2px" }}
-            >
-            ▼
-            </span>
+            <ButtonWrapper>
+                <span
+                style={{ fontSize: "20px", cursor: "pointer", marginBottom: "2px" }}
+                onClick={() => isModalOpen ? setModalOpen(false) : setModalOpen(true)}
+                >
+                ▼
+                </span>
+                <UserModal isOpen={isModalOpen} onClose = {() => setModalOpen(false)}>
+                    <p>test</p>
+                </UserModal>
+            </ButtonWrapper>
+
         </UserInfo>
         </HeaderWrapper>
     );
     };
+
+const ButtonWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
 
 const HeaderWrapper = styled.header`
     width: 100%;
