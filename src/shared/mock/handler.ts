@@ -22,7 +22,27 @@ interface RegisterFormContent {
     passwordConfirm: string;
 }
 
+interface HeaderInfo {
+  name: string;
+  type: string;
+  score: string;
+}
+
 export const handler = [
+    //헤더
+     http.get("/api/header", () => {
+        const mockData: HeaderInfo = {
+          name: "홍길동",
+          type: "수강생",
+          score: "점수: 00",
+        };
+    
+        return HttpResponse.json(mockData, {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }),
+    
     //로그인
     http.post("/api/login", async ({ request }) => {
         const body = (await request.json()) as LoginRequestBody;
