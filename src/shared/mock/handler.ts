@@ -45,12 +45,17 @@ export const handler = [
     http.post('/api/registerforms', async({request}) => {
         const body = (await request.json()) as RegisterFormContent;
 
-        return HttpResponse.json(body, {
-            status: 201,
-            headers: {
-                'Content-Type': 'application/json'
+        return HttpResponse.json(
+            {
+                token: "mock-jwt-token",
+                email: body.email,
+                message: "회원가입 성공",
+            },
+            {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
             }
-        })
+        );
     }),
 
     //get요청 예시
