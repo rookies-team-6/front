@@ -3,6 +3,50 @@ import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import theme from "@app/styles/theme";
 import { postLogin } from "@shared/Apis/auth";
+import { useNavigate } from "react-router-dom";
+
+const LoginForm: React.FC = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate()
+
+    const handleLogin = async () => {
+        try {
+        const response = await postLogin({ email, password });
+        console.log("로그인 성공:", response);
+        navigate("/home"); // ✅ 홈으로 이동
+        } catch (error) {
+        console.error("로그인 실패:", error);
+        alert("로그인에 실패했습니다.");
+        }
+    };
+
+    const handleRegister = () => {
+        navigate("/register"); // ✅ 회원가입 페이지로 이동
+    };
+
+    return (
+        <Wrapper>
+        <Logo src={logoImage} alt="제대로 보안니 로고" />
+        <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button onClick={handleLogin}>Log In</Button>
+        <RegisterButton onClick={handleRegister}>
+            계정이 없으신가요?
+        </RegisterButton>
+        </Wrapper>
+    );
+};
 
 const Wrapper = styled.div`
     display: flex;
@@ -15,9 +59,9 @@ const Wrapper = styled.div`
 `;
 
 const Logo = styled.img`
-    width: 25%;
-    max-width: 100px;
-    margin-bottom: 5%;
+    width: 50%;
+    max-width: 200px;
+    margin-bottom: 10px;
 `;
 
 const Input = styled.input`
@@ -63,47 +107,5 @@ const RegisterButton = styled.button`
         color: #333;
     }
 `;
-
-const LoginForm: React.FC = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const handleLogin = async () => {
-        try {
-        const response = await postLogin({ email, password });
-        console.log("로그인 성공:", response);
-        } catch (error) {
-        console.error("로그인 실패:", error);
-        alert("로그인에 실패했습니다.");
-        }
-    };
-
-    const handleRegister = () => {
-        alert("회원가입 페이지로 이동합니다."); // 임시 처리
-        // TODO: 필요시 회원가입 라우터 이동
-    };
-
-    return (
-        <Wrapper>
-        <Logo src={logoImage} alt="제대로 보안니 로고" />
-        <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button onClick={handleLogin}>Log In</Button>
-        <RegisterButton onClick={handleRegister}>
-            계정이 없으신가요?
-        </RegisterButton>
-        </Wrapper>
-    );
-};
 
 export default LoginForm;
