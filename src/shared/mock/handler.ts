@@ -28,6 +28,15 @@ interface HeaderInfo {
   score: string;
 }
 
+interface ScoreItem {
+  team: string;
+  score: string;
+}
+
+interface EmployeeInfo {
+  employeeNumber: string;
+}
+
 export const handler = [
     //헤더
      http.get("/api/header", () => {
@@ -76,6 +85,43 @@ export const handler = [
                 headers: { "Content-Type": "application/json" },
             }
         );
+    }),
+
+    //조별 점수가져오기
+    http.get("/api/scores", () => {
+        const mockScoresData: ScoreItem[] = [
+            { team: "1조", score: "100점" },
+            { team: "2조", score: "95점" },
+            { team: "3조", score: "88점" },
+            { team: "4조", score: "92점" },
+            { team: "5조", score: "75점" },
+            { team: "6조", score: "100점" },
+            { team: "7조", score: "80점" },
+            { team: "8조", score: "100점" },
+        { team: "9조", score: "95점" },
+        { team: "10조", score: "88점" },
+        { team: "11조", score: "92점" },
+        { team: "12조", score: "75점" },
+        { team: "13조", score: "100점" },
+        { team: "14조", score: "80점" },
+        ];
+    
+        return HttpResponse.json(mockScoresData, {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }),
+
+    //사원번호 조회
+    http.get("/api/emregister", () => {
+        const mockEmployee: EmployeeInfo = {
+        employeeNumber: "12345678"
+        };
+    
+        return HttpResponse.json(mockEmployee, {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+        });
     }),
 
     //get요청 예시
