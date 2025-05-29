@@ -10,36 +10,48 @@ const MainBackground: React.FC<Props> = ({ children }) => {
   return (
     <BackgroundWrapper>
       <TopBar />
-      {children}
+      <ContentWrapper>{children}</ContentWrapper>
       <BottomBar />
     </BackgroundWrapper>
   );
 };
 
-export default MainBackground;
-
-
 const BackgroundWrapper = styled.div`
-  background: ${theme.yellow.y100};  // ✅ 크림색 배경 (연노랑)
+  background: ${theme.yellow.y100};
   height: 1024px;
   position: relative;
   overflow: hidden;
 `;
 
+const ContentWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+  padding-top: 38px;   // TopBar 높이만큼 여백
+  padding-bottom: 38px; // BottomBar 높이만큼 여백
+  height: calc(100% - 76px);
+  box-sizing: border-box;
+`;
+
 const TopBar = styled.div`
-  background: ${theme.orange.o500};  // ✅ 상단 주황 띠
+  background: ${theme.orange.o500};
   width: 100%;
   height: 38px;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 2;
 `;
 
 const BottomBar = styled.div`
-  background: ${theme.orange.o500};  // ✅ 하단 주황 띠
+  background: ${theme.orange.o500};
   width: 100%;
   height: 38px;
   position: absolute;
   bottom: 0;
   left: 0;
+  z-index: 2;
 `;
+
+
+
+export default MainBackground;
