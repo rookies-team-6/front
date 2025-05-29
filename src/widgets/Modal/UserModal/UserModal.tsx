@@ -6,16 +6,20 @@ interface ModalProps {
 }
 
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+export const UserModal: React.FC<ModalProps> = ({ isOpen, onCLose, children }) => {
     if (!isOpen) return null;
 
+    const onBtnClick = () =>{
+
+    }
+
     return (
-        <Backdrop isOpen={isOpen} onClick={onClose}>
-        <ModalContainer isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
+        <ModalWrapper  isOpen={isOpen}>
+        <ModalContainer isOpen={isOpen} onClick={() => onCLose()}>
             {children}
-            <button onClick={onClose}>닫기</button>
+            <button onClick={onBtnClick}>버튼</button>
         </ModalContainer>
-        </Backdrop>
+        </ModalWrapper>
     );
 };
 
@@ -41,19 +45,27 @@ const fadeSlideOut = keyframes`
   }
 `;
 
-const Backdrop = styled.div<{ isOpen: boolean }>`
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
-  align-items: center;
-  justify-content: center;
+const ModalWrapper  = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  top: 100%; /* 버튼 아래 */
+  right: 0;
+  margin-top: 8px;
+  z-index: 999;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: clamp(240px, 50vw, 400px); 
+  animation: ${({ isOpen }) => (isOpen ? fadeSlideIn : fadeSlideOut)} 0.3s ease-out forwards;
+  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
 `;
 
 const ModalContainer = styled.div<{ isOpen: boolean }>`
   background: white;
   padding: 20px;
   border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 400px;
   animation: ${({ isOpen }) => (isOpen ? fadeSlideIn : fadeSlideOut)} 0.3s ease-out forwards;
 `;
