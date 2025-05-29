@@ -8,20 +8,10 @@ import RegisterPage from "@pages/RegisterPage/RegisterPage"
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <p>test</p>,
-        children: [
-            {
-              path:"login",
-              element: <LoginPage />  
-            },
-            {
-              path:"register",
-              element: <RegisterPage />  
-            },
-            {
-              path:"home",
-              element: <HomePage />  
-            }
-        ]
+        element: <p>test</p>
     },
+    {
+      path: "/home",
+      element: <HomePage />  
+    }
 ]);
