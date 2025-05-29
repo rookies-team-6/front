@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AuthBackground: React.FC = () => {
+const AuthBackground: React.FC = ({children}) => {
   return (
     <div
       style={{
@@ -9,6 +9,7 @@ const AuthBackground: React.FC = () => {
         width: '100%',
       }}
     >
+      {children}
     </div>
   );
 };
