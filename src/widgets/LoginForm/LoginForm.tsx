@@ -22,7 +22,7 @@ const LoginForm: React.FC = () => {
     };
 
     const handleRegister = () => {
-        navigate("/register"); // ✅ 회원가입 페이지로 이동
+        navigate("/checkemplnum"); // ✅ 사원조회회 페이지로 이동
     };
 
     return (
@@ -59,13 +59,13 @@ const Wrapper = styled.div`
 `;
 
 const Logo = styled.img`
-    width: 50%;
+    width: 100%;
     max-width: 200px;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
 `;
 
 const Input = styled.input`
-    width: 80%;
+    width: 130%;
     max-width: 300px;
     padding: 10px 15px;
     margin-bottom: 25px;
@@ -76,7 +76,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-    width: 80%;
+    width: 130%;
     max-width: 300px;
     padding: 10px 15px;
     background-color: ${theme.orange.o500};
@@ -95,7 +95,7 @@ const Button = styled.button`
 
 const RegisterButton = styled.button`
     margin-top: 15px;
-    font-size: 14px;
+    font-size: 12px;
     color: #666;
     text-decoration: underline;
     cursor: pointer;
