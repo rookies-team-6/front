@@ -18,7 +18,7 @@ const MainBackground: React.FC<Props> = ({ children }) => {
 
 const BackgroundWrapper = styled.div`
   background: ${theme.yellow.y100};
-  height: 1024px;
+  min-height: 100vh;
   position: relative;
   overflow: hidden;
 `;

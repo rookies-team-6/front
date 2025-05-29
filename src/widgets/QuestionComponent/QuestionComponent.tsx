@@ -51,7 +51,7 @@ const QuestionComponent: React.FC = () => {
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 600px;
+  max-width: 80%;
   margin: 2rem auto;
   background-color: #fff;
   border-radius: 8px;
