@@ -12,7 +12,9 @@ const QuestionComponent: React.FC = () => {
   useEffect(()=>{
     const fetchData = async () => {
       const resultQuestion = await getQuestionData(1);
-      console.log(resultQuestion)
+      // console.log(resultQuestion)
+      setQuestionTitle(resultQuestion.data.title)
+      setQuestion(resultQuestion.data.content)
     };
 
     fetchData();
@@ -32,7 +34,7 @@ const QuestionComponent: React.FC = () => {
   
   //제출 버튼 누를경우
   const handleSubmit = () => {
-    postQuestionData(answer)
+    postAnswerData(answer)
     setAnswer("");
   };
 
@@ -49,10 +51,9 @@ const QuestionComponent: React.FC = () => {
 
   return (
     <Wrapper>
-      <Title>질문 주제</Title>
+      <Title>{questionTitle}</Title>
       <QuestionBox>
-        <div>질문내용</div>
-        <div>질문세부내용</div>
+        {question}
       </QuestionBox>
       <AnswerWrapper>
         {/* <Arrow>↳</Arrow> */}

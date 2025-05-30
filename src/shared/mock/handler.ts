@@ -141,7 +141,7 @@ const mainHandlerList = [
     }),
 
     //질문요청
-    http.post('/api/questions', async({request}) => {
+    http.post('/api/answer', async({request}) => {
         const body = (await request.json()) as SubmitBody;
 
         return HttpResponse.json(body, {

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { postRegisterData, requestEmailVerification, verifyEmailCode } from "@shared/Apis/auth";
 import useRegisterStore from "@shared/zustand/registerStore"
 
+import { RegisterFormSchema } from "@shared/schemas/registerSchema";
+
 const RegisterForm: React.FC = () => {
   const {employeeNumber, employeeName } = useRegisterStore();
   const [email, setEmail] = useState("");
@@ -14,23 +16,23 @@ const RegisterForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const isRegisterButtonDisabled =
-    !employeeName || !employeeNumber || !emailVerified || !password || password !== passwordConfirm;
+  // const isRegisterButtonDisabled =
+  //   !employeeName || !employeeNumber || !emailVerified || !password || password !== passwordConfirm;
 
   const navigate = useNavigate();
 
   // 이메일 인증 코드 전송
-  const handleSendEmailCode = async () => {
-    try {
-      const response = await requestEmailVerification(email); // 서버에 이메일 인증 요청
-      console.log("이메일 인증 요청 성공:", response);
-      alert("이메일로 인증 코드가 전송되었습니다.");
-      setEmailSent(true);
-    } catch (error) {
-      console.error("이메일 인증 코드 전송 실패:", error);
-      alert("인증 코드 전송에 실패했습니다. 올바른 이메일 주소인지 확인해주세요.");
-    }
-  };
+  // const handleSendEmailCode = async () => {
+  //   try {
+  //     const response = await requestEmailVerification(email); // 서버에 이메일 인증 요청
+  //     console.log("이메일 인증 요청 성공:", response);
+  //     alert("이메일로 인증 코드가 전송되었습니다.");
+  //     setEmailSent(true);
+  //   } catch (error) {
+  //     console.error("이메일 인증 코드 전송 실패:", error);
+  //     alert("인증 코드 전송에 실패했습니다. 올바른 이메일 주소인지 확인해주세요.");
+  //   }
+  // };
 
   // 이메일 인증 코드 검증
   const handleVerifyEmailCode = async () => {
@@ -48,19 +50,26 @@ const RegisterForm: React.FC = () => {
     }
   };
 
-  const handleRegister = async () => {
-    if (isRegisterButtonDisabled) return;
+  const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
-    try {
+    try{
+        RegisterFormSchema.parse({
+              email: email,
+              password: password,
+              passwordConfirm: passwordConfirm
+            });
+
       const response = await postRegisterData({ email, password, passwordConfirm });
       console.log("회원가입 성공:", response);
       alert("회원가입에 성공했습니다!");
-      navigate("/");
-    } catch (error) {
-      console.error("회원가입 실패:", error);
-      alert("회원가입에 실패했습니다.");
+      navigate("/", { replace: true });
+
+    }catch(error){
+      alert(error);
     }
-  };
+    
+   };
 
   const handleLogin = () => {
         navigate("/");
@@ -82,11 +91,7 @@ const RegisterForm: React.FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           disabled={emailVerified}
         />
-        {!emailVerified && (
-          <Button type="button" onClick={handleSendEmailCode} disabled={!email}>
-            인증하기
-          </Button>
-        )}
+        
 
         {emailSent && !emailVerified && (
           <>
@@ -113,7 +118,7 @@ const RegisterForm: React.FC = () => {
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}
         />
-        <Button type="submit" onClick={handleRegister} disabled={isRegisterButtonDisabled}>Sign up</Button>
+        <Button type="submit" onClick={handleRegister}>Sign up</Button>
       </Form>
       <RegisterButton onClick={handleLogin}>
             로그인으로 돌아가기
