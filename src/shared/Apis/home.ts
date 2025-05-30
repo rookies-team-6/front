@@ -1,8 +1,8 @@
 import { devServerInstance } from "@shared/apiInstance";
 
-const postQuestionData = async(query: string) => {
+const postAnswerData = async(query: string) => {
     const res = await devServerInstance.post(
-        "/api/questions",
+        "/api/answer",
         {
             data:{
                 query: query
@@ -14,4 +14,22 @@ const postQuestionData = async(query: string) => {
     console.log(res.data)
 }
 
-export {postQuestionData}
+const getAllQuestionData = async() => {
+    const res = await devServerInstance.get(
+        "/api/questions"
+    )
+
+    return res.data
+
+}
+
+const getQuestionData = async(id: number) => {
+    const res = await devServerInstance.get(
+        `/api/question/${id}`
+    )
+
+    return res.data
+
+}
+
+export {postAnswerData, getAllQuestionData, getQuestionData}
