@@ -3,18 +3,22 @@ import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import theme from "@app/styles/theme";
 import { getEmployeeInfo } from "@shared/Apis/emregister";
-import type { EmployeeInfo } from "@shared/Apis/emregister";
+// import type { EmployeeInfo } from "@shared/Apis/emregister";
 import { useNavigate } from "react-router-dom";
+import useRegisterStore from "@shared/zustand/registerStore"
 
 const EmRegister = () => {
-    const [inputData, setInputData] = useState<EmployeeInfo>({
-        employeeNumber: "",
-        employeeName: ""
-    });
+    // const [inputData, setInputData] = useState<EmployeeInfo>({
+    //     employeeNumber: "",
+    //     employeeName: ""
+    // });
+
+    const {employeeNumber, employeeName, setEmployeeNumber, setEmployeeName} = useRegisterStore();
+
     const navigate = useNavigate();
 
     const handleSearch = async () => {
-        if (!inputData.employeeNumber || !inputData.employeeName) {
+        if (!employeeNumber || !employeeName) {
             alert("사원 번호와 이름을 모두 입력해주세요.");
             return;
         }
@@ -22,14 +26,14 @@ const EmRegister = () => {
         try {
             const data = await getEmployeeInfo(); // 💡 서버에서 가져온 mock data
             if (
-                inputData.employeeNumber === data.employeeNumber &&
-                inputData.employeeName === data.employeeName
+                employeeNumber === data.employeeNumber &&
+                employeeName === data.employeeName
             ) {
                 alert("확인 완료!");
                 navigate("/register", {
                     state: {
-                        employeeNumber: inputData.employeeNumber,
-                        employeeName: inputData.employeeName,
+                        employeeNumber: employeeNumber,
+                        employeeName: employeeName,
                     },
                 });
             } else {
@@ -52,9 +56,9 @@ const EmRegister = () => {
                         id="employee-number"
                         type="text"
                         placeholder="사원 번호"
-                        value={inputData.employeeNumber}
+                        value={employeeNumber}
                         onChange={(e) =>
-                            setInputData({ ...inputData, employeeNumber: e.target.value })
+                            setEmployeeNumber( e.target.value )
                         }
                     />
                     <Label htmlFor="employee-name">사원 이름</Label>
@@ -62,9 +66,9 @@ const EmRegister = () => {
                         id="employee-name"
                         type="text"
                         placeholder="사원 이름"
-                        value={inputData.employeeName}
+                        value={employeeName}
                         onChange={(e) =>
-                            setInputData({ ...inputData, employeeName: e.target.value })
+                            setEmployeeName(e.target.value )
                         }
                     />
                     <Button onClick={handleSearch}>조회하기</Button>
