@@ -1,4 +1,5 @@
 import {http, HttpResponse} from "msw";
+import {testHandlerList} from "@shared/mock/handlerTest";
 
 interface Question {
     id: number;
@@ -37,7 +38,7 @@ interface EmployeeInfo {
   employeeName: string;
 }
 
-export const handler = [
+const mainHandlerList = [
     //헤더
      http.get("/api/header", () => {
         const mockData: HeaderInfo = {
@@ -153,3 +154,14 @@ export const handler = [
 
     
 ]
+
+let handler;
+
+if (import.meta.env.DEV){
+    handler = [...mainHandlerList, ...testHandlerList];
+}else{
+    handler = mainHandlerList;
+}
+
+
+export {handler}
