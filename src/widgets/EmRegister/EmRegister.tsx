@@ -1,30 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import theme from "@app/styles/theme";
 import { getEmployeeInfo } from "@shared/Apis/emregister";
-import type { EmployeeInfo } from "@shared/Apis/emregister";
+// import type { EmployeeInfo } from "@shared/Apis/emregister";
 import { useNavigate } from "react-router-dom";
+import useRegisterStore from "@shared/zustand/registerStore"
 
 const EmRegister = () => {
-    const [employee, setEmployee] = useState<EmployeeInfo>({ employeeNumber: "" });
+    // const [inputData, setInputData] = useState<EmployeeInfo>({
+    //     employeeNumber: "",
+    //     employeeName: ""
+    // });
+
+    const {employeeNumber, employeeName, setEmployeeNumber, setEmployeeName} = useRegisterStore();
+
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await getEmployeeInfo();
-            setEmployee(data);
-        };
-        fetchData();
-    }, []);
-
-    const handleSearch = () => {
-        if (!employee.employeeNumber) {
-            alert("사원이 아닙니다.");
+    const handleSearch = async () => {
+        if (!employeeNumber || !employeeName) {
+            alert("사원 번호와 이름을 모두 입력해주세요.");
             return;
         }
-        alert("확인 완료!");
-        navigate("/register"); // ✅ 회원가입 페이지로 이동
+
+        try {
+            const data = await getEmployeeInfo(); // 💡 서버에서 가져온 mock data
+            if (
+                employeeNumber === data.employeeNumber &&
+                employeeName === data.employeeName
+            ) {
+                alert("확인 완료!");
+                navigate("/register", {
+                    state: {
+                        employeeNumber: employeeNumber,
+                        employeeName: employeeName,
+                    },
+                });
+            } else {
+                alert("사원이 아닙니다.");
+            }
+        } catch (error) {
+            console.error("사원 조회 실패:", error);
+            alert("오류가 발생했습니다.");
+        }
     };
 
     return (
@@ -38,9 +56,19 @@ const EmRegister = () => {
                         id="employee-number"
                         type="text"
                         placeholder="사원 번호"
-                        value={employee.employeeNumber}
+                        value={employeeNumber}
                         onChange={(e) =>
-                            setEmployee({ ...employee, employeeNumber: e.target.value })
+                            setEmployeeNumber( e.target.value )
+                        }
+                    />
+                    <Label htmlFor="employee-name">사원 이름</Label>
+                    <Input
+                        id="employee-name"
+                        type="text"
+                        placeholder="사원 이름"
+                        value={employeeName}
+                        onChange={(e) =>
+                            setEmployeeName(e.target.value )
                         }
                     />
                     <Button onClick={handleSearch}>조회하기</Button>
@@ -66,7 +94,7 @@ const Logo = styled.img`
 const Title = styled.h2`
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 `;
 
 const Container = styled.div`
@@ -102,7 +130,7 @@ const Label = styled.label`
 const Input = styled.input`
     width: 100%;
     padding: 10px 15px;
-    margin-bottom: 0;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 12px;
@@ -111,7 +139,7 @@ const Input = styled.input`
 
 const Button = styled.button`
     width: 100%;
-    margin-top: 30px;
+    margin-top: 15px;
     padding: 10px 15px;
     background-color: ${theme.orange.o500};
     color: white;

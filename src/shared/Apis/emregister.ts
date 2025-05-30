@@ -2,6 +2,7 @@ import { devServerInstance } from "@shared/apiInstance";
 
 interface EmployeeInfo {
   employeeNumber: string;
+  employeeName: string;
 }
 
 const getEmployeeInfo = async (): Promise<EmployeeInfo> => {

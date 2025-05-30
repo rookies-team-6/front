@@ -35,6 +35,7 @@ interface ScoreItem {
 
 interface EmployeeInfo {
   employeeNumber: string;
+  employeeName: string;
 }
 
 export const handler = [
@@ -115,7 +116,8 @@ export const handler = [
     //사원번호 조회
     http.get("/api/emregister", () => {
         const mockEmployee: EmployeeInfo = {
-        employeeNumber: "12345678"
+        employeeNumber: "12345678",
+        employeeName: "홍길동",
         };
     
         return HttpResponse.json(mockEmployee, {
