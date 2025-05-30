@@ -2,7 +2,127 @@ import styled from "styled-components";
 import theme from "@app/styles/theme";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postRegisterData } from "@shared/Apis/auth";
+import { postRegisterData, requestEmailVerification, verifyEmailCode } from "@shared/Apis/auth";
+import useRegisterStore from "@shared/zustand/registerStore"
+
+const RegisterForm: React.FC = () => {
+  const {employeeNumber, employeeName } = useRegisterStore();
+  const [email, setEmail] = useState("");
+  const [emailCode, setEmailCode] = useState(""); // 이메일 인증코드 입력값
+  const [emailSent, setEmailSent] = useState(false); // 이메일 인증코드 전송 여부
+  const [emailVerified, setEmailVerified] = useState(false); // 이메일 인증 완료 여부
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const isRegisterButtonDisabled =
+    !employeeName || !employeeNumber || !emailVerified || !password || password !== passwordConfirm;
+
+  const navigate = useNavigate();
+
+  // 이메일 인증 코드 전송
+  const handleSendEmailCode = async () => {
+    try {
+      const response = await requestEmailVerification(email); // 서버에 이메일 인증 요청
+      console.log("이메일 인증 요청 성공:", response);
+      alert("이메일로 인증 코드가 전송되었습니다.");
+      setEmailSent(true);
+    } catch (error) {
+      console.error("이메일 인증 코드 전송 실패:", error);
+      alert("인증 코드 전송에 실패했습니다. 올바른 이메일 주소인지 확인해주세요.");
+    }
+  };
+
+  // 이메일 인증 코드 검증
+  const handleVerifyEmailCode = async () => {
+    try {
+      const response = await verifyEmailCode(email, emailCode); // 서버에 인증 코드 검증 요청
+      if (response.success) {
+        alert("이메일 인증이 완료되었습니다.");
+        setEmailVerified(true);
+      } else {
+        alert("인증 코드가 올바르지 않습니다.");
+      }
+    } catch (error) {
+      console.error("이메일 인증 실패:", error);
+      alert("이메일 인증에 실패했습니다.");
+    }
+  };
+
+  const handleRegister = async () => {
+    if (isRegisterButtonDisabled) return;
+
+    try {
+      const response = await postRegisterData({ email, password, passwordConfirm });
+      console.log("회원가입 성공:", response);
+      alert("회원가입에 성공했습니다!");
+      navigate("/");
+    } catch (error) {
+      console.error("회원가입 실패:", error);
+      alert("회원가입에 실패했습니다.");
+    }
+  };
+
+  const handleLogin = () => {
+        navigate("/");
+    };
+
+  return (
+    <Container>
+      <Title>회원가입</Title>
+      <Form>
+        <Label>이름</Label>
+        <Input type="text" value={employeeName} readOnly/>
+        <Label>사원 번호</Label>
+        <Input type="text" value={employeeNumber} readOnly/>
+
+        <Label htmlFor="email">이메일</Label>
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={emailVerified}
+        />
+        {!emailVerified && (
+          <Button type="button" onClick={handleSendEmailCode} disabled={!email}>
+            인증하기
+          </Button>
+        )}
+
+        {emailSent && !emailVerified && (
+          <>
+            <Label>인증번호</Label>
+            <Input
+              type="text"
+              value={emailCode}
+              onChange={(e) => setEmailCode(e.target.value)}
+            />
+            <Button type="button" onClick={handleVerifyEmailCode} disabled={!emailCode}>
+              인증번호 확인
+            </Button>
+          </>
+        )}
+        <Label htmlFor="password">비밀번호</Label>
+        <Input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Label htmlFor="passwordConfirm">비밀번호 확인</Label>
+        <Input
+          type="password"
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
+        />
+        <Button type="submit" onClick={handleRegister} disabled={isRegisterButtonDisabled}>Sign up</Button>
+      </Form>
+      <RegisterButton onClick={handleLogin}>
+            로그인으로 돌아가기
+      </RegisterButton>
+    </Container>
+  );
+};
+
+
 
 const Container = styled.div`
   width: 57.22%;
@@ -37,14 +157,14 @@ const Input = styled.input`
   border-radius: 10px;
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ disabled?: boolean }>`
   padding: 10px 0;
   font-size: 16px;
   color: #ffffff;
-  background-color: ${theme.orange.o500};
+  background-color: ${(props) => (props.disabled ? "#c4c4c4" : theme.orange.o500)};
   border: none;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
 const RegisterButton = styled.button`
@@ -61,65 +181,5 @@ const RegisterButton = styled.button`
         color: #333;
     }
 `;
-
-const RegisterForm: React.FC = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-
-  const navigate = useNavigate();
-
-  const handleRegister = async () => {
-        try {
-        const response = await postRegisterData({ name, email, password, passwordConfirm });
-        console.log("회원가입 성공:", response);
-        navigate("/login");
-        } catch (error) {
-        console.error("회원가입 실패:", error);
-        alert("회원가입에 실패했습니다.");
-        }
-  };
-
-  const handleLogin = () => {
-        navigate("/login");
-    };
-
-  return (
-    <Container>
-      <Title>회원가입</Title>
-      <Form>
-        <Label htmlFor="name">Name</Label>
-        <Input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Label htmlFor="email">Email</Label>
-        <Input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Label htmlFor="password">Password</Label>
-        <Input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Label htmlFor="passwordConfirm">Password Confirm</Label>
-        <Input
-          type="password"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
-        />
-        <Button type="submit" onClick={handleRegister}>Sign up</Button>
-      </Form>
-      <RegisterButton onClick={handleLogin}>
-            로그인으로 돌아가기
-      </RegisterButton>
-    </Container>
-  );
-};
 
 export default RegisterForm;

@@ -16,7 +16,6 @@ interface LoginRequestBody {
 }
 
 interface RegisterFormContent {
-    name: string;
     email: string;
     password: string;
     passwordConfirm: string;
