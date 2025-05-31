@@ -5,11 +5,13 @@ import LoginPage from  "@pages/LoginPage/LoginPage"
 import HomePage from "@pages/HomePage/HomePage"
 import RegisterPage from "@pages/RegisterPage/RegisterPage"
 import CheckEmployeePage from "@pages/CheckEmployeePage/CheckEmployeePage";
+import NotFoundPage from "@pages/404Page/404Page";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <LoginPage />  
+        element: <LoginPage /> ,
+        errorElement: <NotFoundPage />
     },
     {
       path: "/home",
