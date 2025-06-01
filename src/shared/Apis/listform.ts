@@ -10,8 +10,9 @@ interface Answer {
     score: number;
 }
 
-const getAnswers = async (): Promise<Answer[]> => {
-    const res = await devServerInstance.get("/api/getmyanswers");
+const getAnswers = async (isGroup: boolean): Promise<Answer[]> => {
+    const endpoint = isGroup ? "/api/team-answers" : "/api/getmyanswers";
+    const res = await devServerInstance.get(endpoint);
     return res.data;
 };
 

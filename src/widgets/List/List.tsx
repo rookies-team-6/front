@@ -15,35 +15,36 @@ const List: React.FC<ListProps> = ({ isGroup = false }) => {
 
     useEffect(() => {
         const fetchAnswers = async () => {
-        const data = await getAnswers();
-        console.log(data);
-        setAnswers(data); // 모든 질문 데이터를 스토어에 저장
+            const data = await getAnswers(isGroup); // ✅ 전달
+            console.log(data);
+            setAnswers(data);
         };
         fetchAnswers();
-    }, [setAnswers]);
+    }, [setAnswers, isGroup]); // ✅ 의존성에 포함
 
     return (
         <>
-        {answers.map((answer) => (
-            <ListButton key={answer.id}>
-            <AnswerDate>{answer.date}</AnswerDate>
-            <AnswerContent>{truncateText(answer.content)}</AnswerContent>
-            <AnswerScore>
-                {isGroup ? "조별 평균 점수" : "내 점수"}: {answer.score}
-            </AnswerScore>
-            </ListButton>
-        ))}
+            {answers.map((answer) => (
+                <ListButton key={answer.id}>
+                    <AnswerDate>{answer.date}</AnswerDate>
+                    <AnswerContent>{truncateText(answer.content)}</AnswerContent>
+                    <AnswerScore>
+                        {isGroup ? "조별 평균 점수" : "내 점수"}: {answer.score}
+                    </AnswerScore>
+                </ListButton>
+            ))}
         </>
     );
 };
-// 스타일
+
+// 스타일 정의 그대로 유지
 const ListButton = styled.div`
     cursor: pointer;
-    position: relative; /* ✅ 기준 잡기 */
+    position: relative;
     width: 100%;
     background-color: white;
     border-radius: 10px;
-    padding: 12px 14px 20px 14px; /* ✅ 아래 padding 추가 */
+    padding: 12px 14px 20px 14px;
     margin: 6px 0;
     display: flex;
     flex-direction: column;
@@ -65,10 +66,10 @@ const AnswerContent = styled.span`
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: left;
-    `;
+`;
 
 const AnswerScore = styled.span`
-    position: absolute; /* ✅ 오른쪽 하단 고정 */
+    position: absolute;
     right: 14px;
     bottom: 8px;
     font-size: 10px;

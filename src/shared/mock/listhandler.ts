@@ -1,5 +1,3 @@
-// src/shared/mock/listhandler.ts
-
 import { http, HttpResponse } from "msw";
 
 interface Answer {
@@ -10,7 +8,8 @@ interface Answer {
   score: number;
 }
 
-const mockAnswers: Answer[] = [
+// ✅ 내 답변 mock
+const myMockAnswers: Answer[] = [
   {
     id: 1,
     title: "모의 질문 1",
@@ -27,13 +26,36 @@ const mockAnswers: Answer[] = [
   },
 ];
 
+// ✅ 조별 답변 mock
+const teamMockAnswers: Answer[] = [
+  {
+    id: 1,
+    title: "조별 질문 1",
+    content: "조 평균 응답입니다.",
+    date: "2025.12.12",
+    score: 88,
+  },
+  {
+    id: 2,
+    title: "조별 질문 2",
+    content: "우리 조는 이렇게 생각했어요.",
+    date: "2025.12.13",
+    score: 92,
+  },
+];
+
 export const listHandler = [
   http.get("/api/getmyanswers", () => {
-    return HttpResponse.json(mockAnswers, {
+    return HttpResponse.json(myMockAnswers, {
       status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
+    });
+  }),
+
+  http.get("/api/team-answers", () => {
+    return HttpResponse.json(teamMockAnswers, {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
     });
   }),
 ];
