@@ -2,11 +2,14 @@ import styled from "styled-components";
 import React, { useState, useEffect, useRef } from "react";
 import { getScoreItems } from "@shared/Apis/scorebar";
 import type { ScoreItem } from "@shared/Apis/scorebar";
+import { useNavigate } from "react-router-dom";
 
 
 const ScoreBar: React.FC = () => {
   const [scoreList, setScoreList] = useState<ScoreItem[]>([]);
   const scoreContainerRef = useRef<HTMLDivElement>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchScores = async () => {
@@ -42,8 +45,7 @@ const ScoreBar: React.FC = () => {
   };
 
   const handleQueryAll = () => {
-    alert("전체 답변 조회 버튼 클릭");
-    // 전체 답변을 조회하는 라우터 이동
+    navigate("/answerdetail");
   };
 
   return (
