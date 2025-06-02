@@ -43,9 +43,8 @@ const Header = () => {
                 >
                 ▼
                 </span>
-                <UserModal isOpen={isModalOpen} onClose = {() => setModalOpen(false)}>
-                    <p>test</p>
-                </UserModal>
+                <UserModal isOpen={isModalOpen} onClose = {() => setModalOpen(false)} />
+                    
             </ButtonWrapper>
 
         </UserInfo>
