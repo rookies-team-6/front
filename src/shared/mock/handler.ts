@@ -38,12 +38,6 @@ interface EmployeeInfo {
   employeeName: string;
 }
 
-interface AnswerSearch {
-    id: number;
-    content: string;
-    questionId?: number;
-}
-
 
 export const handler = [
     //헤더
@@ -167,17 +161,14 @@ export const handler = [
         });
     }),
 
-    //답변들 조회
-    http.get('/api/answer', () => {
-    const answers: AnswerSearch[] = [
-        { id: 1, content: '답변 정리 1' },
-        { id: 2, content: '답변 정리 2' },
-        ];
-        return HttpResponse.json(answers, {
-            status: 201,
-            headers: {
-                'Content-Type': 'application/json'
+    //답변 디테일 조회
+    http.get('/api/answer/:id', ({ params }) => {
+        return HttpResponse.json({
+            data:{
+                "content": "답변 정리 1"
             }
+        }, {
+        status: 200,
         });
     }),
 

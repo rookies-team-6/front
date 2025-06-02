@@ -6,6 +6,7 @@ import HomePage from "@pages/HomePage/HomePage"
 import RegisterPage from "@pages/RegisterPage/RegisterPage"
 import CheckEmployeePage from "@pages/CheckEmployeePage/CheckEmployeePage";
 import NotFoundPage from "@pages/404Page/404Page";
+import AnswerDetailPage from "@pages/AnswerDetailPage/AnswerDetailPage";
 
 export const router = createBrowserRouter([
     {
@@ -24,5 +25,9 @@ export const router = createBrowserRouter([
     {
       path: "/checkemplnum",
       element: <CheckEmployeePage />  
+    },
+    {
+      path: "/answerdetail",
+      element: <AnswerDetailPage />  
     }
 ]);
