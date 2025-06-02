@@ -1,5 +1,5 @@
 import {http, HttpResponse} from "msw";
-import {testHandlerList} from "@shared/mock/handlerTest";
+import { myMockAnswers, teamMockAnswers } from "@shared/mock/dataList";
 
 interface Question {
     id: number;
@@ -38,7 +38,14 @@ interface EmployeeInfo {
   employeeName: string;
 }
 
-const mainHandlerList = [
+interface AnswerSearch {
+    id: number;
+    content: string;
+    questionId?: number;
+}
+
+
+export const handler = [
     //헤더
      http.get("/api/header", () => {
         const mockData: HeaderInfo = {
@@ -140,6 +147,59 @@ const mainHandlerList = [
         });
     }),
 
+      // 내 답변 요청 핸들러
+    http.get("/api/getmyanswers", () => {
+        return HttpResponse.json(myMockAnswers, {
+        status: 200,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        });
+    }),
+
+    // 조별 답변 요청 핸들러
+    http.get("/api/team-answers", () => {
+        return HttpResponse.json(teamMockAnswers, {
+        status: 200,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        });
+    }),
+
+    //답변들 조회
+    http.get('/api/answer', () => {
+    const answers: AnswerSearch[] = [
+        { id: 1, content: '답변 정리 1' },
+        { id: 2, content: '답변 정리 2' },
+        ];
+        return HttpResponse.json(answers, {
+            status: 201,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }),
+
+    //질문 디테일 조회
+    http.get('/api/question/:id', ({ params }) => {
+        // const id = Number(params.id);
+        // const question = questions.find((q) => q.id === id);
+
+        // if (!question) {
+        //   return HttpResponse.json({ message: '질문을 찾을 수 없습니다.' }, { status: 404 });
+        // }
+
+        return HttpResponse.json({
+            data:{
+                "title": "질문제목퉤스트트",
+                "content": "내용내용내용용내용이 겁나 길어요요오오ㅗㅇ오오오"
+            }
+        }, {
+        status: 200,
+        });
+    }),
+
     //질문요청
     http.post('/api/answer', async({request}) => {
         const body = (await request.json()) as SubmitBody;
@@ -154,14 +214,3 @@ const mainHandlerList = [
 
     
 ]
-
-let handler;
-
-if (import.meta.env.DEV){
-    handler = [...mainHandlerList, ...testHandlerList];
-}else{
-    handler = mainHandlerList;
-}
-
-
-export {handler}
