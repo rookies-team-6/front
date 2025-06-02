@@ -1,19 +1,20 @@
-// src/shared/Apis/listform.ts
-
 import { devServerInstance } from "@shared/apiInstance";
 
-interface Answer {
-    id: number;
-    title: string;
-    content: string;
-    date: string;
-    score: number;
+export interface Answer {
+  id: number;
+  title: string;
+  content: string;
+  date: string;
+  score: number;
 }
 
-const getAnswers = async (isGroup: boolean): Promise<Answer[]> => {
-    const endpoint = isGroup ? "/api/team-answers" : "/api/getmyanswers";
-    const res = await devServerInstance.get(endpoint);
-    return res.data;
+/**
+ * API 주소를 전달받아 답변 목록을 가져오는 함수
+ * @param url API 주소 (예: "/api/getmyanswers", "/api/team-answers")
+ */
+const getAnswers = async (url: string): Promise<Answer[]> => {
+  const res = await devServerInstance.get(url);
+  return res.data;
 };
 
 export { getAnswers };

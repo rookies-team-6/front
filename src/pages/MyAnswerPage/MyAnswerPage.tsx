@@ -6,38 +6,37 @@ import List from "@widgets/List/List";
 import styled from "styled-components";
 
 const MyAnswerPage = () => {
-    return (
-        <MainBackground>
-            <Header />
-            <ScoreBar />
-            <ContentWrapper>
-                <Title>내 답변</Title>
-                <ScrollArea>
-                    <List isGroup={false} /> {/* ✅ 내 점수용 */}
-                </ScrollArea>
-            </ContentWrapper>
-        </MainBackground>
-    );
+  return (
+    <MainBackground>
+      <Header />
+      <ScoreBar />
+      <ContentWrapper>
+        <Title>내 답변</Title>
+        <ScrollArea>
+          <List title="내 점수" url="/api/getmyanswers" />
+        </ScrollArea>
+      </ContentWrapper>
+    </MainBackground>
+  );
 };
 
 export default MyAnswerPage;
 
-// ✅ 스타일 정의
 const ContentWrapper = styled.div`
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.h2`
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
 `;
 
 const ScrollArea = styled.div`
-    max-height: 300px;
-    overflow-y: auto;
-    padding-right: 40px;
-    padding-left: 40px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 40px;
+  padding-left: 40px;
 `;
