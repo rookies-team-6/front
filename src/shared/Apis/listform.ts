@@ -14,6 +14,11 @@ export interface Answer {
  */
 const getAnswers = async (url: string): Promise<Answer[]> => {
   const res = await devServerInstance.get(url);
+  console.log("✅ API 응답:", res.data); // 디버깅용
+  if (!Array.isArray(res.data)) {
+    console.error("응답 데이터가 배열이 아님:", res.data);
+    return [];
+  }
   return res.data;
 };
 

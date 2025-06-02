@@ -40,6 +40,19 @@ interface EmployeeInfo {
 
 
 export const handler = [
+    //북마크
+    http.post("/api/record/bookmarked", async ({ request }) => {
+    const body = await request.json();
+    console.log("북마크된 항목:", body); // 콘솔에 어떤 ID가 넘어오는지 확인용
+
+    return HttpResponse.json({ message: "북마크 처리 완료" }, { status: 200 });
+    }),
+
+    http.delete("/api/record/bookmarked/:id", ({ params }) => {
+    console.log("삭제된 북마크 ID:", params.id);
+    return HttpResponse.json({ success: true }, { status: 200 });
+    }),
+
     //헤더
      http.get("/api/header", () => {
         const mockData: HeaderInfo = {
@@ -173,7 +186,7 @@ export const handler = [
     }),
 
     //질문 디테일 조회
-    http.get('/api/question/:id', ({ params }) => {
+    http.get('/api/questions/:id', ({ params }) => {
         // const id = Number(params.id);
         // const question = questions.find((q) => q.id === id);
 
