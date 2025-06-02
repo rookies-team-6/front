@@ -11,7 +11,7 @@ const getAnswerData = async(id: number) => {
 
 const getQuestionData = async(id: number) => {
     const res = await devServerInstance.get(
-        `/api/questions/${id}`
+        `/api/question/${id}`
     )
 
     return res.data
