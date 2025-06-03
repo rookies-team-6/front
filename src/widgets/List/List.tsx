@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getAnswers } from "@shared/Apis/listform";
 import { postBookmark, deleteBookmark } from "@shared/Apis/bookmark";
+import useTeamStore from "@shared/zustand/teamStore";
 
 interface Answer {
   id: number;
@@ -23,10 +24,12 @@ const List: React.FC<ListProps> = ({ title, url }) => {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [bookmarkedIds, setBookmarkedIds] = useState<number[]>([]); // 북마크 상태
 
+  const {teamDict} = useTeamStore();
+
   useEffect(() => {
     const fetchAnswers = async () => {
       try {
-        const data = await getAnswers(url);
+        const data = await getAnswers(teamDict.url);
         if (!Array.isArray(data)) {
           console.error("❗️응답이 배열이 아닙니다:", data);
           setAnswers([]);
@@ -40,7 +43,7 @@ const List: React.FC<ListProps> = ({ title, url }) => {
     };
 
     fetchAnswers();
-  }, [url, title]); // ✅ title도 의존성 배열에 추가
+  }, []); // ✅ title도 의존성 배열에 추가
 
 const toggleBookmark = async (id: number) => {
   try {
