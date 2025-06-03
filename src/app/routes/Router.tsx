@@ -7,6 +7,7 @@ import RegisterPage from "@pages/RegisterPage/RegisterPage"
 import CheckEmployeePage from "@pages/CheckEmployeePage/CheckEmployeePage";
 import NotFoundPage from "@pages/404Page/404Page";
 import AnswerDetailPage from "@pages/AnswerDetailPage/AnswerDetailPage";
+import TeamAnswerPage from "@pages/TeamAnswerPage/TeamAnswerPage";
 
 export const router = createBrowserRouter([
     {
@@ -29,5 +30,9 @@ export const router = createBrowserRouter([
     {
       path: "/answerdetail",
       element: <AnswerDetailPage />  
+    },
+    {
+      path: "/teamanswerlist",
+      element: <TeamAnswerPage />
     }
 ]);

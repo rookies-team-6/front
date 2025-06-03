@@ -165,8 +165,16 @@ export const handler = [
     }),
 
     // 조별 답변 요청 핸들러
-    http.get("/api/team-answers", () => {
-        return HttpResponse.json(teamMockAnswers, {
+    http.get("/api/team-answers/:team", ({ params }) => {
+        let resData = null
+        if (params.team == "1"){
+            resData = teamMockAnswers
+        }else{
+            resData = {
+                "data": "None"
+            }
+        }
+        return HttpResponse.json(resData, {
         status: 200,
         headers: {
             "Content-Type": "application/json",

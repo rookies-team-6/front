@@ -3,13 +3,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { getScoreItems } from "@shared/Apis/scorebar";
 import type { ScoreItem } from "@shared/Apis/scorebar";
 import { useNavigate } from "react-router-dom";
-
+import useTeamStore from "@shared/zustand/teamStore";
 
 const ScoreBar: React.FC = () => {
   const [scoreList, setScoreList] = useState<ScoreItem[]>([]);
   const scoreContainerRef = useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
+  const {setTeamDict} = useTeamStore();
 
   useEffect(() => {
     const fetchScores = async () => {
@@ -40,8 +41,12 @@ const ScoreBar: React.FC = () => {
   };
 
   const handleScoreBoxClick = (team: string, score: string) => {
-    alert(`${team}의 점수는 ${score}입니다!`);
-    // 실제 해당 조의 상세 정보를 보여주는 페이지로 이동
+    const testNum = 1
+    setTeamDict({
+      "title": "조별답변",
+      "url": `/api/team-answers/${testNum}`
+    })
+    navigate("/teamanswerlist");
   };
 
   const handleQueryAll = () => {
