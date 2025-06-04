@@ -3,6 +3,7 @@ import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import { getHeaderInfo } from "@shared/Apis/header";
 import { UserModal } from "@widgets/Modal/UserModal/UserModal";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
     const [user, setUser] = useState<getHeaderInfo>({
@@ -12,6 +13,7 @@ const Header = () => {
     });
     const [isModalOpen, setModalOpen] = useState(false);
 
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async () => {
             const data = await getHeaderInfo();
@@ -27,7 +29,11 @@ const Header = () => {
             {/* <Link to="/">
             
         </Link> */}
-            <Logo src={logoImage} alt="로고" />
+            <Logo
+                src={logoImage}
+                alt="로고"
+                onClick={() => navigate("/home")}
+            />
             <UserInfo>
                 <LogoutButton onClick={() => alert("로그아웃 처리 예정")}>
                     로그아웃
@@ -81,6 +87,10 @@ const Logo = styled.img`
     width: 145px;
     height: 71px;
     object-fit: cover;
+
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const UserInfo = styled.div`
