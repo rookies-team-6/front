@@ -29,11 +29,11 @@ const postLogin = async (body: LoginRequestBody): Promise<LoginResponse> => {
 };
 
 //화면페이지전환 혹은 화면새로고침할 때마다 요청하여 로그인만료시간 체크 & 만료시간 갱신하기
-const onSilentRefresh = async() => {
-  devServerInstance.get('/api/refresh').then(onLoginSuccess).catch(error=>{
-    throw `인증 만료됨: ${error}` //이 부분은 임시로 throw처리함. 나중에 다시 수정하도록
-  })
-}
+// const onSilentRefresh = async() => {
+//   devServerInstance.get('/api/refresh').then(onLoginSuccess).catch(error=>{
+//     throw `인증 만료됨: ${error}` //이 부분은 임시로 throw처리함. 나중에 다시 수정하도록
+//   })
+// }
 
 const postRegisterData = async (formData:RegisterFormContent) => {
   const res = await devServerInstance.post(
