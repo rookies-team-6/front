@@ -3,20 +3,21 @@ import MainBackground from "@shared/ui/main_background";
 import Header from "@widgets/Header/Header";
 import ScoreBar from "@widgets/GroupScoreBar/GroupScoreBar";
 import QuestionComponent from "@widgets/QuestionComponent/QuestionComponent";
+import BulletinBoard from "@widgets/BulletinBoard/BulletinBoard";
 
-type View = 'question' | 'detail' | 'none';
+type View = 'question' | 'board' | 'none';
 
 const HomePage = () => {
-    const [viewState, setViewState] = useState<View>("question") //여기를 zustand로 교체할것
+    const [viewState, setViewState] = useState<View>("question") 
 
     useEffect(()=>{
-
+        setViewState("board")
     },[])
 
     const viewMap = {
-        question: <QuestionComponent />,
-        detail: <p>test</p>,
-        none: <p>None</p>,
+        "question": <QuestionComponent />,
+        "board": <BulletinBoard />, 
+        "none": <p>None</p>,
     };
 
     const RenderComponent = ({state}: { view: View }) => {
