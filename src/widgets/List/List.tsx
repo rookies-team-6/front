@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { getAnswers } from "@shared/Apis/listform";
 import { postBookmark, deleteBookmark } from "@shared/Apis/bookmark";
 import useTeamStore from "@shared/zustand/teamStore";
+import Loading from "@widgets/Loading/Loading";
 
 interface Answer {
   id: number;
@@ -23,10 +24,12 @@ const truncateText = (text: string) =>
 const List: React.FC<ListProps> = ({ title, url }) => {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [bookmarkedIds, setBookmarkedIds] = useState<number[]>([]); // 북마크 상태
+  const [isLoading, setLoading] = useState(false)
 
   const {teamDict} = useTeamStore();
 
   useEffect(() => {
+    setLoading(true);
     const fetchAnswers = async () => {
       try {
         const data = await getAnswers(teamDict.url);
@@ -43,6 +46,7 @@ const List: React.FC<ListProps> = ({ title, url }) => {
     };
 
     fetchAnswers();
+    setLoading(false);
   }, []); // ✅ title도 의존성 배열에 추가
 
 const toggleBookmark = async (id: number) => {
@@ -63,25 +67,32 @@ const toggleBookmark = async (id: number) => {
 
   return (
     <>
-      {answers.map((answer) => (
-        <ListButton key={answer.id}>
-          <AnswerDate>{answer.date}</AnswerDate>
-          <AnswerContent>{truncateText(answer.content)}</AnswerContent>
-          <AnswerScore>
-            {title}: {answer.score}
-          </AnswerScore>
+      {
+        isLoading ? 
+        <Loading />
+        :
+      <>
+        {answers.map((answer) => (
+          <ListButton key={answer.id}>
+            <AnswerDate>{answer.date}</AnswerDate>
+            <AnswerContent>{truncateText(answer.content)}</AnswerContent>
+            <AnswerScore>
+              {title}: {answer.score}
+            </AnswerScore>
 
-          {/* ✅ 북마크 버튼 */}
-          {title === "내 점수" && (
-            <BookmarkButton
-              $active={bookmarkedIds.includes(answer.id)}
-              onClick={() => toggleBookmark(answer.id)}
-            >
-              {bookmarkedIds.includes(answer.id) ? "★" : "☆"}
-            </BookmarkButton>
-          )}
-        </ListButton>
-      ))}
+            {/* ✅ 북마크 버튼 */}
+            {title === "내 점수" && (
+              <BookmarkButton
+                $active={bookmarkedIds.includes(answer.id)}
+                onClick={() => toggleBookmark(answer.id)}
+              >
+                {bookmarkedIds.includes(answer.id) ? "★" : "☆"}
+              </BookmarkButton>
+            )}
+          </ListButton>
+        ))}
+      </>
+    }
     </>
   );
 };
