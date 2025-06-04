@@ -212,6 +212,27 @@ export const handler = [
         });
     }),
 
+    //게시판 내용들 가져오기
+    http.get('/api/board?page=0&size=10', async() => {
+        const result = [
+            {
+                "id": "ttt",
+                "number": 1,
+                "category": "test",
+                "title": "테스트",
+                "date": "2025-06-04",
+                "author": "조우성"
+            }
+        ]
+        
+        return HttpResponse.json(result, {
+            status: 201,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }),
+
     //질문요청
     http.post('/api/answer', async({request}) => {
         const body = (await request.json()) as SubmitBody;
