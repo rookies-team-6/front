@@ -47,28 +47,4 @@ const postRegisterData = async (formData:RegisterFormContent) => {
   return res.data;
 };
 
-const requestEmailVerification = async (email:string) => {
-  const res = await devServerInstance.post(
-    "/api/email-verfication",
-    {
-      email,
-    }
-  );
-
-  console.log("서버 응답 데이터:", res.data);
-  return res.data;
-};
-
-const verifyEmailCode = async (email:string, emailCode:string) => {
-  const res = await devServerInstance.post(
-    "/api/email-verfication/verify",
-    {
-      email,emailCode,
-    }
-  );
-
-  console.log("서버 응답 데이터:", res.data);
-  return res.data;
-};
-
-export { postLogin, postRegisterData, requestEmailVerification, verifyEmailCode, onSilentRefresh}
+export { postLogin, postRegisterData, onSilentRefresh}
