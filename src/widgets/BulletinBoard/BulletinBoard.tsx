@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
+import { getAllPosts } from '@shared/Apis/board';
+import { useNavigate } from 'react-router-dom';
 
 // 타입 정의
 interface Post {
+  id: string,
   number: number;
   category: string;
   title: string;
@@ -23,9 +26,15 @@ const BulletinBoard: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState(0);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    fetchPosts(page).then(data => setPosts(data));
+    getAllPosts(page).then(data => setPosts(data));
   }, [page]);
+
+  const onClickRow = (postId: string) => {
+    navigate(`/boardDetail/${postId}`)
+  }
 
   return (
     <Container>
@@ -45,7 +54,7 @@ const BulletinBoard: React.FC = () => {
         </Thead>
         <tbody>
           {posts.map(post => (
-            <Tr key={post.number} highlighted={post.author !== undefined}>
+            <Tr key={post.number} onClick={() => onClickRow(post.id)} highlighted={post.author !== undefined}>
               <Td>{post.number}</Td>
               <Td>{post.category}</Td>
               <Td>{post.title}</Td>
@@ -83,7 +92,6 @@ const Container = styled.div`
 
 const Title = styled.h1`
   font-size: 24px;
-  margin-bottom: 20px;
 `;
 
 const Table = styled.table`
@@ -106,6 +114,11 @@ const Th = styled.th`
 const Tr = styled.tr<{ highlighted?: boolean }>`
   background-color: ${({ highlighted }) => (highlighted ? '#fef3c7' : 'white')};
   border-bottom: 1px solid #e5e5e5;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #fef08a; /* hover 효과 추가 (선택사항) */
+  }
 `;
 
 const Td = styled.td`
@@ -116,7 +129,8 @@ const EditIcon = styled.div`
   float: right;
   width: 36px;
   height: 36px;
-  background-color: #fbbf24;
+  background-color: #FFBCB9;
+  margin-bottom: 20px;
   border-radius: 50%;
   display: flex;
   align-items: center;

@@ -8,6 +8,8 @@ import CheckEmployeePage from "@pages/CheckEmployeePage/CheckEmployeePage";
 import NotFoundPage from "@pages/404Page/404Page";
 import AnswerDetailPage from "@pages/AnswerDetailPage/AnswerDetailPage";
 import TeamAnswerPage from "@pages/TeamAnswerPage/TeamAnswerPage";
+import BoardDetailPage from "@pages/BoardDetail/BoardDetail";
+import BoardRegistrationPage from "@page/BoardRegistrationPage/BoardRegistrationPage"
 
 export const router = createBrowserRouter([
     {
@@ -34,5 +36,13 @@ export const router = createBrowserRouter([
     {
       path: "/teamanswerlist",
       element: <TeamAnswerPage />
+    },
+    {
+      path: "/boardDetail/:postId",
+      element: <BoardDetailPage />
+    },
+    {
+      path: "/boardregistration",
+      element: <BoardRegistrationPage />
     }
 ]);
