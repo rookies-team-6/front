@@ -1,45 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import ReactPaginate from 'react-paginate';
-import { getAllPosts } from '@shared/Apis/board';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import ReactPaginate from "react-paginate";
+import { getAllPosts } from "@shared/Apis/board";
+import { useNavigate } from "react-router-dom";
 
 // 타입 정의
 interface Post {
-  id: string,
-  number: number;
-  category: string;
-  title: string;
-  date?: string;
-  author?: string;
+    id: string;
+    number: number;
+    category: string;
+    title: string;
+    date?: string;
+    author?: string;
 }
-
-
 
 // 서버 데이터 불러오기 함수
 const fetchPosts = async (page: number): Promise<Post[]> => {
-  // 예: return await axios.get(`/api/posts?page=${page}`)
-  return [];
+    // 예: return await axios.get(`/api/posts?page=${page}`)
+    return [];
 };
 
 const BulletinBoard: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [page, setPage] = useState(0);
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [page, setPage] = useState(0);
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    getAllPosts(page).then(data => setPosts(data));
-  }, [page]);
+    useEffect(() => {
+        getAllPosts(page).then((data) => setPosts(data));
+    }, [page]);
 
   const onClickRow = (postId: string) => {
     navigate(`/boardDetail/${postId}`)
   }
 
+  const onClickWrite = () => {
+    navigate("/write")
+  }
+
   return (
     <Container>
       <Title>게시판</Title>
-      <EditIcon>
+      <EditIcon onClick={onClickWrite}>
         <img src="/edit-icon.svg" alt="edit" />
       </EditIcon>
       <Table>
@@ -80,94 +82,99 @@ const BulletinBoard: React.FC = () => {
 
 // Styled Components
 const Container = styled.div`
-  width: 100%;
-  max-width: 80%;
-  margin: 2rem auto;
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  text-align: left;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 80%;
+    margin: 2rem auto;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: left;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
+    font-size: 24px;
 `;
 
 const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
 `;
 
 const Thead = styled.thead`
-  background-color: #fbbf24;
+    background-color: #fbbf24;
 `;
 
 const Th = styled.th`
-  padding: 12px;
-  text-align: left;
+    padding: 12px;
+    text-align: left;
 `;
 
 const Tr = styled.tr<{ highlighted?: boolean }>`
-  background-color: ${({ highlighted }) => (highlighted ? '#fef3c7' : 'white')};
-  border-bottom: 1px solid #e5e5e5;
-  cursor: pointer;
+    background-color: ${({ highlighted }) =>
+        highlighted ? "#fef3c7" : "white"};
+    border-bottom: 1px solid #e5e5e5;
+    cursor: pointer;
 
-  &:hover {
-    background-color: #fef08a; /* hover 효과 추가 (선택사항) */
-  }
+    &:hover {
+        background-color: #fef08a; /* hover 효과 추가 (선택사항) */
+    }
 `;
 
 const Td = styled.td`
-  padding: 12px;
+    padding: 12px;
 `;
 
 const EditIcon = styled.div`
-  float: right;
-  width: 36px;
-  height: 36px;
-  background-color: #FFBCB9;
-  margin-bottom: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  img {
-    width: 18px;
-    height: 18px;
-  }
+    float: right;
+    width: 36px;
+    height: 36px;
+    background-color: #ffbcb9;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    img {
+        width: 18px;
+        height: 18px;
+    }
 `;
 
 // 페이지네이션 스타일
 const PaginationWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-
-  .pagination {
     display: flex;
-    list-style: none;
-    padding: 0;
+    justify-content: center;
+    margin-top: 20px;
 
-    li {
-      margin: 0 4px;
-      a {
-        padding: 6px 10px;
-        background-color: #fbbf24;
-        border-radius: 6px;
-        color: white;
-        cursor: pointer;
-        text-decoration: none;
-      }
-      &.selected a {
-        background-color: #f59e0b;
-      }
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+
+        li {
+            margin: 0 4px;
+            a {
+                padding: 6px 10px;
+                background-color: #fbbf24;
+                border-radius: 6px;
+                color: white;
+                cursor: pointer;
+                text-decoration: none;
+
+                &:hover {
+                    background-color: #f59e0b;
+                }
+            }
+            &.selected a {
+                background-color: #f59e0b;
+            }
+        }
     }
-  }
 `;
 
 export default BulletinBoard;

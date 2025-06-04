@@ -4,21 +4,35 @@ import logoImage from "@shared/assets/icon/logo.png";
 import theme from "@app/styles/theme";
 import { postLogin } from "@shared/Apis/auth";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import {
+    type SignInFormType,
+    SignInSchema,
+} from "@/shared/schemas/signInSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { serverInstance } from "@/shared/apiInstance";
 
 const LoginForm: React.FC = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isValid },
+        watch,
+    } = useForm<SignInFormType>({
+        resolver: zodResolver(SignInSchema),
+        mode: "onChange",
+    });
 
     const handleLogin = async () => {
-        try {
-        const response = await postLogin({ email, password });
-        console.log("로그인 성공:", response);
-        navigate("/home"); // ✅ 홈으로 이동
-        } catch (error) {
-        console.error("로그인 실패:", error);
-        alert("로그인에 실패했습니다.");
-        }
+        // // apiInstan
+        // const res = serverInstance.post("/auth/signin");
+        // if (res.code === 200) {
+        //     navigate("/");
+        // }else{
+        //     alert("")
+        // }
     };
 
     const handleRegister = () => {
@@ -26,29 +40,41 @@ const LoginForm: React.FC = () => {
     };
 
     return (
-        <Wrapper>
-        <Logo src={logoImage} alt="제대로 보안니 로고" />
-        <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button onClick={handleLogin}>Log In</Button>
-        <RegisterButton onClick={handleRegister}>
-            계정이 없으신가요?
-        </RegisterButton>
+        <Wrapper onSubmit={handleSubmit(handleLogin)}>
+            <Logo src={logoImage} alt="제대로 보안니 로고" />
+            <Input
+                type="email"
+                placeholder="Email"
+                value={watch("email")}
+                {...register("email")}
+            />
+            {errors.email && (
+                <p style={{ color: "red", marginBottom: "12px" }}>
+                    {errors.email?.message}
+                </p>
+            )}
+            <Input
+                type="password"
+                placeholder="Password"
+                value={watch("password")}
+                {...register("password")}
+            />
+            {errors.password && (
+                <p style={{ color: "red", marginBottom: "12px" }}>
+                    {errors.password?.message}
+                </p>
+            )}
+            <Button type="submit" disabled={!isValid}>
+                Log In
+            </Button>
+            <RegisterButton onClick={handleRegister}>
+                계정이 없으신가요?
+            </RegisterButton>
         </Wrapper>
     );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -75,11 +101,14 @@ const Input = styled.input`
     box-sizing: border-box;
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ disabled: boolean }>`
     width: 130%;
     max-width: 300px;
     padding: 10px 15px;
-    background-color: ${theme.orange.o500};
+    background-color: ${(props) =>
+        props.disabled ? "#c4c4c4" : theme.orange.o500};
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+
     color: white;
     border: none;
     border-radius: 8px;

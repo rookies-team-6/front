@@ -5,7 +5,7 @@ import theme from "@app/styles/theme";
 import { getEmployeeInfo } from "@shared/Apis/emregister";
 // import type { EmployeeInfo } from "@shared/Apis/emregister";
 import { useNavigate } from "react-router-dom";
-import useRegisterStore from "@shared/zustand/registerStore"
+import useRegisterStore from "@shared/zustand/registerStore";
 
 const EmRegister = () => {
     // const [inputData, setInputData] = useState<EmployeeInfo>({
@@ -13,7 +13,8 @@ const EmRegister = () => {
     //     employeeName: ""
     // });
 
-    const {employeeNumber, employeeName, setEmployeeNumber, setEmployeeName} = useRegisterStore();
+    const { employeeNumber, employeeName, setEmployeeNumber, setEmployeeName } =
+        useRegisterStore();
 
     const navigate = useNavigate();
 
@@ -57,9 +58,7 @@ const EmRegister = () => {
                         type="text"
                         placeholder="사원 번호"
                         value={employeeNumber}
-                        onChange={(e) =>
-                            setEmployeeNumber( e.target.value )
-                        }
+                        onChange={(e) => setEmployeeNumber(e.target.value)}
                     />
                     <Label htmlFor="employee-name">사원 이름</Label>
                     <Input
@@ -67,9 +66,7 @@ const EmRegister = () => {
                         type="text"
                         placeholder="사원 이름"
                         value={employeeName}
-                        onChange={(e) =>
-                            setEmployeeName(e.target.value )
-                        }
+                        onChange={(e) => setEmployeeName(e.target.value)}
                     />
                     <Button onClick={handleSearch}>조회하기</Button>
                 </InputGroup>
@@ -104,7 +101,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     padding: 40px 20px;
     box-sizing: border-box;
     transform: translateY(-5%);

@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 const PostDetail: React.FC = ({ postId }) => {
-  const [content, setContent] = useState("이 편지는 영국에서부터 시작되어...");
-  const [title, setTitle] = useState("제목");
+  const [content, setContent] = useState("이 편지는 인도");
+  const [title, setTitle] = useState("테스트 제목");
   const navigate = useNavigate()
 
   const handleEditToggle = () => {
