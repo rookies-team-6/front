@@ -5,16 +5,16 @@ import ScoreBar from "@widgets/GroupScoreBar/GroupScoreBar";
 import BoardRegistration from "@widgets/BoardRegistration/BoardRegistration";
 
 
-const BoardRegistrationPage = () => {
+const BoardWritePage = () => {
 
     return(
         <MainBackground>
             <Header />
             <ScoreBar/>
-            <BoardRegistration isEditMode={true}/>
+            <BoardRegistration isEditMode={false}/>
         </MainBackground>
     )
 
 }
 
-export default BoardRegistrationPage;
+export default BoardWritePage;

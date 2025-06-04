@@ -30,54 +30,50 @@ const BulletinBoard: React.FC = () => {
         getAllPosts(page).then((data) => setPosts(data));
     }, [page]);
 
-    const onClickRow = (postId: string) => {
-        navigate(`/boardDetail/${postId}`);
-    };
+  const onClickRow = (postId: string) => {
+    navigate(`/boardDetail/${postId}`)
+  }
 
-    return (
-        <Container>
-            <Title>게시판</Title>
-            <EditIcon>
-                <img src="/edit-icon.svg" alt="edit" />
-            </EditIcon>
-            <Table>
-                <Thead>
-                    <tr>
-                        <Th>번호</Th>
-                        <Th>구분</Th>
-                        <Th>제목</Th>
-                        <Th>날짜</Th>
-                        <Th>작성자</Th>
-                    </tr>
-                </Thead>
-                <tbody>
-                    {posts.map((post) => (
-                        <Tr
-                            key={post.number}
-                            onClick={() => onClickRow(post.id)}
-                            highlighted={post.author !== undefined}
-                        >
-                            <Td>{post.number}</Td>
-                            <Td>{post.category}</Td>
-                            <Td>{post.title}</Td>
-                            <Td>{post.date || ""}</Td>
-                            <Td>{post.author || ""}</Td>
-                        </Tr>
-                    ))}
-                </tbody>
-            </Table>
-            <PaginationWrapper>
-                <ReactPaginate
-                    pageCount={68}
-                    pageRangeDisplayed={3}
-                    marginPagesDisplayed={1}
-                    onPageChange={({ selected }) => setPage(selected)}
-                    containerClassName={"pagination"}
-                    activeClassName={"selected"}
-                />
-            </PaginationWrapper>
-        </Container>
-    );
+  return (
+    <Container>
+      <Title>게시판</Title>
+      <EditIcon>
+        <img src="/edit-icon.svg" alt="edit" />
+      </EditIcon>
+      <Table>
+        <Thead>
+          <tr>
+            <Th>번호</Th>
+            <Th>구분</Th>
+            <Th>제목</Th>
+            <Th>날짜</Th>
+            <Th>작성자</Th>
+          </tr>
+        </Thead>
+        <tbody>
+          {posts.map(post => (
+            <Tr key={post.number} onClick={() => onClickRow(post.id)} highlighted={post.author !== undefined}>
+              <Td>{post.number}</Td>
+              <Td>{post.category}</Td>
+              <Td>{post.title}</Td>
+              <Td>{post.date || ''}</Td>
+              <Td>{post.author || ''}</Td>
+            </Tr>
+          ))}
+        </tbody>
+      </Table>
+      <PaginationWrapper>
+        <ReactPaginate
+          pageCount={68}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={1}
+          onPageChange={({ selected }) => setPage(selected)}
+          containerClassName={'pagination'}
+          activeClassName={'selected'}
+        />
+      </PaginationWrapper>
+    </Container>
+  );
 };
 
 // Styled Components

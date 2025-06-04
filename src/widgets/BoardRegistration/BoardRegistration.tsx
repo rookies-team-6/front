@@ -3,19 +3,19 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
 interface LocationState {
-    initialTitle?: string;
-    initialContent?: string;
+  initialTitle?: string;
+  initialContent?: string;
 }
 
 const BoardRegistration: React.FC = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const state = (location.state as LocationState) || {};
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as LocationState || {};
 
-    const [title, setTitle] = useState(state.initialTitle || "");
-    const [content, setContent] = useState(state.initialContent || "");
+  const [title, setTitle] = useState(state.initialTitle || '');
+  const [content, setContent] = useState(state.initialContent || '');
 
-    const isEditMode = state.initialTitle || state.initialContent;
+  const isEditMode = !!(state.initialTitle || state.initialContent);
 
     const handleRegister = () => {
         if (isEditMode) {
