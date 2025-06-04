@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { postAnswerData, getQuestionData } from "@shared/Apis/home";
-
+import Loading from "@widgets/Loading/Loading";
 
 
 const QuestionComponent: React.FC = () => {
   const [answer, setAnswer] = useState("");
   const [question, setQuestion] = useState("")
   const [questionTitle, setQuestionTitle] = useState("")
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(()=>{
+    setLoading(true)
     const fetchData = async () => {
       const resultQuestion = await getQuestionData(1);
       // console.log(resultQuestion)
@@ -18,6 +20,7 @@ const QuestionComponent: React.FC = () => {
     };
 
     fetchData();
+    setLoading(false)
   },[])
 
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -52,9 +55,15 @@ const QuestionComponent: React.FC = () => {
   return (
     <Wrapper>
       <Title>{questionTitle}</Title>
-      <QuestionBox>
-        {question}
-      </QuestionBox>
+      {
+        isLoading ? 
+        <Loading />
+        :
+        <QuestionBox>
+          {question}
+        </QuestionBox> 
+      }
+      
       <AnswerWrapper>
         {/* <Arrow>↳</Arrow> */}
         <Input

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { getAnswerData, getQuestionData } from "@shared/Apis/answer";
+import Loading from "@widgets/Loading/Loading";
 
 const AnswerSearch: React.FC = () => {
   const [answer, setAnswer] = useState("");
   const [questionTitle, setQuestionTitle] = useState("")
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(()=>{
+    setLoading(true)
     const fetchData = async () => {
       const resultQuestion = await getQuestionData(1);
       // console.log(resultQuestion)
@@ -14,6 +17,7 @@ const AnswerSearch: React.FC = () => {
     };
 
     fetchData();
+    setLoading(false)
   },[])
 
   useEffect(()=>{
@@ -28,10 +32,17 @@ const AnswerSearch: React.FC = () => {
 
   return (
     <Wrapper>
-      <Title>{questionTitle}</Title>
-      <QuestionBox>
-        {answer}
-      </QuestionBox>
+      {
+        isLoading ? 
+        <Loading />
+        :
+        <>
+          <Title>{questionTitle}</Title>
+          <QuestionBox>
+            {answer}
+          </QuestionBox>
+        </>
+      }
     </Wrapper>
   );
 };

@@ -4,20 +4,24 @@ import { getScoreItems } from "@shared/Apis/scorebar";
 import type { ScoreItem } from "@shared/Apis/scorebar";
 import { useNavigate } from "react-router-dom";
 import useTeamStore from "@shared/zustand/teamStore";
+import Loading from "@widgets/Loading/Loading";
 
 const ScoreBar: React.FC = () => {
   const [scoreList, setScoreList] = useState<ScoreItem[]>([]);
   const scoreContainerRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const {setTeamDict} = useTeamStore();
 
   useEffect(() => {
+    setLoading(true);
     const fetchScores = async () => {
         const data = await getScoreItems();
         setScoreList(data);
     };
     fetchScores();
+    setLoading(false);
   }, []);
 
   const scrollAmount = 110 + 53;
@@ -55,22 +59,30 @@ const ScoreBar: React.FC = () => {
 
   return (
     <Wrapper>
-      <NavButton onClick={scrollLeft}>‹</NavButton>
-      <ScoreContainer ref={scoreContainerRef}>
-        {scoreList.length > 0 ? (
-          scoreList.map((item, index) => (
-            <ScoreBox
-              key={index}
-              onClick={() => handleScoreBoxClick(item.team, item.score)}
-            >
-              {item.team} : {item.score}
-            </ScoreBox>
-          ))
-        ) : (
-          <ScoreBox as="div">점수 데이터 로딩 중...</ScoreBox>
-        )}
-      </ScoreContainer>
-      <NavButton onClick={scrollRight}>›</NavButton>
+      {
+        isLoading ? 
+        <Loading />
+        :
+        <>
+          <NavButton onClick={scrollLeft}>‹</NavButton>
+          <ScoreContainer ref={scoreContainerRef}>
+            {scoreList.length > 0 ? (
+              scoreList.map((item, index) => (
+                <ScoreBox
+                  key={index}
+                  onClick={() => handleScoreBoxClick(item.team, item.score)}
+                >
+                  {item.team} : {item.score}
+                </ScoreBox>
+              ))
+            ) : (
+              <ScoreBox as="div">점수 데이터 로딩 중...</ScoreBox>
+            )}
+          </ScoreContainer>
+          <NavButton onClick={scrollRight}>›</NavButton>
+        </>
+
+    }
       <QueryButton onClick={handleQueryAll}>전체 답변 조회</QueryButton>
     </Wrapper>
   );
