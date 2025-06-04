@@ -34,10 +34,14 @@ const BulletinBoard: React.FC = () => {
     navigate(`/boardDetail/${postId}`)
   }
 
+  const onClickWrite = () => {
+    navigate("/write")
+  }
+
   return (
     <Container>
       <Title>게시판</Title>
-      <EditIcon>
+      <EditIcon onClick={onClickWrite}>
         <img src="/edit-icon.svg" alt="edit" />
       </EditIcon>
       <Table>

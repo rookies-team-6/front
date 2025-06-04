@@ -9,7 +9,8 @@ import NotFoundPage from "@pages/404Page/404Page";
 import AnswerDetailPage from "@pages/AnswerDetailPage/AnswerDetailPage";
 import TeamAnswerPage from "@pages/TeamAnswerPage/TeamAnswerPage";
 import BoardDetailPage from "@pages/BoardDetail/BoardDetail";
-import BoardRegistrationPage from "@page/BoardRegistrationPage/BoardRegistrationPage"
+import BoardRegistrationPage from "@pages/BoardRegistrationPage/BoardRegistrationPage"
+import BoardWritePage from "@pages/WritePage/WrigtePage";
 
 export const router = createBrowserRouter([
     {
@@ -42,7 +43,11 @@ export const router = createBrowserRouter([
         element: <BoardDetailPage />,
     },
     {
-      path: "/boardregistration",
+      path: "/modify/:postId",
       element: <BoardRegistrationPage />
+    },
+    {
+      path: "/write",
+      element: <BoardWritePage />
     }
 ]);
