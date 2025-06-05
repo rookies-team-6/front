@@ -123,7 +123,6 @@ const ScoreContainer = styled.div`
 
 const ScoreBox = styled.button`
     background-color: #d9d9d9;
-    width: 110px;
     height: 60px;
     padding: 10px;
     display: flex;

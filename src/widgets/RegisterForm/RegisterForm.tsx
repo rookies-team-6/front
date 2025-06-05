@@ -9,16 +9,8 @@ import {
 } from "@shared/schemas/registerSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { postSignUp } from '@shared/Apis/auth';
-import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
-
-// 이메일 중복 확인 API 호출 함수(수정 필요)
-const checkEmailDuplicate = async (email: string) => {
-  const res = await axios.get(`/auth/email/check?email=${email}`);
-  return res.data.data;
-};
-
+import { postSignUp } from "@shared/Apis/auth";
+import { useMutation } from "@tanstack/react-query";
 
 const RegisterForm: React.FC = () => {
     // 사원 번호 유저 이름
@@ -40,38 +32,38 @@ const RegisterForm: React.FC = () => {
         },
     });
 
-    const email = watch("email")
+    const email = watch("email");
 
     const navigate = useNavigate();
 
     // 중복 확인 관련(수정 필요)
-    const { mutate: checkEmail, isPending } = useMutation({
-        mutationFn: checkEmailDuplicate,
-        onSuccess: (isDuplicate) => {
-            if (isDuplicate) {
-            setError("email", {
-            type: "manual",
-            message: "이미 사용 중인 이메일입니다.",
-            });
-            setValue("isEmailChecked", false);
-        } else {
-            clearErrors("email");
-            setValue("isEmailChecked", true);
-            alert("사용 가능한 이메일입니다.");
-        }
-        },
-        onError: () => {
-        setError("email", {
-            type: "manual",
-            message: "이메일 확인 중 오류가 발생했습니다.",
-        });
-        },
-    });
-// 회원가입 누르면 되는 부분 관련(수정 필요)
+    // const { mutate: checkEmail, isPending } = useMutation({
+    //     mutationFn: checkEmailDuplicate,
+    //     onSuccess: (isDuplicate) => {
+    //         if (isDuplicate) {
+    //             setError("email", {
+    //                 type: "manual",
+    //                 message: "이미 사용 중인 이메일입니다.",
+    //             });
+    //             setValue("isEmailChecked", false);
+    //         } else {
+    //             clearErrors("email");
+    //             setValue("isEmailChecked", true);
+    //             alert("사용 가능한 이메일입니다.");
+    //         }
+    //     },
+    //     onError: () => {
+    //         setError("email", {
+    //             type: "manual",
+    //             message: "이메일 확인 중 오류가 발생했습니다.",
+    //         });
+    //     },
+    // });
+    // 회원가입 누르면 되는 부분 관련(수정 필요)
     const { mutate: registerMutate } = useMutation({
         mutationFn: postSignUp,
         onSuccess: (data) => {
-            console.log(data)
+            console.log(data);
             alert("회원가입이 완료되었습니다.");
             navigate("/");
         },
@@ -81,13 +73,13 @@ const RegisterForm: React.FC = () => {
 
             if (code === "A005") {
                 setError("email", {
-                type: "manual",
-                message: message || "중복된 이메일입니다.",
+                    type: "manual",
+                    message: message || "중복된 이메일입니다.",
                 });
             } else if (code === "A002") {
                 setError("passwordConfirm", {
-                type: "manual",
-                message: message || "비밀번호가 일치하지 않습니다.",
+                    type: "manual",
+                    message: message || "비밀번호가 일치하지 않습니다.",
                 });
             } else if (code === "EA001") {
                 alert(message || "존재하지 않는 사번입니다.");
@@ -97,24 +89,14 @@ const RegisterForm: React.FC = () => {
         },
     });
 
-    const handleLogin = () => {
-        navigate("/");
-    };
-
     const onSubmit = (data: RegisterFormValues) => {
         if (!data.isEmailChecked) {
             setError("isEmailChecked", {
-            type: "manual",
-            message: "이메일 중복 확인을 해주세요.",
+                type: "manual",
+                message: "이메일 중복 확인을 해주세요.",
             });
             return;
         }
-
-        // registerMutate({
-        //     email: data.email,
-        //     password: data.password,
-        //     employeeNum: employeeNumber,
-        // });
     };
 
     return (
@@ -128,38 +110,37 @@ const RegisterForm: React.FC = () => {
 
                 <Label htmlFor="email">이메일</Label>
                 <InputWrapper>
-                    <Input
-                        type="email"
-                        {...register("email")}
-                    />
-                    <SubmitButton
+                    <Input type="email" {...register("email")} />
+                    {/* <SubmitButton
                         type="button"
                         onClick={() => checkEmail(email)}
                         disabled={!email || isPending}
                     >
                         {isPending ? "확인 중..." : "중복확인"}
-                    </SubmitButton>
+                    </SubmitButton> */}
                 </InputWrapper>
-                {errors.email && (<ErrorText>{errors.email?.message}</ErrorText>)}
+                {errors.email && <ErrorText>{errors.email?.message}</ErrorText>}
                 {/*이거도 수정 필요*/}
-                {errors.isEmailChecked && (<ErrorText>{errors.isEmailChecked?.message}</ErrorText>)}
+                {errors.isEmailChecked && (
+                    <ErrorText>{errors.isEmailChecked?.message}</ErrorText>
+                )}
                 <Label htmlFor="password">비밀번호</Label>
-                <Input
-                    type="password"
-                    {...register("password")}
-                />
-                {errors.password && (<ErrorText>{errors.password?.message}</ErrorText>)}
+                <Input type="password" {...register("password")} />
+                {errors.password && (
+                    <ErrorText>{errors.password?.message}</ErrorText>
+                )}
                 <Label htmlFor="passwordConfirm">비밀번호 확인</Label>
-                <Input
-                    type="password"
-                    {...register("passwordConfirm")}
-                />
-                {errors.passwordConfirm && (<ErrorText>{errors.passwordConfirm.message}</ErrorText>)}
+                <Input type="password" {...register("passwordConfirm")} />
+                {errors.passwordConfirm && (
+                    <ErrorText>{errors.passwordConfirm.message}</ErrorText>
+                )}
                 <Button type="submit" disabled={!isValid}>
                     Sign up
                 </Button>
             </Form>
-            <RegisterButton type="button" onClick={handleLogin}>로그인으로 돌아가기</RegisterButton>
+            <RegisterButton type="button" onClick={() => navigate("/")}>
+                로그인으로 돌아가기
+            </RegisterButton>
         </Container>
     );
 };
@@ -264,8 +245,8 @@ const SubmitButton = styled.button`
 `;
 
 const ErrorText = styled.p`
-  color: red;
-  margin-bottom: 12px;
+    color: red;
+    margin-bottom: 12px;
 `;
 
 export default RegisterForm;
