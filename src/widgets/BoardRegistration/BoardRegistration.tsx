@@ -1,76 +1,89 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
+import React from "react";
+import { useForm } from "react-hook-form";
 
 interface LocationState {
   title?: string;
   content?: string;
 }
 
-const BoardRegistration: React.FC = ({isEditMode}) => {
+interface FormValues {
+  title: string;
+  content: string;
+}
+
+interface Props {
+  isEditMode: boolean;
+}
+
+const BoardRegistration: React.FC<Props> = ({ isEditMode }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state as LocationState || {};
+  const state = (location.state as LocationState) || {};
 
-  const [title, setTitle] = useState(state.title || '');
-  const [content, setContent] = useState(state.content || '');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      title: state.title || "",
+      content: state.content || "",
+    },
+  });
 
-  // const isEditMode = !!(state.initialTitle || state.initialContent);
+  const onSubmit = (data: FormValues) => {
+    if (isEditMode) {
+      alert("수정 되었습니다.");
+    } else {
+      alert("등록 되었습니다.");
+    }
+    navigate("/home");
+  };
 
-    const handleRegister = () => {
-        if (isEditMode) {
-            // 여기는 수정하는 부분
-            alert("수정 되었습니다.");
-        } else {
-            // 여기는 등록하는 부분
-            alert("등록 되었습니다.");
-        }
-        navigate("/home");
-    };
+  const handleDelete = () => {
+    alert("삭제 되었습니다.");
+    navigate("/home");
+  };
 
-    const handleDelete = () => {
-        //여기에는 삭제하는 부분을 추가하기
-        alert("삭제 되었습니다.");
-        navigate("/home");
-    };
+  const handleBackToList = () => {
+    navigate("/home");
+  };
 
-    const handleBackToList = () => {
-        navigate("/home");
-    };
-
-    return (
-        <Container>
-            <TitleRow>
-                <TitleInput
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="제목을 입력하세요"
-                />
-                <ButtonGroup>
-                    <Button onClick={handleRegister}>
-                        {isEditMode ? "수정" : "등록"}
-                    </Button>
-                    {isEditMode && (
-                        <Button onClick={handleDelete} variant="danger">
-                            삭제
-                        </Button>
-                    )}
-                </ButtonGroup>
-            </TitleRow>
-            <ContentInput
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="내용을 입력하세요"
-            />
-            <BackButton onClick={handleBackToList}>
-                목록으로 돌아가기
-            </BackButton>
-        </Container>
-    );
+  return (
+    <Container>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TitleRow>
+          <TitleInput
+            {...register("title", { required: "제목을 입력해주세요" })}
+            placeholder="제목을 입력하세요"
+          />
+          <ButtonGroup>
+            <Button type="submit">
+              {isEditMode ? "수정" : "등록"}
+            </Button>
+            {isEditMode && (
+              <Button type="button" onClick={handleDelete} variant="danger">
+                삭제
+              </Button>
+            )}
+          </ButtonGroup>
+        </TitleRow>
+        {errors.title && <ErrorText>{errors.title.message}</ErrorText>}
+        <ContentInput
+          {...register("content", { required: "내용을 입력해주세요" })}
+          placeholder="내용을 입력하세요"
+        />
+        {errors.content && <ErrorText>{errors.content.message}</ErrorText>}
+      </form>
+      <BackButton onClick={handleBackToList}>목록으로 돌아가기</BackButton>
+    </Container>
+  );
 };
 
 export default BoardRegistration;
+
 
 const Container = styled.div`
     width: 100%;
@@ -146,4 +159,9 @@ const BackButton = styled.button`
     &:hover {
         color: #333;
     }
+`;
+
+const ErrorText = styled.p`
+  color: red;
+  margin-bottom: 12px;
 `;
