@@ -42,19 +42,16 @@ const LoginForm: React.FC = () => {
                 {...register("email")}
             />
             {errors.email && (
-                <p style={{ color: "red", marginBottom: "12px" }}>
-                    {errors.email?.message}
-                </p>
+            <ErrorText>{errors.email?.message}</ErrorText>
             )}
+
             <Input
                 type="password"
                 placeholder="Password"
                 {...register("password")}
             />
             {errors.password && (
-                <p style={{ color: "red", marginBottom: "12px" }}>
-                    {errors.password?.message}
-                </p>
+            <ErrorText>{errors.password?.message}</ErrorText>
             )}
             <Button type="submit" disabled={!isValid}>
                 Log In
@@ -127,6 +124,16 @@ const RegisterButton = styled.button`
     &:hover {
         color: #333;
     }
+`;
+
+const ErrorText = styled.p`
+    width: 130%;
+    max-width: 300px;
+    font-size: 12px;
+    color: red;
+    margin-top: -20px;
+    margin-bottom: 12px;
+    text-align: left;
 `;
 
 export default LoginForm;
