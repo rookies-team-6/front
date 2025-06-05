@@ -23,14 +23,16 @@ interface RegisterFormContent {
 }
 
 const postSignIn = async (body: LoginRequestBody): Promise<LoginResponse> => {
-    const res = await devServerInstance.post("/api/login", { data: body });
-
+    const res = await serverInstance.post("/api/login", body);
+    if (res.success) {
+        const token = res.data.accessToken;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; //앞으로 요청마다 헤더에 자동으로 token을 넣고 요청함
+    }
     const { token } = res.data;
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; //앞으로 요청마다 헤더에 자동으로 token을 넣고 요청함
     // token localStorage, cookie 등에 저장하지 않는다!
 
-    return res.data;
+    return res.success;
 };
 
 //화면페이지전환 혹은 화면새로고침할 때마다 요청하여 로그인만료시간 체크 & 만료시간 갱신하기

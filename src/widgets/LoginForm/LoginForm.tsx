@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import theme from "@app/styles/theme";
-import { postLogin } from "@shared/Apis/auth";
+import { postSignIn } from "@shared/Apis/auth";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
@@ -10,7 +10,6 @@ import {
     SignInSchema,
 } from "@/shared/schemas/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { serverInstance } from "@/shared/apiInstance";
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
@@ -25,18 +24,13 @@ const LoginForm: React.FC = () => {
         mode: "onChange",
     });
 
-    const handleLogin = async () => {
-        // // apiInstan
-        // const res = serverInstance.post("/auth/signin");
-        // if (res.code === 200) {
-        //     navigate("/");
-        // }else{
-        //     alert("")
-        // }
-    };
-
-    const handleRegister = () => {
-        navigate("/checkemplnum"); // ✅ 사원조회회 페이지로 이동
+    const handleLogin = async (data) => {
+        const isSuccessed = await postSignIn(data);
+        if (isSuccessed) {
+            navigate("/home");
+        } else {
+            alert("이메일 또는 비밀번호가 올바르지 않습니다.");
+        }
     };
 
     return (
@@ -45,7 +39,6 @@ const LoginForm: React.FC = () => {
             <Input
                 type="email"
                 placeholder="Email"
-                value={watch("email")}
                 {...register("email")}
             />
             {errors.email && (
@@ -56,7 +49,6 @@ const LoginForm: React.FC = () => {
             <Input
                 type="password"
                 placeholder="Password"
-                value={watch("password")}
                 {...register("password")}
             />
             {errors.password && (
@@ -67,7 +59,7 @@ const LoginForm: React.FC = () => {
             <Button type="submit" disabled={!isValid}>
                 Log In
             </Button>
-            <RegisterButton onClick={handleRegister}>
+            <RegisterButton onClick={() => navigate("/checkemplnum")}>
                 계정이 없으신가요?
             </RegisterButton>
         </Wrapper>
