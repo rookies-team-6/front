@@ -1,5 +1,10 @@
-import { devServerInstance } from "@shared/apiInstance";
+import { devServerInstance, serverInstance } from "@shared/apiInstance";
 import axios from "axios";
+
+interface VerifyRequest {
+    username: string;
+    employeeNum: string;
+}
 
 interface LoginRequestBody {
     email: string;
@@ -17,7 +22,7 @@ interface RegisterFormContent {
     passwordConfirm: string;
 }
 
-const postLogin = async (body: LoginRequestBody): Promise<LoginResponse> => {
+const postSignIn = async (body: LoginRequestBody): Promise<LoginResponse> => {
     const res = await devServerInstance.post("/api/login", { data: body });
 
     const { token } = res.data;
@@ -35,7 +40,7 @@ const postLogin = async (body: LoginRequestBody): Promise<LoginResponse> => {
 //   })
 // }
 
-const postRegisterData = async (formData: RegisterFormContent) => {
+const postSignUp = async (formData: RegisterFormContent) => {
     const res = await devServerInstance.post("/api/registerforms", {
         data: formData, // 객체를 그대로 data에 전달
     });
@@ -44,4 +49,23 @@ const postRegisterData = async (formData: RegisterFormContent) => {
     return res.data;
 };
 
-export { postLogin, postRegisterData };
+const getVerify = async (queryParam: VerifyRequest) => {
+    const res = serverInstance.get(
+        `/auth/verify?username=${queryParam.username}&employeeNum=${queryParam.employeeNum}`
+    );
+};
+
+const getEmailCheck = async (email: string) => {
+    const res = serverInstance.get(`/auth/email/check?email=${email}`);
+};
+
+// refresh token 재발급
+const postRefreshToken = async () => {
+    const res = serverInstance.get(`/auth/refresh`);
+};
+
+const postSignOut = async () => {
+    const res = serverInstance.get(`/auth/signout`);
+};
+
+export { postSignIn, postSignUp };
