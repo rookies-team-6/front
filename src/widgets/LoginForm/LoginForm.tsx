@@ -10,7 +10,6 @@ import {
     SignInSchema,
 } from "@/shared/schemas/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { serverInstance } from "@/shared/apiInstance";
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
@@ -25,13 +24,14 @@ const LoginForm: React.FC = () => {
         mode: "onChange",
     });
 
-    const handleLogin = async () => {
-
-    };
-
-    const handleRegister = () => {
-        navigate("/checkemplnum"); // ✅ 사원조회회 페이지로 이동
-    };
+    const handleLogin = async (data) => {
+            const isSuccessed = await postSignIn(data);
+            if (isSuccessed) {
+                navigate("/home");
+            } else {
+                alert("이메일 또는 비밀번호가 올바르지 않습니다.");
+            }
+        };
 
     return (
         <Wrapper onSubmit={handleSubmit(handleLogin)}>
@@ -57,7 +57,7 @@ const LoginForm: React.FC = () => {
             <Button type="submit" disabled={!isValid}>
                 Log In
             </Button>
-            <RegisterButton onClick={handleRegister}>
+            <RegisterButton onClick={() => navigate("/checkemplnum")}>
                 계정이 없으신가요?
             </RegisterButton>
         </Wrapper>
