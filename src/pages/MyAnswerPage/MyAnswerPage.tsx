@@ -11,16 +11,11 @@ const MyAnswerPage = () => {
       <Header />
       <ScoreBar />
       <ContentWrapper>
-        <Title>내 답변</Title>
-        <ScrollArea>
-          <List title="내 점수" url="/api/getmyanswers" />
-        </ScrollArea>
+        <List type="my" />
       </ContentWrapper>
     </MainBackground>
   );
 };
-
-export default MyAnswerPage;
 
 const ContentWrapper = styled.div`
   padding: 50px;
@@ -28,15 +23,4 @@ const ContentWrapper = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.h2`
-  font-size: 25px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`;
-
-const ScrollArea = styled.div`
-  max-height: 300px;
-  overflow-y: auto;
-  padding-right: 40px;
-  padding-left: 40px;
-`;
+export default MyAnswerPage;
