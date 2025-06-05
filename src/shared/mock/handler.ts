@@ -102,21 +102,32 @@ export const handler = [
       }),
     
     //로그인
-    http.post("/api/login", async ({ request }) => {
+    http.post("/auth/signin", async ({ request }) => {
         const body = (await request.json()) as LoginRequestBody;
+
+        if(body.email == "test@test.com" && body.password == "1234"){
+            // 여기선 단순 mock 응답, 실제론 인증 로직에 따라 응답 구성
+            return HttpResponse.json(
+                {
+                code: 200,
+                data: {
+                    token: "mock-jwt-token",
+                    tokenType: "Bearer",
+                    message: "로그인 성공",
+                }
+            });
+        }else{
+           // 여기선 단순 mock 응답, 실제론 인증 로직에 따라 응답 구성
+            return HttpResponse.json(
+                {
+                code: 400,
+                error: {
+                    message: "로그인 실패"
+                }
+            });
+        }
     
-        // 여기선 단순 mock 응답, 실제론 인증 로직에 따라 응답 구성
-        return HttpResponse.json(
-            {
-                token: "mock-jwt-token",
-                email: body.email,
-                message: "로그인 성공",
-            },
-            {
-                status: 200,
-                headers: { "Content-Type": "application/json" },
-            }
-        );
+
     }),
 
     //회원가입
