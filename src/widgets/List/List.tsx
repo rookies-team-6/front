@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getAnswers } from "@shared/Apis/listform";
-import { postBookmark, deleteBookmark } from "@shared/Apis/bookmark";
+import {
+  fetchQuestions,
+  fetchMyScores,
+  fetchDeptAverages,
+  fetchBookmarkedAnswers,
+} from "@shared/Apis/listform";
+
+import { toggleBookmark } from "@/shared/Apis/bookmark";
 import useTeamStore from "@shared/zustand/teamStore";
 import Loading from "@widgets/Loading/Loading";
-
+import useBookmarkStore from "@shared/zustand/bookmarkStore";
+import { useNavigate } from "react-router-dom";
 interface Answer {
   id: number;
   title: string;
@@ -13,138 +20,207 @@ interface Answer {
   score: number;
 }
 
-interface ListProps {
-  title: string; // "내 점수", "조별 평균 점수"
-  url: string;
+interface ScoreData {
+  questionId: number;
+  score: number;
 }
 
-const truncateText = (text: string) =>
-  text.length > 10 ? `${text.slice(0, 10)}...` : text;
+interface ListProps {
+  type: "my" | "team" | "bookmark";
+}
 
-const List: React.FC<ListProps> = ({ title, url }) => {
-  const [answers, setAnswers] = useState<Answer[]>([]);
-  const [bookmarkedIds, setBookmarkedIds] = useState<number[]>([]); // 북마크 상태
-  const [isLoading, setLoading] = useState(false)
+const truncateText = (text?: string) =>
+  text && text.length > 10 ? `${text.slice(0, 10)}...` : text ?? "";
 
-  const {teamDict} = useTeamStore();
+const List: React.FC<ListProps> = ({ type }) => {
+  const [questions, setQuestions] = useState<Answer[]>([]);
+  const [scoreDict, setScoreDict] = useState<{ [id: number]: number }>({});
+  const [isLoading, setLoading] = useState(false);
+  const { teamDict } = useTeamStore();
+  const teamId = teamDict.team;
+  const {
+  bookmarkedIds, setBookmarkedIds, toggleBookmark: toggleBookmarkState } = useBookmarkStore();
 
+  const isMy = type === "my";
+  const isTeam = type === "team";
+  const isBookmark = type === "bookmark";
+  const navigate = useNavigate();
+    
   useEffect(() => {
-    setLoading(true);
-    const fetchAnswers = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const data = await getAnswers(teamDict.url);
-        if (!Array.isArray(data)) {
-          console.error("❗️응답이 배열이 아닙니다:", data);
-          setAnswers([]);
-        } else {
-          setAnswers(data);
+        if (isMy || isTeam) {
+          const fetchedQuestions = await fetchQuestions();
+          setQuestions(fetchedQuestions);
+
+          if (isMy) {
+            const myScores = await fetchMyScores();
+            const mapped = myScores.reduce(
+              (acc: { [id: number]: number }, cur: ScoreData) => {
+                acc[cur.questionId] = cur.score;
+                return acc;
+              },
+              {}
+            );
+            setScoreDict(mapped);
+          }
+
+          if (isTeam) {
+            const deptScores = await fetchDeptAverages();
+            const mapped = deptScores.reduce(
+              (acc: { [id: number]: number }, cur: ScoreData) => {
+                acc[cur.questionId] = cur.score;
+                return acc;
+              },
+              {}
+            );
+            setScoreDict(mapped);
+          }
+        } else if (isBookmark) {
+          const bookmarked = await fetchBookmarkedAnswers();
+          setQuestions(bookmarked);
+          setBookmarkedIds(bookmarked.map((q) => q.id));
         }
-      } catch (error) {
-        console.error("❗️데이터 요청 실패:", error);
-        setAnswers([]);
+      } catch (e) {
+        console.error("데이터 로딩 실패", e);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchAnswers();
-    setLoading(false);
-  }, []); // ✅ title도 의존성 배열에 추가
+    fetchData();
+  }, []);
 
-const toggleBookmark = async (id: number) => {
-  try {
-    if (bookmarkedIds.includes(id)) {
-      // ✅ 북마크 취소
-      await deleteBookmark(id); // 👈 이거 추가
-      setBookmarkedIds(prev => prev.filter(item => item !== id));
-    } else {
-      // ✅ 북마크 추가
-      await postBookmark(id);
-      setBookmarkedIds(prev => [...prev, id]);
+  const handleBookmark = async (id: number) => {
+    try {
+      await toggleBookmark(id);
+      toggleBookmarkState(id); // zustand 상태 토글
+    } catch (e) {
+      console.error("북마크 토글 실패", e);
     }
-  } catch (error) {
-    console.error("❗ 북마크 요청 실패:", error);
-  }
-};
+  };
+  if (isLoading) return <Loading />;
 
   return (
     <>
-      {
-        isLoading ? 
-        <Loading />
-        :
-      <>
-        {answers.map((answer) => (
-          <ListButton key={answer.id}>
-            <AnswerDate>{answer.date}</AnswerDate>
-            <AnswerContent>{truncateText(answer.content)}</AnswerContent>
-            <AnswerScore>
-              {title}: {answer.score}
-            </AnswerScore>
+      {isMy && <Title>내 답변</Title>}
+      {isTeam && <Title>{teamId}조 답변</Title>}
+      {isBookmark && <Title>북마크</Title>}
 
-            {/* ✅ 북마크 버튼 */}
-            {title === "내 점수" && (
-              <BookmarkButton
-                $active={bookmarkedIds.includes(answer.id)}
-                onClick={() => toggleBookmark(answer.id)}
-              >
-                {bookmarkedIds.includes(answer.id) ? "★" : "☆"}
-              </BookmarkButton>
-            )}
+      <ListWrapper>
+        {questions.map((q) => (
+          <ListButton key={q.id} onClick={() => navigate("/answerdetail")}>
+            <AnswerDate>{q.date}</AnswerDate>
+
+            <ContentRow>
+              <AnswerContent>{truncateText(q.title)}</AnswerContent>
+              {isMy && (
+                <BookmarkButton
+                  $active={bookmarkedIds.includes(q.id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // 북마크 클릭 시 상세 이동 막기
+                    handleBookmark(q.id);
+                  }}
+                >
+                  {bookmarkedIds.includes(q.id) ? "★" : "☆"}
+                </BookmarkButton>
+              )}
+            </ContentRow>
+
+            <AnswerScore>
+              {isMy
+                ? `내 점수: ${scoreDict[q.id] ?? "-"}`
+                : isTeam
+                ? `조별 평균 점수: ${scoreDict[q.id] ?? "-"}`
+                : `점수: ${q.score}`}
+            </AnswerScore>
           </ListButton>
         ))}
-      </>
-    }
+      </ListWrapper>
     </>
   );
 };
 
-// ✅ 스타일 정의
+const Title = styled.h2`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
+
 const ListButton = styled.div`
   cursor: pointer;
-  position: relative;
   width: 100%;
   background-color: white;
   border-radius: 10px;
-  padding: 12px 14px 20px 14px;
-  margin: 6px 0;
+  padding: 8px 14px 8px 14px;
+  margin: 8px 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   font-size: 14px;
   border: 1px solid #ddd;
+  &:hover {
+    background-color: #ededed;
+  }
 `;
 
-const AnswerDate = styled.span`
+const AnswerDate = styled.div`
   font-size: 9px;
   color: gray;
   margin-bottom: 6px;
+  // border: 1px solid red; // 시각 확인용
 `;
 
-const AnswerContent = styled.span`
+const ContentRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 25px;
+  padding: 2px 0;
+  // border: 1px solid brown; // 시각 확인용
+`;
+
+const AnswerContent = styled.div`
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
-`;
-
-const AnswerScore = styled.span`
-  position: absolute;
-  right: 14px;
-  bottom: 8px;
-  font-size: 10px;
-  color: black;
+  // border: 1px solid red; // 시각 확인용
 `;
 
 const BookmarkButton = styled.button<{ $active: boolean }>`
-  position: absolute;
-  top: 10px;
-  right: 10px;
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   color: ${({ $active }) => ($active ? "red" : "black")};
+  // border: 1px solid red; // 시각 확인용
+`;
+
+const AnswerScore = styled.div`
+  font-size: 10px;
+  text-align: right;
+  color: black;
+  margin-top: 6px;
+  // border: 1px solid red; // 시각 확인용
+`;
+
+const ListWrapper = styled.div`
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 6px;
+
+  /* 스크롤바 스타일 */
+  scrollbar-width: thin;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
 `;
 
 export default List;

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import theme from "@app/styles/theme";
-import { postLogin } from "@shared/Apis/auth";
+import { postSignIn } from "@shared/Apis/auth";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
@@ -10,6 +10,7 @@ import {
     SignInSchema,
 } from "@/shared/schemas/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { serverInstance } from "@/shared/apiInstance";
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
@@ -25,13 +26,7 @@ const LoginForm: React.FC = () => {
     });
 
     const handleLogin = async () => {
-        // // apiInstan
-        // const res = serverInstance.post("/auth/signin");
-        // if (res.code === 200) {
-        //     navigate("/");
-        // }else{
-        //     alert("")
-        // }
+
     };
 
     const handleRegister = () => {
@@ -50,7 +45,6 @@ const LoginForm: React.FC = () => {
             {errors.email && (
             <ErrorText>{errors.email?.message}</ErrorText>
             )}
-
             <Input
                 type="password"
                 placeholder="Password"
@@ -142,5 +136,4 @@ const ErrorText = styled.p`
     margin-bottom: 12px;
     text-align: left;
 `;
-
 export default LoginForm;

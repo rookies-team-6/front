@@ -11,16 +11,12 @@ const TeamAnswerPage = () => {
       <Header />
       <ScoreBar />
       <ContentWrapper>
-        <Title>조별 답변</Title>
-        <ScrollArea>
-          <List title="조별 평균 점수" url="/api/team-answers" />
-        </ScrollArea>
+        <List type="team" />
       </ContentWrapper>
     </MainBackground>
   );
 };
 
-export default TeamAnswerPage;
 
 const ContentWrapper = styled.div`
   padding: 50px;
@@ -28,15 +24,4 @@ const ContentWrapper = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.h2`
-  font-size: 25px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`;
-
-const ScrollArea = styled.div`
-  max-height: 300px;
-  overflow-y: auto;
-  padding-right: 40px;
-  padding-left: 40px;
-`;
+export default TeamAnswerPage;

@@ -4,6 +4,7 @@ import logoImage from "@shared/assets/icon/logo.png";
 import { getHeaderInfo } from "@shared/Apis/header";
 import { UserModal } from "@widgets/Modal/UserModal/UserModal";
 import { useNavigate } from "react-router-dom";
+import { IoChevronDown } from "react-icons/io5";
 
 const Header = () => {
     const [user, setUser] = useState<getHeaderInfo>({
@@ -12,8 +13,8 @@ const Header = () => {
         score: "",
     });
     const [isModalOpen, setModalOpen] = useState(false);
-
     const navigate = useNavigate();
+
     useEffect(() => {
         const fetchData = async () => {
             const data = await getHeaderInfo();
@@ -25,10 +26,6 @@ const Header = () => {
 
     return (
         <HeaderWrapper>
-            {/* 로고 클릭 시 홈으로 이동 */}
-            {/* <Link to="/">
-            
-        </Link> */}
             <Logo
                 src={logoImage}
                 alt="로고"
@@ -42,20 +39,10 @@ const Header = () => {
                 <InfoText>{user.type}</InfoText>
                 <InfoText>{user.score}</InfoText>
                 <ButtonWrapper>
-                    <span
-                        style={{
-                            fontSize: "20px",
-                            cursor: "pointer",
-                            // marginBottom: "2px",
-                        }}
-                        onClick={() =>
-                            isModalOpen
-                                ? setModalOpen(false)
-                                : setModalOpen(true)
-                        }
-                    >
-                        ▼
-                    </span>
+                    <StyledChevron
+                        $active={isModalOpen}
+                        onClick={() => setModalOpen(!isModalOpen)}
+                    />
                     <UserModal
                         isOpen={isModalOpen}
                         onClose={() => setModalOpen(false)}
@@ -122,6 +109,16 @@ const LogoutButton = styled.button`
         background-color: red;
         color: white;
     }
+`;
+
+const StyledChevron = styled(IoChevronDown)<{ $active: boolean }>`
+  font-size: 24px;
+  cursor: pointer;
+  color: ${({ $active }) => ($active ? "orange" : "black")};
+
+  &:hover {
+    color: orange;
+  }
 `;
 
 export default Header;

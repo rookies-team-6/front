@@ -13,13 +13,6 @@ import { postSignUp } from '@shared/Apis/auth';
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 
-// 이메일 중복 확인 API 호출 함수(수정 필요)
-const checkEmailDuplicate = async (email: string) => {
-  const res = await axios.get(`/auth/email/check?email=${email}`);
-  return res.data.data;
-};
-
-
 const RegisterForm: React.FC = () => {
     // 사원 번호 유저 이름
     const { employeeNumber, employeeName } = useRegisterStore();
@@ -44,29 +37,29 @@ const RegisterForm: React.FC = () => {
 
     const navigate = useNavigate();
 
-    // 중복 확인 관련(수정 필요)
-    const { mutate: checkEmail, isPending } = useMutation({
-        mutationFn: checkEmailDuplicate,
-        onSuccess: (isDuplicate) => {
-            if (isDuplicate) {
-            setError("email", {
-            type: "manual",
-            message: "이미 사용 중인 이메일입니다.",
-            });
-            setValue("isEmailChecked", false);
-        } else {
-            clearErrors("email");
-            setValue("isEmailChecked", true);
-            alert("사용 가능한 이메일입니다.");
-        }
-        },
-        onError: () => {
-        setError("email", {
-            type: "manual",
-            message: "이메일 확인 중 오류가 발생했습니다.",
-        });
-        },
-    });
+    // // 중복 확인 관련(수정 필요)
+    // const { mutate: checkEmail, isPending } = useMutation({
+    //     mutationFn: checkEmailDuplicate,
+    //     onSuccess: (isDuplicate) => {
+    //         if (isDuplicate) {
+    //         setError("email", {
+    //         type: "manual",
+    //         message: "이미 사용 중인 이메일입니다.",
+    //         });
+    //         setValue("isEmailChecked", false);
+    //     } else {
+    //         clearErrors("email");
+    //         setValue("isEmailChecked", true);
+    //         alert("사용 가능한 이메일입니다.");
+    //     }
+    //     },
+    //     onError: () => {
+    //     setError("email", {
+    //         type: "manual",
+    //         message: "이메일 확인 중 오류가 발생했습니다.",
+    //     });
+    //     },
+    // });
 // 회원가입 누르면 되는 부분 관련(수정 필요)
     const { mutate: registerMutate } = useMutation({
         mutationFn: postSignUp,
@@ -109,12 +102,6 @@ const RegisterForm: React.FC = () => {
             });
             return;
         }
-
-        // registerMutate({
-        //     email: data.email,
-        //     password: data.password,
-        //     employeeNum: employeeNumber,
-        // });
     };
 
     return (
@@ -132,13 +119,13 @@ const RegisterForm: React.FC = () => {
                         type="email"
                         {...register("email")}
                     />
-                    <SubmitButton
+                    {/* <SubmitButton
                         type="button"
                         onClick={() => checkEmail(email)}
                         disabled={!email || isPending}
                     >
                         {isPending ? "확인 중..." : "중복확인"}
-                    </SubmitButton>
+                    </SubmitButton> */}
                 </InputWrapper>
                 {errors.email && (<ErrorText>{errors.email?.message}</ErrorText>)}
                 {/*이거도 수정 필요*/}

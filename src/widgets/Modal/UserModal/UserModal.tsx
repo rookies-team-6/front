@@ -1,20 +1,24 @@
 import styled, {keyframes} from "styled-components";
-
+import { useNavigate } from "react-router-dom"; 
 interface ModalProps {
     isOpen: boolean;
-    onCLose: () => void; 
+    onClose: () => void; 
 }
 
 
 export const UserModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+    const navigate = useNavigate();
+
     if (!isOpen) return null;
 
     const onBookMarkClick = () =>{
-
-    }
+      navigate("/bookmarked"); // ✅ 북마크 페이지로 이동
+      onClose(); // ✅ 모달 닫기
+    };
 
     const onMySolvedClick = () => {
-
+      navigate("/myanswerlist"); // ✅ 푼 문제 조회 페이지로 이동
+      onClose(); // ✅ 모달 닫기
     }
 
     return (
