@@ -10,7 +10,6 @@ import {
     SignInSchema,
 } from "@/shared/schemas/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { serverInstance } from "@/shared/apiInstance";
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();

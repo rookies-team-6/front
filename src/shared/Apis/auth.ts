@@ -1,5 +1,10 @@
-import { devServerInstance } from "@shared/apiInstance";
+import { devServerInstance, serverInstance } from "@shared/apiInstance";
 import axios from "axios";
+
+interface VerifyRequest {
+    username: string;
+    employeeNum: string;
+}
 
 interface LoginRequestBody {
     email: string;
@@ -7,7 +12,6 @@ interface LoginRequestBody {
 }
 
 interface LoginResponse {
-    message: string;
     token: string;
 }
 
@@ -17,10 +21,11 @@ interface RegisterFormContent {
     passwordConfirm: string;
 }
 
-const postLogin = async (body: LoginRequestBody): Promise<LoginResponse> => {
-    const res = await devServerInstance.post("/api/login", { data: body });
+const postSignIn = async (body: LoginRequestBody): Promise<LoginResponse> => {
+    const res = await devServerInstance.post("/api/signin", { data: body });
 
-    const { token } = res.data;
+    const token = res.token;
+    console.log(token)
 
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; //앞으로 요청마다 헤더에 자동으로 token을 넣고 요청함
     // token localStorage, cookie 등에 저장하지 않는다!
@@ -35,13 +40,30 @@ const postLogin = async (body: LoginRequestBody): Promise<LoginResponse> => {
 //   })
 // }
 
-const postRegisterData = async (formData: RegisterFormContent) => {
+const postSignUp = async (formData: RegisterFormContent) => {
     const res = await devServerInstance.post("/api/registerforms", {
         data: formData, // 객체를 그대로 data에 전달
     });
-
-    console.log("서버 응답 데이터:", res.data);
-    return res.data;
 };
 
-export { postLogin, postRegisterData };
+
+const getVerify = async (queryParam: VerifyRequest) => {
+    const res = serverInstance.get(
+        `/auth/verify?username=${queryParam.username}&employeeNum=${queryParam.employeeNum}`
+    );
+};
+
+const getEmailCheck = async (email: string) => {
+    const res = serverInstance.get(`/auth/email/check?email=${email}`);
+};
+
+// refresh token 재발급
+const postRefreshToken = async () => {
+    const res = serverInstance.get(`/auth/refresh`);
+};
+
+const postSignOut = async () => {
+    const res = serverInstance.get(`/auth/signout`);
+};
+
+export { postSignIn, postSignUp };
