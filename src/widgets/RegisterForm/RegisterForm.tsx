@@ -9,7 +9,7 @@ import {
 } from "@shared/schemas/registerSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { postRegisterData } from '@shared/Apis/auth';
+import { postSignUp } from '@shared/Apis/auth';
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 
@@ -69,7 +69,7 @@ const RegisterForm: React.FC = () => {
     });
 // 회원가입 누르면 되는 부분 관련(수정 필요)
     const { mutate: registerMutate } = useMutation({
-        mutationFn: postRegisterData,
+        mutationFn: postSignUp,
         onSuccess: (data) => {
             console.log(data)
             alert("회원가입이 완료되었습니다.");

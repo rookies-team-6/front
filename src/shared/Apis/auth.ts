@@ -40,7 +40,7 @@ const postSignIn = async (body: LoginRequestBody): Promise<LoginResponse> => {
 //   })
 // }
 
-const postRegisterData = async (formData: RegisterFormContent) => {
+const postSignUp = async (formData: RegisterFormContent) => {
     const res = await devServerInstance.post("/api/registerforms", {
         data: formData, // 객체를 그대로 data에 전달
     });
