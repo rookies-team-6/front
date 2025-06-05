@@ -1,6 +1,7 @@
 import {http, HttpResponse} from "msw";
 import { myMockAnswers, teamMockAnswers } from "@shared/mock/dataList";
 
+const bookmarkedState: { [id: number]: boolean } = {};
 interface Question {
     id: number;
     title: string;
@@ -40,18 +41,51 @@ interface EmployeeInfo {
 
 
 export const handler = [
-    //북마크
+    http.get("/api/questions/me", () => {
+        return HttpResponse.json(myMockAnswers);
+    }),
+    //내점수
+    http.get("/admin/users/scores", () => {
+        return HttpResponse.json(
+        myMockAnswers.map((item) => ({ questionId: item.id, score: item.score }))
+        );
+    }),
+    //조별평균점수
+    http.get("/dept-scores/averaged", () => {
+        return HttpResponse.json(
+        teamMockAnswers.map((item) => ({ questionId: item.id, score: item.score }))
+        );
+    }),
+    // 북마크 GET (조회용)
+    http.get("/api/record/bookmarked", () => {
+    const bookmarkedIds = Object.entries(bookmarkedState)
+        .filter(([_, marked]) => marked)
+        .map(([id]) => Number(id));
+
+    const bookmarkedData = myMockAnswers.filter((item) =>
+        bookmarkedIds.includes(item.id)
+    );
+
+    return HttpResponse.json(bookmarkedData);
+    }),
+
+
+    // 북마크 POST (토글용)
     http.post("/api/record/bookmarked", async ({ request }) => {
-    const body = await request.json();
-    console.log("북마크된 항목:", body); // 콘솔에 어떤 ID가 넘어오는지 확인용
+    const body = (await request.json()) as { id: number };
+    const { id } = body;
 
-    return HttpResponse.json({ message: "북마크 처리 완료" }, { status: 200 });
-    }),
+    // 현재 상태를 반대로 토글
+    bookmarkedState[id] = !bookmarkedState[id];
 
-    http.delete("/api/record/bookmarked/:id", ({ params }) => {
-    console.log("삭제된 북마크 ID:", params.id);
-    return HttpResponse.json({ success: true }, { status: 200 });
-    }),
+    return HttpResponse.json({
+        success: true,
+        data: {
+        id,
+        bookMarked: bookmarkedState[id],
+        },
+    });
+}),
 
     //헤더
      http.get("/api/header", () => {
@@ -68,32 +102,21 @@ export const handler = [
       }),
     
     //로그인
-    http.post("/auth/signin", async ({ request }) => {
+    http.post("/api/login", async ({ request }) => {
         const body = (await request.json()) as LoginRequestBody;
-
-        if(body.email == "test@test.com" && body.password == "1234"){
-            // 여기선 단순 mock 응답, 실제론 인증 로직에 따라 응답 구성
-            return HttpResponse.json(
-                {
-                code: 200,
-                data: {
-                    token: "mock-jwt-token",
-                    tokenType: "Bearer",
-                    message: "로그인 성공",
-                }
-            });
-        }else{
-           // 여기선 단순 mock 응답, 실제론 인증 로직에 따라 응답 구성
-            return HttpResponse.json(
-                {
-                code: 400,
-                error: {
-                    message: "로그인 실패"
-                }
-            });
-        }
     
-
+        // 여기선 단순 mock 응답, 실제론 인증 로직에 따라 응답 구성
+        return HttpResponse.json(
+            {
+                token: "mock-jwt-token",
+                email: body.email,
+                message: "로그인 성공",
+            },
+            {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            }
+        );
     }),
 
     //회원가입

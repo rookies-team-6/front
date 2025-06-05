@@ -10,6 +10,7 @@ import {
     SignInSchema,
 } from "@/shared/schemas/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { serverInstance } from "@/shared/apiInstance";
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
@@ -24,13 +25,18 @@ const LoginForm: React.FC = () => {
         mode: "onChange",
     });
 
-    const handleLogin = async (data) => {
-        const isSuccessed = await postSignIn(data);
-        if (isSuccessed) {
-            navigate("/home");
-        } else {
-            alert("이메일 또는 비밀번호가 올바르지 않습니다.");
-        }
+    const handleLogin = async () => {
+        // // apiInstan
+        // const res = serverInstance.post("/auth/signin");
+        // if (res.code === 200) {
+        //     navigate("/");
+        // }else{
+        //     alert("")
+        // }
+    };
+
+    const handleRegister = () => {
+        navigate("/checkemplnum"); // ✅ 사원조회회 페이지로 이동
     };
 
     return (
@@ -44,7 +50,6 @@ const LoginForm: React.FC = () => {
             {errors.email && (
             <ErrorText>{errors.email?.message}</ErrorText>
             )}
-
             <Input
                 type="password"
                 placeholder="Password"
@@ -135,5 +140,4 @@ const ErrorText = styled.p`
     margin-bottom: 12px;
     text-align: left;
 `;
-
 export default LoginForm;

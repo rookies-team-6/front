@@ -71,4 +71,5 @@ const postSignOut = async () => {
     const res = serverInstance.get(`/auth/signout`);
 };
 
+
 export { postSignIn, postSignUp };

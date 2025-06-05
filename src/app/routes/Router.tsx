@@ -11,6 +11,9 @@ import TeamAnswerPage from "@pages/TeamAnswerPage/TeamAnswerPage";
 import BoardDetailPage from "@pages/BoardDetail/BoardDetail";
 import BoardRegistrationPage from "@pages/BoardRegistrationPage/BoardRegistrationPage"
 import BoardWritePage from "@pages/WritePage/WrigtePage";
+import MyAnswerPage from "@/pages/MyAnswerPage/MyAnswerPage";
+import BookMarkPage from "@/pages/BookMarkPage/BookMarkPage";
+
 
 export const router = createBrowserRouter([
     {
@@ -49,5 +52,18 @@ export const router = createBrowserRouter([
     {
       path: "/write",
       element: <BoardWritePage />
+    },
+        {
+      path: "/myanswerlist",
+      element: <MyAnswerPage />
+    },
+    {
+      path: "/teamanswerlist",
+      element: <TeamAnswerPage />
+    },
+    {
+      path: "/bookmarked",
+      element: <BookMarkPage/>
     }
+
 ]);

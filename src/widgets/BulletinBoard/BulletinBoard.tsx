@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import { getAllPosts } from "@shared/Apis/board";
 import { useNavigate } from "react-router-dom";
+import pencil from "@shared/assets/icon/pencil.png"
 
 // 타입 정의
 interface Post {
@@ -42,7 +43,7 @@ const BulletinBoard: React.FC = () => {
     <Container>
       <Title>게시판</Title>
       <EditIcon onClick={onClickWrite}>
-        <img src="/edit-icon.svg" alt="edit" />
+        <img src={pencil} alt="edit" />
       </EditIcon>
       <Table>
         <Thead>

@@ -6,6 +6,24 @@ interface Answer {
   score: number;
 }
 
+// ✅ 북마크된 답변 mock
+const bookmarkedAnswers: Answer[] = [
+  {
+    id: 1,
+    title: "비밀번호 안전 관리",
+    content: "복잡하고 고유한 비밀번호를 사용합니다.",
+    date: "2025.12.12",
+    score: 9,
+  },
+  {
+    id: 2,
+    title: "2단계 인증",
+    content: "2단계 인증으로 계정을 보호할 수 있어요.",
+    date: "2025.12.13",
+    score: 8,
+  },
+];
+
 // ✅ 내 답변 mock
 const myMockAnswers: Answer[] = [
   {
@@ -126,4 +144,4 @@ const teamMockAnswers: Answer[] = [
   },
 ];
 
-export {myMockAnswers, teamMockAnswers}
+export {myMockAnswers, teamMockAnswers, bookmarkedAnswers};

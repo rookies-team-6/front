@@ -118,6 +118,7 @@ const RegisterForm: React.FC = () => {
                     >
                         {isPending ? "확인 중..." : "중복확인"}
                     </SubmitButton> */}
+                    </SubmitButton> */}
                 </InputWrapper>
                 {errors.email && <ErrorText>{errors.email?.message}</ErrorText>}
                 {/*이거도 수정 필요*/}
