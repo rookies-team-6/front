@@ -9,6 +9,9 @@ import {
 } from "@shared/schemas/registerSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { postSignUp } from '@shared/Apis/auth';
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
 
 const RegisterForm: React.FC = () => {
     // 사원 번호 유저 이름
@@ -19,6 +22,9 @@ const RegisterForm: React.FC = () => {
         handleSubmit,
         formState: { errors, isValid },
         watch,
+        setError,
+        clearErrors,
+        setValue,
     } = useForm<RegisterFormValues>({
         resolver: zodResolver(RegisterFormSchema),
         mode: "onChange",
@@ -27,20 +33,81 @@ const RegisterForm: React.FC = () => {
         },
     });
 
-    // const [errors, setErrors] = useState<Record<string, string>>({});
+    const email = watch("email")
 
     const navigate = useNavigate();
 
-    // 이메일 인증 코드 전송 관련(수정필요) -> 이제 여기를 중복확인 관련으로 바꾸기
+    // // 중복 확인 관련(수정 필요)
+    // const { mutate: checkEmail, isPending } = useMutation({
+    //     mutationFn: checkEmailDuplicate,
+    //     onSuccess: (isDuplicate) => {
+    //         if (isDuplicate) {
+    //         setError("email", {
+    //         type: "manual",
+    //         message: "이미 사용 중인 이메일입니다.",
+    //         });
+    //         setValue("isEmailChecked", false);
+    //     } else {
+    //         clearErrors("email");
+    //         setValue("isEmailChecked", true);
+    //         alert("사용 가능한 이메일입니다.");
+    //     }
+    //     },
+    //     onError: () => {
+    //     setError("email", {
+    //         type: "manual",
+    //         message: "이메일 확인 중 오류가 발생했습니다.",
+    //     });
+    //     },
+    // });
+// 회원가입 누르면 되는 부분 관련(수정 필요)
+    const { mutate: registerMutate } = useMutation({
+        mutationFn: postSignUp,
+        onSuccess: (data) => {
+            console.log(data)
+            alert("회원가입이 완료되었습니다.");
+            navigate("/");
+        },
+        onError: (error: any) => {
+            const code = error?.response?.data?.error?.code;
+            const message = error?.response?.data?.error?.message;
+
+            if (code === "A005") {
+                setError("email", {
+                type: "manual",
+                message: message || "중복된 이메일입니다.",
+                });
+            } else if (code === "A002") {
+                setError("passwordConfirm", {
+                type: "manual",
+                message: message || "비밀번호가 일치하지 않습니다.",
+                });
+            } else if (code === "EA001") {
+                alert(message || "존재하지 않는 사번입니다.");
+            } else {
+                alert("알 수 없는 오류가 발생했습니다.");
+            }
+        },
+    });
 
     const handleLogin = () => {
         navigate("/");
     };
 
+    const onSubmit = (data: RegisterFormValues) => {
+        if (!data.isEmailChecked) {
+            setError("isEmailChecked", {
+            type: "manual",
+            message: "이메일 중복 확인을 해주세요.",
+            });
+            return;
+        }
+    };
+
     return (
         <Container>
             <Title>회원가입</Title>
-            <Form onSubmit={handleSubmit(handleLogin)}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <Label>이름</Label>
                 <Input type="text" value={employeeName} readOnly />
                 <Label>사원 번호</Label>
@@ -50,44 +117,36 @@ const RegisterForm: React.FC = () => {
                 <InputWrapper>
                     <Input
                         type="email"
-                        placeholder="올바른 이메일 형식으로 입력해주세요. 예: user@example.com"
                         {...register("email")}
-                        // 여기는 중복 확인 관련으로 disabled? 뭐 이런 거 하면 되지 않을까요 아닌가... 하여튼
                     />
-                    <SubmitButton type="button">중복확인</SubmitButton>
+                    {/* <SubmitButton
+                        type="button"
+                        onClick={() => checkEmail(email)}
+                        disabled={!email || isPending}
+                    >
+                        {isPending ? "확인 중..." : "중복확인"}
+                    </SubmitButton> */}
                 </InputWrapper>
-                {errors.email && (
-                    <p style={{ color: "red", marginBottom: "12px" }}>
-                        {errors.email?.message}
-                    </p>
-                )}
+                {errors.email && (<ErrorText>{errors.email?.message}</ErrorText>)}
+                {/*이거도 수정 필요*/}
+                {errors.isEmailChecked && (<ErrorText>{errors.isEmailChecked?.message}</ErrorText>)}
                 <Label htmlFor="password">비밀번호</Label>
                 <Input
                     type="password"
-                    value={watch("password")}
                     {...register("password")}
                 />
-                {errors.password && (
-                    <p style={{ color: "red", marginBottom: "12px" }}>
-                        {errors.password?.message}
-                    </p>
-                )}
+                {errors.password && (<ErrorText>{errors.password?.message}</ErrorText>)}
                 <Label htmlFor="passwordConfirm">비밀번호 확인</Label>
                 <Input
                     type="password"
-                    value={watch("passwordConfirm")}
                     {...register("passwordConfirm")}
                 />
-                {errors.passwordConfirm && (
-                    <p style={{ color: "red", marginBottom: "12px" }}>
-                        {errors.passwordConfirm.message}
-                    </p>
-                )}
+                {errors.passwordConfirm && (<ErrorText>{errors.passwordConfirm.message}</ErrorText>)}
                 <Button type="submit" disabled={!isValid}>
                     Sign up
                 </Button>
             </Form>
-            <RegisterButton type="submit">로그인으로 돌아가기</RegisterButton>
+            <RegisterButton type="button" onClick={handleLogin}>로그인으로 돌아가기</RegisterButton>
         </Container>
     );
 };
@@ -189,6 +248,11 @@ const SubmitButton = styled.button`
         background-color: #e0e0e0;
         cursor: not-allowed;
     }
+`;
+
+const ErrorText = styled.p`
+  color: red;
+  margin-bottom: 12px;
 `;
 
 export default RegisterForm;
