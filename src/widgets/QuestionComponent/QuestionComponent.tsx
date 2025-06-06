@@ -1,29 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { postAnswerData, getQuestionData } from "@shared/Apis/home";
-import Loading from "@widgets/Loading/Loading";
+import { postAnswerData } from "@shared/Apis/home";
+import { useQuestionStore } from "@shared/zustand/question";
 
 
 const QuestionComponent: React.FC = () => {
   const [answer, setAnswer] = useState("");
-  const [question, setQuestion] = useState("")
-  const [questionTitle, setQuestionTitle] = useState("")
-  const [isLoading, setLoading] = useState(false)
+  const {questions} = useQuestionStore();
+  // canSolve가 true인 질문만 필터링
+  const solvableQuestions = questions.filter((q) => q.canSolve)
 
-  useEffect(()=>{
-    setLoading(true)
-    const fetchData = async () => {
-      const resultQuestion = await getQuestionData(1);
-      // console.log(resultQuestion)
-      setQuestionTitle(resultQuestion.data.title)
-      setQuestion(resultQuestion.data.content)
-    };
-
-    fetchData();
-    setLoading(false)
-  },[])
+  const [index, setIndex] = useState(0)
+  
 
   const ref = useRef<HTMLTextAreaElement>(null);
+
 
   useEffect(() => {
     const textarea = ref.current;
@@ -36,9 +27,11 @@ const QuestionComponent: React.FC = () => {
 
   
   //제출 버튼 누를경우
-  const handleSubmit = () => {
-    postAnswerData(answer)
+  const handleSubmit = async() => {
+    await postAnswerData(answer)
     setAnswer("");
+    // 마지막 질문까지 도달했을 때는 더 이상 증가하지 않도록
+    setIndex((prev) => (prev < solvableQuestions.length - 1 ? prev + 1 : prev))
   };
 
   
@@ -54,15 +47,11 @@ const QuestionComponent: React.FC = () => {
 
   return (
     <Wrapper>
-      <Title>{questionTitle}</Title>
-      {
-        isLoading ? 
-        <Loading />
-        :
-        <QuestionBox>
-          {question}
-        </QuestionBox> 
-      }
+      <Title>질문 {index}번</Title>
+      <QuestionBox>
+        {solvableQuestions[index]?.question}
+      </QuestionBox> 
+      
       
       <AnswerWrapper>
         {/* <Arrow>↳</Arrow> */}
