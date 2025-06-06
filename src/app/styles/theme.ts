@@ -26,10 +26,24 @@ const yellow = {
   y100: '#FFFCEE'
 };
 
+const gray = {
+  g500:'#a0a0a0',
+  g400:'#c0c0c0',
+  g300: '#cccccc',
+  g200: '#d9d9d9',
+  g100: '#ededed'
+};
+
+const black = {b500: '#000000'};
+const white = {w500: '#ffffff'};
+
 const theme = {
     red,
     orange,
     yellow,
+    gray,
+    black,
+    white
 };
 
 
