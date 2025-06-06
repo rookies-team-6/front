@@ -6,6 +6,7 @@ import { getEmployeeInfo } from "@shared/Apis/emregister";
 // import type { EmployeeInfo } from "@shared/Apis/emregister";
 import { useNavigate } from "react-router-dom";
 import useRegisterStore from "@shared/zustand/registerStore";
+import { getVerify } from "@/shared/Apis/auth";
 
 const EmRegister = () => {
     // const [inputData, setInputData] = useState<EmployeeInfo>({
@@ -23,27 +24,7 @@ const EmRegister = () => {
             alert("사원 번호와 이름을 모두 입력해주세요.");
             return;
         }
-
-        try {
-            const data = await getEmployeeInfo(); // 💡 서버에서 가져온 mock data
-            if (
-                employeeNumber === data.employeeNumber &&
-                employeeName === data.employeeName
-            ) {
-                alert("확인 완료!");
-                navigate("/register", {
-                    state: {
-                        employeeNumber: employeeNumber,
-                        employeeName: employeeName,
-                    },
-                });
-            } else {
-                alert("사원이 아닙니다.");
-            }
-        } catch (error) {
-            console.error("사원 조회 실패:", error);
-            alert("오류가 발생했습니다.");
-        }
+        getVerify(employeeNumber, employeeName);
     };
 
     return (

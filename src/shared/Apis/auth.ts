@@ -21,9 +21,10 @@ interface LoginResponse {
 }
 
 interface RegisterFormContent {
+    employeeNum: string;
     email: string;
     password: string;
-    passwordConfirm: string;
+    passwordCheck: string;
 }
 
 const postSignIn = async (body: LoginRequestBody): Promise<LoginResponse> => {
@@ -46,20 +47,23 @@ const postSignIn = async (body: LoginRequestBody): Promise<LoginResponse> => {
 //   })
 // }
 
-const postSignUp = async (formData: RegisterFormContent) => {
-    const res = await devServerInstance.post("/api/registerforms", {
-        data: formData, // 객체를 그대로 data에 전달
+const postSignUp = async (data: RegisterFormContent) => {
+    const res = await serverInstance.post("/auth/signup", data);
+};
+
+export const getVerify = async (employeeNum: string, username: string) => {
+    const res = await serverInstance.get("/auth/verify", {
+        params: {
+            username: username,
+            employeeNum: employeeNum,
+        },
     });
+    console.log(res);
 };
 
-const getVerify = async (queryParam: VerifyRequest) => {
-    const res = serverInstance.get(
-        `/auth/verify?username=${queryParam.username}&employeeNum=${queryParam.employeeNum}`
-    );
-};
-
-const getEmailCheck = async (email: string) => {
+export const getEmailCheck = async (email: string) => {
     const res = serverInstance.get(`/auth/email/check?email=${email}`);
+    return res;
 };
 
 // refresh token 재발급
@@ -70,6 +74,5 @@ const postRefreshToken = async () => {
 const postSignOut = async () => {
     const res = serverInstance.get(`/auth/signout`);
 };
-
 
 export { postSignIn, postSignUp };

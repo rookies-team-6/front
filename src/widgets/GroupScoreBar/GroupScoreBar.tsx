@@ -35,6 +35,8 @@ const ScoreBar: React.FC = () => {
         }
     };
 
+    // 여기서 api 호출을 받아요 
+
     const scrollRight = () => {
         if (scoreContainerRef.current) {
             scoreContainerRef.current.scrollBy({

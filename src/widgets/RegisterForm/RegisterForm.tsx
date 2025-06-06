@@ -9,7 +9,7 @@ import {
 } from "@shared/schemas/registerSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { postSignUp } from "@shared/Apis/auth";
+import { getEmailCheck, postSignUp } from "@shared/Apis/auth";
 import { useMutation } from "@tanstack/react-query";
 
 const RegisterForm: React.FC = () => {
@@ -22,48 +22,23 @@ const RegisterForm: React.FC = () => {
         formState: { errors, isValid },
         watch,
         setError,
-        clearErrors,
         setValue,
+        getValues,
     } = useForm<RegisterFormValues>({
         resolver: zodResolver(RegisterFormSchema),
         mode: "onChange",
         defaultValues: {
-            isEmailChecked: true,
+            isEmailDuplicatedChecked: false,
         },
     });
 
+    const navigate = useNavigate();
     const email = watch("email");
 
-    const navigate = useNavigate();
-
-    // 중복 확인 관련(수정 필요)
-    // const { mutate: checkEmail, isPending } = useMutation({
-    //     mutationFn: checkEmailDuplicate,
-    //     onSuccess: (isDuplicate) => {
-    //         if (isDuplicate) {
-    //             setError("email", {
-    //                 type: "manual",
-    //                 message: "이미 사용 중인 이메일입니다.",
-    //             });
-    //             setValue("isEmailChecked", false);
-    //         } else {
-    //             clearErrors("email");
-    //             setValue("isEmailChecked", true);
-    //             alert("사용 가능한 이메일입니다.");
-    //         }
-    //     },
-    //     onError: () => {
-    //         setError("email", {
-    //             type: "manual",
-    //             message: "이메일 확인 중 오류가 발생했습니다.",
-    //         });
-    //     },
-    // });
     // 회원가입 누르면 되는 부분 관련(수정 필요)
     const { mutate: registerMutate } = useMutation({
         mutationFn: postSignUp,
-        onSuccess: (data) => {
-            console.log(data);
+        onSuccess: () => {
             alert("회원가입이 완료되었습니다.");
             navigate("/");
         },
@@ -90,12 +65,31 @@ const RegisterForm: React.FC = () => {
     });
 
     const onSubmit = (data: RegisterFormValues) => {
-        if (!data.isEmailChecked) {
-            setError("isEmailChecked", {
-                type: "manual",
-                message: "이메일 중복 확인을 해주세요.",
-            });
-            return;
+        // resgister mutate
+        const newData = {
+            employeeNum: "SK12345333",
+            email: data.email,
+            password: data.password,
+            passwordCheck: data.passwordConfirm,
+        };
+
+        registerMutate(newData);
+    };
+
+    const handleEmailDuplicateCheck = async () => {
+        try {
+            const res = await getEmailCheck(email);
+            const isAvailable = res?.data?.data;
+
+            if (isAvailable === true) {
+                alert("이미 사용 중인 이메일입니다.");
+            } else {
+                alert("사용 가능한 이메일입니다.");
+                setValue("isEmailDuplicatedChecked", true);
+            }
+        } catch (error) {
+            console.error("이메일 중복 확인 중 오류 발생:", error);
+            alert("이메일 중복 확인 중 오류가 발생했습니다.");
         }
     };
 
@@ -111,19 +105,24 @@ const RegisterForm: React.FC = () => {
                 <Label htmlFor="email">이메일</Label>
                 <InputWrapper>
                     <Input type="email" {...register("email")} />
-                    {/* <SubmitButton
+                    <SubmitButton
                         type="button"
-                        onClick={() => checkEmail(email)}
-                        disabled={!email || isPending}
+                        onClick={handleEmailDuplicateCheck}
+                        disabled={
+                            !!errors.email || watch("isEmailDuplicatedChecked")
+                        }
                     >
-                        {isPending ? "확인 중..." : "중복확인"}
-                    </SubmitButton> */}
-                    </SubmitButton> */}
+                        {watch("isEmailDuplicatedChecked")
+                            ? "확인 완료"
+                            : "중복 확인"}
+                    </SubmitButton>
                 </InputWrapper>
                 {errors.email && <ErrorText>{errors.email?.message}</ErrorText>}
                 {/*이거도 수정 필요*/}
-                {errors.isEmailChecked && (
-                    <ErrorText>{errors.isEmailChecked?.message}</ErrorText>
+                {errors.isEmailDuplicatedChecked && (
+                    <ErrorText>
+                        {errors.isEmailDuplicatedChecked?.message}
+                    </ErrorText>
                 )}
                 <Label htmlFor="password">비밀번호</Label>
                 <Input type="password" {...register("password")} />
