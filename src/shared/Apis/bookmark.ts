@@ -1,5 +1,6 @@
 import { devServerInstance } from "@shared/apiInstance";
 
+// 북마크 상태 토글 요청
 export const toggleBookmark = async (id: number): Promise<boolean> => {
   try {
     const res = await devServerInstance.post("/api/record/bookmarked", { id });
