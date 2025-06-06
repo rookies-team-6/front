@@ -24,14 +24,15 @@ const LoginForm: React.FC = () => {
         mode: "onChange",
     });
 
-    const handleLogin = async (data) => {
-            const isSuccessed = await postSignIn(data);
-            if (isSuccessed) {
-                navigate("/home");
-            } else {
-                alert("이메일 또는 비밀번호가 올바르지 않습니다.");
-            }
-        };
+    const handleLogin = async (data: SignInFormType) => {
+        const isSuccessed = await postSignIn(data);
+        if (isSuccessed) {
+            navigate("/home");
+        } else {
+            alert("이메일 또는 비밀번호가 올바르지 않습니다.");
+        }
+    };
+
 
     return (
         <Wrapper onSubmit={handleSubmit(handleLogin)}>
