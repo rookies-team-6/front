@@ -12,6 +12,7 @@ import useHomeStore from "@shared/zustand/useHomeStore";
 
 import Loading from "@widgets/Loading/Loading";
 import { useNavigate } from "react-router-dom";
+import theme from "@app/styles/theme";
 
 interface Answer {
   id: number;
@@ -146,14 +147,14 @@ const Title = styled.h2`
 const ListButton = styled.div`
   cursor: pointer;
   width: 100%;
-  background-color: white;
+  background-color: ${theme.white.w500};
   border-radius: 10px;
   padding: 8px 14px;
   margin: 8px 0;
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  border: 1px solid #ddd;
+  border: 1px solid ${theme.gray.g300};
   &:hover {
     background-color: #ededed;
   }
@@ -161,7 +162,7 @@ const ListButton = styled.div`
 
 const AnswerDate = styled.div`
   font-size: 9px;
-  color: gray;
+  color: ${theme.gray.g500};
   margin-bottom: 6px;
 `;
 
@@ -193,7 +194,7 @@ const BookmarkButton = styled.button<{ $active: boolean }>`
 const AnswerScore = styled.div`
   font-size: 10px;
   text-align: right;
-  color: black;
+  color: ${theme.black.b500};
   margin-top: 6px;
   min-height: 14px;
 `;
@@ -208,7 +209,7 @@ const ListWrapper = styled.div`
     width: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #ccc;
+    background-color: ${theme.gray.g300};
     border-radius: 4px;
   }
 `;

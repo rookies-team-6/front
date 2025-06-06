@@ -6,6 +6,7 @@ import { getHeaderInfo } from "@shared/Apis/header";
 import { UserModal } from "@widgets/Modal/UserModal/UserModal";
 import { useNavigate } from "react-router-dom";
 import { IoChevronDown } from "react-icons/io5";
+import theme from "@app/styles/theme";
 
 interface HeaderInfo {
   userId: number;
@@ -73,7 +74,7 @@ const ButtonWrapper = styled.div`
 const HeaderWrapper = styled.header`
   width: 100%;
   height: 71px;
-  background-color: #f0efec;
+  background-color:${theme.gray.g100};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -95,26 +96,26 @@ const UserInfo = styled.div`
 `;
 
 const InfoText = styled.div`
-  background-color: white;
+  background-color: ${theme.white.w500};
   padding: 10px 16px;
   border-radius: 8px;
   font-size: 15px;
-  color: #333;
+  color: ${theme.black.b500};
 `;
 
 const LogoutButton = styled.button`
-  background-color: white;
-  border: 1px solid #fff;
+  background-color: ${theme.white.w500};
+  border: 1px solid ${theme.white.w500};
   border-radius: 6px;
   padding: 4px 10px;
   cursor: pointer;
   font-size: 13px;
-  color: red;
+  color: ${theme.red.r500};
   height: 36px;
 
   &:hover {
-    background-color: red;
-    color: white;
+    background-color: ${theme.red.r500};
+    color: ${theme.white.w500};
   }
 `;
 
@@ -124,7 +125,7 @@ const StyledChevron = styled(IoChevronDown)<{ $active: boolean }>`
   color: ${({ $active }) => ($active ? "orange" : "black")};
 
   &:hover {
-    color: orange;
+    color: ${theme.orange.o500};
   }
 `;
 

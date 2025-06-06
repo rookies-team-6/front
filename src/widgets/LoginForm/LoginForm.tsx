@@ -86,7 +86,7 @@ const Input = styled.input`
     max-width: 300px;
     padding: 10px 15px;
     margin-bottom: 25px;
-    border: 1px solid #ccc;
+    border: 1px solid ${theme.gray.g300};
     border-radius: 8px;
     font-size: 12px;
     box-sizing: border-box;
@@ -109,14 +109,14 @@ const Button = styled.button<{ disabled: boolean }>`
     box-sizing: border-box;
 
     &:hover {
-        background-color: #e0a800;
+        background-color:${theme.orange.o500};
     }
 `;
 
 const RegisterButton = styled.button`
     margin-top: 15px;
     font-size: 12px;
-    color: #666;
+    color: ${theme.gray.g500};
     text-decoration: underline;
     cursor: pointer;
     background: none;
@@ -124,7 +124,7 @@ const RegisterButton = styled.button`
     padding: 0;
 
     &:hover {
-        color: #333;
+        color:#e0a800;
     }
 `;
 
@@ -132,7 +132,7 @@ const ErrorText = styled.p`
     width: 130%;
     max-width: 300px;
     font-size: 12px;
-    color: red;
+    color: ${theme.red.r500};
     margin-top: -20px;
     margin-bottom: 12px;
     text-align: left;

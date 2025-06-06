@@ -117,7 +117,7 @@ const InputGroup = styled.div`
 
 const Label = styled.label`
   font-size: 13px;
-  color: black;
+  color: ${theme.black};
   margin-bottom: 3px;
   text-align: left;
   width: 100%;
@@ -127,7 +127,7 @@ const Input = styled.input`
   width: 100%;
   padding: 10px 15px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid ${theme.gray.g300};
   border-radius: 8px;
   font-size: 12px;
   box-sizing: border-box;
@@ -138,7 +138,7 @@ const Button = styled.button`
   margin-top: 15px;
   padding: 10px 15px;
   background-color: ${theme.orange.o500};
-  color: white;
+  color: ${theme.white};
   border: none;
   border-radius: 8px;
   font-weight: Regular;
@@ -147,7 +147,7 @@ const Button = styled.button`
   box-sizing: border-box;
 
   &:hover {
-    background-color: #e0a800;
+    background-color: ${theme.orange.o500};
   }
 `;
 

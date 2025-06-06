@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { fetchHomeInfo } from "@shared/Apis/listform";
 import { useNavigate } from "react-router-dom";
 import Loading from "@widgets/Loading/Loading";
-import useHomeStore from "@shared/zustand/useHomeStore"; // ✅ teamStore → homeStore
+import useHomeStore from "@shared/zustand/useHomeStore";
+import theme from "@app/styles/theme";
 
 interface GroupScore {
   groupNum: number;
@@ -16,7 +17,7 @@ const ScoreBar: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { setSelectedGroupNum } = useHomeStore(); // ✅ 추가된 zustand 상태
+  const { setSelectedGroupNum } = useHomeStore(); 
 
   useEffect(() => {
     const fetchScores = async () => {
@@ -55,7 +56,7 @@ const ScoreBar: React.FC = () => {
   };
 
   const handleScoreBoxClick = (groupNum: number) => {
-    setSelectedGroupNum(groupNum); // ✅ 선택된 조 번호 저장
+    setSelectedGroupNum(groupNum); 
     navigate("/teamanswerlist");
   };
 
@@ -98,11 +99,11 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: calc(12 / 1440 * 100%);
-  background-color: white;
+  background-color: ${theme.white.w500};
 `;
 
 const ScoreContainer = styled.div`
-  background-color: #ededed;
+  background-color: ${theme.gray.g100};
   width: calc(770 / 1440 * 100%);
   height: auto;
   padding: 10px 20px;
@@ -118,7 +119,7 @@ const ScoreContainer = styled.div`
 `;
 
 const ScoreBox = styled.button`
-  background-color: #d9d9d9;
+  background-color: ${theme.gray.g200};
   width: 110px;
   height: 60px;
   padding: 10px;
@@ -139,11 +140,11 @@ const ScoreBox = styled.button`
   }
 
   &:hover {
-    background-color: #c0c0c0;
+    background-color: ${theme.gray.g400};
   }
 
   &:active {
-    background-color: #a0a0a0;
+    background-color:;${theme.gray.g500}
   }
 
   &:last-child {
@@ -161,7 +162,7 @@ const NavButton = styled.button`
 `;
 
 const QueryButton = styled.button`
-  background-color: #d9d9d9;
+  background-color:${theme.gray.g200};
   width: 120px;
   height: 60px;
   border: none;
@@ -170,10 +171,10 @@ const QueryButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   margin-left: calc(20 / 1440 * 100%);
-  color: #000000;
+  color:${theme.black.b500};
   flex-shrink: 0;
 
   &:hover {
-    background-color: #c0c0c0;
+    background-color: ${theme.gray.g400};
   }
 `;
