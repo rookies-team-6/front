@@ -1,46 +1,45 @@
-import styled, {keyframes} from "styled-components";
-import { useNavigate } from "react-router-dom"; 
+import styled, { keyframes } from "styled-components";
+import { useNavigate } from "react-router-dom";
+
 interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void; 
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-
 export const UserModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    if (!isOpen) return null;
+  if (!isOpen) return null;
 
-    const onBookMarkClick = () =>{
-      navigate("/bookmarked"); // ✅ 북마크 페이지로 이동
-      onClose(); // ✅ 모달 닫기
-    };
+  const onBookMarkClick = () => {
+    navigate("/bookmarked");
+    onClose();
+  };
 
-    const onMySolvedClick = () => {
-      navigate("/myanswerlist"); // ✅ 푼 문제 조회 페이지로 이동
-      onClose(); // ✅ 모달 닫기
-    }
+  const onMySolvedClick = () => {
+    navigate("/myanswerlist");
+    onClose();
+  };
 
-    return (
-      <>
-        <Overlay onClick={onClose} />
-        <ModalWrapper  isOpen={isOpen} onClick={onClose}>
-        <ModalContainer isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
-            <OrangeButton onClick={onBookMarkClick}>북마크</OrangeButton>
-            <OrangeButton onClick={onMySolvedClick}>푼 문제 조회</OrangeButton>
+  return (
+    <>
+      <Overlay onClick={onClose} />
+      <ModalWrapper $isOpen={isOpen} onClick={onClose}>
+        <ModalContainer $isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
+          <OrangeButton onClick={onBookMarkClick}>북마크</OrangeButton>
+          <OrangeButton onClick={onMySolvedClick}>푼 문제 조회</OrangeButton>
         </ModalContainer>
-        </ModalWrapper>
-      </>
-
-    );
+      </ModalWrapper>
+    </>
+  );
 };
 
 const OrangeButton = styled.button`
-  width: 120px; /* 고정된 너비 */
+  width: 120px;
   background-color: orange;
   color: white;
   border: none;
-  padding: 10px 0; /* 좌우 padding 제거, 세로만 적용 */
+  padding: 10px 0;
   border-radius: 4px;
   font-size: 14px;
   font-weight: 600;
@@ -61,7 +60,7 @@ const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 998;
-  background: transparent; // 배경 시각 효과 없애기
+  background: transparent;
 `;
 
 const fadeSlideIn = keyframes`
@@ -86,28 +85,30 @@ const fadeSlideOut = keyframes`
   }
 `;
 
-const ModalWrapper  = styled.div<{ isOpen: boolean }>`
+const ModalWrapper = styled.div<{ $isOpen: boolean }>`
   position: absolute;
-  top: 100%; /* 버튼 아래 */
+  top: 100%;
   right: 0;
   margin-top: 8px;
   z-index: 999;
-  animation: ${({ isOpen }) => (isOpen ? fadeSlideIn : fadeSlideOut)} 0.3s ease-out forwards;
-  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+  animation: ${({ $isOpen }) =>
+    $isOpen ? fadeSlideIn : fadeSlideOut} 0.3s ease-out forwards;
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
 `;
 
-const ModalContainer = styled.div<{ isOpen: boolean }>`
+const ModalContainer = styled.div<{ $isOpen: boolean }>`
   background: white;
   padding: 16px;
   border-radius: 12px;
   border: 1px solid #ddd;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 200px; /* 더 작고 보기 좋게 */
-  animation: ${({ isOpen }) => (isOpen ? fadeSlideIn : fadeSlideOut)} 0.3s ease-out forwards;
+  width: 200px;
+  animation: ${({ $isOpen }) =>
+    $isOpen ? fadeSlideIn : fadeSlideOut} 0.3s ease-out forwards;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 12px; /* 요소들 사이 간격 */
+  gap: 12px;
 `;

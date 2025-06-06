@@ -26,7 +26,7 @@ export const RegisterFormSchema = z
         passwordConfirm: z
             .string()
             .min(1, { message: "비밀번호 확인을 입력해주세요." }),
-        isEmailChecked: z.boolean().refine((val) => val === true, {
+        isEmailDuplicatedChecked: z.boolean().refine((val) => val === true, {
             message: "이메일 중복확인을 완료해주세요.",
         }),
     })
