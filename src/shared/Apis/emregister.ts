@@ -12,8 +12,9 @@ const getEmployeeInfo = async (info: EmployeeInfo): Promise<any> => {
         employeeNum: info.employeeNumber,
       },
     });
+    console.log(res.data)
 
-    return res;
+    return res.data;
 };
 
 export {getEmployeeInfo}

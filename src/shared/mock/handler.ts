@@ -163,16 +163,23 @@ export const handler = [
       }),
 
     //사원번호 조회
-    http.get("/api/emregister", () => {
-        const mockEmployee: EmployeeInfo = {
+    http.get("/auth/verify", () => {
+    const mockEmployee: EmployeeInfo = {
         employeeNumber: "12345678",
         employeeName: "홍길동",
-        };
-    
-        return HttpResponse.json(mockEmployee, {
+    };
+
+    return HttpResponse.json({
+        success: true,
+        code: 200,
+        data: mockEmployee,
+        message: "조회 성공",
+        timestamp: new Date().toISOString(),
+        requestId: "mocked-request-id"
+    }, {
         status: 200,
         headers: { "Content-Type": "application/json" },
-        });
+    });
     }),
 
     //get요청 예시

@@ -33,14 +33,10 @@ const EmRegister = () => {
     } catch (error: any) {
       const message = error?.response?.data?.error?.message;
 
-      if (message === "이미 가입된 사원 번호입니다.") {
+      if (message === "존재하지 않는 사번이거나 가입 완료된 사번입니다.") {
         alert("이미 가입된 사번입니다. 로그인해주세요.");
-      } else if (
-        message === "존재하지 않는 사번이거나 가입 완료된 사번입니다."
-      ) {
-        alert("존재하지 않는 사번입니다.");
       } else {
-        alert("서버 오류가 발생했습니다.");
+        alert("존재하지 않는 사번입니다.");
       }
 
       console.error("사원 조회 실패:", error);
