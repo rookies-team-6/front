@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { getAnswerData, getQuestionData } from "@shared/Apis/answer";
+import { getAnswerData } from "@shared/Apis/answer";
 import Loading from "@widgets/Loading/Loading";
 import theme from "@app/styles/theme";
 
@@ -12,9 +12,9 @@ const AnswerSearch: React.FC = () => {
   useEffect(()=>{
     setLoading(true)
     const fetchData = async () => {
-      const resultQuestion = await getQuestionData(1);
-      // console.log(resultQuestion)
-      setQuestionTitle(resultQuestion.data.title)
+      // const resultQuestion = await getQuestionData(1);
+      // // console.log(resultQuestion)
+      // setQuestionTitle(resultQuestion.data.title)
     };
 
     fetchData();

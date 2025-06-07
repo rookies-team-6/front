@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 // import theme from "@app/styles/theme";
+import { getPostDetail } from '@shared/Apis/board';
 
 
 const PostDetail: React.FC = ({ postId }) => {
   const [content, setContent] = useState("이 편지는 인도");
   const [title, setTitle] = useState("테스트 제목");
+  const [isMine, setIsMine] = useState(false);
   const navigate = useNavigate()
 
   const handleEditToggle = () => {
@@ -23,13 +25,25 @@ const PostDetail: React.FC = ({ postId }) => {
   }
 
   useEffect(()=>{
-    console.log(postId)
+    const getDetailData = async() => {
+      const result = await getPostDetail(postId);
+      if(result.data.success){
+        setContent(result.data.data.title);
+        setTitle(result.data.data.contents);
+        setIsMine(result.data.data.mine);
+      }else{
+        alert("게시물을 가져오는데 실패했습니다: "+result.error.message);
+        navigate("/home")
+      }
+    }
+
+    getDetailData();
   },[])
 
   return (
     <Container>
       <Title>{title}</Title>
-      <EditButton onClick={handleEditToggle}>수정</EditButton>
+      {isMine && <EditButton onClick={handleEditToggle}>수정</EditButton>}
       <TextArea 
         value={content} 
         onChange={e => setContent(e.target.value)}

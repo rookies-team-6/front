@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { postAnswerData } from "@shared/Apis/home";
+import { postAnswerData } from "@shared/Apis/answer";
 import { useQuestionStore } from "@shared/zustand/question";
 
 
 const QuestionComponent: React.FC = () => {
   const [answer, setAnswer] = useState("");
-  const {questions} = useQuestionStore();
-  // canSolve가 true인 질문만 필터링
-  const solvableQuestions = questions.filter((q) => q.canSolve)
-
-  const [index, setIndex] = useState(0)
+  const {question} = useQuestionStore();
   
 
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -30,8 +26,6 @@ const QuestionComponent: React.FC = () => {
   const handleSubmit = async() => {
     await postAnswerData(answer)
     setAnswer("");
-    // 마지막 질문까지 도달했을 때는 더 이상 증가하지 않도록
-    setIndex((prev) => (prev < solvableQuestions.length - 1 ? prev + 1 : prev))
   };
 
   
@@ -47,9 +41,9 @@ const QuestionComponent: React.FC = () => {
 
   return (
     <Wrapper>
-      <Title>질문 {index}번</Title>
+      <Title>질문</Title>
       <QuestionBox>
-        {solvableQuestions[index]?.question}
+        {question.question}
       </QuestionBox> 
       
       
