@@ -15,19 +15,19 @@ import { useNavigate } from "react-router-dom";
 import theme from "@app/styles/theme";
 
 interface Answer {
-  id: number;
-  title: string;
-  content: string;
-  date: string;
-  score: number;
+    id: number;
+    title: string;
+    content: string;
+    date: string;
+    score: number;
 }
 
 interface ListProps {
-  type: "my" | "team" | "bookmark";
+    type: "my" | "team" | "bookmark";
 }
 
 const truncateText = (text?: string) =>
-  text && text.length > 10 ? `${text.slice(0, 10)}...` : text ?? "";
+    text && text.length > 10 ? `${text.slice(0, 10)}...` : text ?? "";
 
 const List: React.FC<ListProps> = ({ type }) => {
   const [questions, setQuestions] = useState<Answer[]>([]);
@@ -84,8 +84,8 @@ const List: React.FC<ListProps> = ({ type }) => {
       }
     };
 
-    fetchData();
-  }, []);
+        fetchData();
+    }, []);
 
   const handleBookmark = async (id: number) => {
     try {
@@ -104,10 +104,13 @@ const List: React.FC<ListProps> = ({ type }) => {
       {isTeam && <Title>{selectedGroupNum}조 답변</Title>}
       {isBookmark && <Title>북마크</Title>}
 
-      <ListWrapper>
-        {questions.map((q) => (
-          <ListButton key={q.id} onClick={() => navigate("/answerdetail")}>
-            <AnswerDate>{q.date}</AnswerDate>
+            <ListWrapper>
+                {questions.map((q) => (
+                    <ListButton
+                        key={q.id}
+                        onClick={() => navigate("/answerdetail")}
+                    >
+                        <AnswerDate>{q.date}</AnswerDate>
 
             <ContentRow>
               <AnswerContent>{truncateText(q.title)}</AnswerContent>
@@ -139,9 +142,9 @@ const List: React.FC<ListProps> = ({ type }) => {
 };
 
 const Title = styled.h2`
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
 `;
 
 const ListButton = styled.div`
@@ -200,9 +203,9 @@ const AnswerScore = styled.div`
 `;
 
 const ListWrapper = styled.div`
-  width: 100%;
-  overflow-y: auto;
-  padding-right: 6px;
+    width: 100%;
+    overflow-y: auto;
+    padding-right: 6px;
 
   scrollbar-width: thin;
   &::-webkit-scrollbar {
