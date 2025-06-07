@@ -8,27 +8,32 @@ import pencil from "@shared/assets/icon/pencil.png"
 // 타입 정의
 interface Post {
     id: string;
-    number: number;
-    category: string;
+    role: string;
     title: string;
     date?: string;
     author?: string;
 }
 
-// 서버 데이터 불러오기 함수
-const fetchPosts = async (page: number): Promise<Post[]> => {
-    // 예: return await axios.get(`/api/posts?page=${page}`)
-    return [];
-};
 
 const BulletinBoard: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState(0);
+    const [allPage, setAllPage] = useState(0);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        getAllPosts(page).then((data) => setPosts(data));
+        const fetchPosts = async() => {
+          const result = await getAllPosts(page)
+          if(result.data.success){
+            setPosts(result.data.content)
+            setAllPage(result.data.totalPages)
+          }else{
+            alert("페이지 가져오는데 실패했습니다: "+result.data.error.message);
+          }
+        }
+
+        fetchPosts();
     }, [page]);
 
   const onClickRow = (postId: string) => {
@@ -57,9 +62,8 @@ const BulletinBoard: React.FC = () => {
         </Thead>
         <tbody>
           {posts.map(post => (
-            <Tr key={post.number} onClick={() => onClickRow(post.id)} highlighted={post.author !== undefined}>
-              <Td>{post.number}</Td>
-              <Td>{post.category}</Td>
+            <Tr key={post.id} onClick={() => onClickRow(post.id)} highlighted={post.author !== undefined}>
+              <Td>{post.role}</Td>
               <Td>{post.title}</Td>
               <Td>{post.date || ''}</Td>
               <Td>{post.author || ''}</Td>
@@ -69,7 +73,7 @@ const BulletinBoard: React.FC = () => {
       </Table>
       <PaginationWrapper>
         <ReactPaginate
-          pageCount={68}
+          pageCount={allPage}
           pageRangeDisplayed={3}
           marginPagesDisplayed={1}
           onPageChange={({ selected }) => setPage(selected)}

@@ -1,27 +1,38 @@
 import { serverInstance } from "@shared/apiInstance";
 
-// const dataFilter = (data) => {
-//     if(data.success){
 
-//     }else{
 
-//     }
-// }
+const postAnswerData = async(query: string) => {
+    const res = await serverInstance.post(
+        "/api/chat/gpt",
+        {
+            data:{
+                query: query
+            }
+        }
+    )
 
-const getAnswerData = async (id: number) => {
-    const res = await serverInstance.get(`/api/answer/${id}`);
+    // const results = res.data.results;
+    console.log(res.data)
+}
 
-    return res.data;
-};
+const getAnswerData = async(id: number) => {
+    const res = await serverInstance.get(
+        `/api/answer/${id}`
+    )
 
-export const getQuestionData = async (id: number) => {
-    const res = await serverInstance.get(`/api/question/${id}`);
+    return res.data
 
-    return res.data;
-};
+}
 
-const getAllQuestionsData = async () => {
-    return await serverInstance.get("/api/questions/all");
-};
 
-export { getAnswerData, getAllQuestionsData };
+
+const getMyQuestion = async() => {
+    return await serverInstance.get(
+        '/api/questions/me'
+    )
+
+    
+}
+
+export {getAnswerData, getMyQuestion, postAnswerData}
