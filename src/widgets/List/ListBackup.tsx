@@ -34,7 +34,7 @@ const List: React.FC<ListProps> = ({ type }) => {
   const [scoreDict, setScoreDict] = useState<{ [id: number]: number }>({});
   const [isLoading, setLoading] = useState(false);
 
-  const { selectedGroupNum } = useHomeStore();
+  const { selectedGroupNum, setUser } = useHomeStore();
 
   const {
     bookmarkedIds,
@@ -44,7 +44,6 @@ const List: React.FC<ListProps> = ({ type }) => {
 
   const isMy = type === "my";
   const isTeam = type === "team";
-  const isGroup = type === "team";
   const isBookmark = type === "bookmark";
 
   const navigate = useNavigate();
@@ -53,27 +52,25 @@ const List: React.FC<ListProps> = ({ type }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
+        const fetchedQuestions = await fetchQuestions();
+        setQuestions(fetchedQuestions);
+
         if (isMy) {
-          const fetchedQuestions = await fetchQuestions();
-          setQuestions(fetchedQuestions);
+          const homeData = await fetchHomeInfo();
+          const user = homeData.data.user;
+
+          setUser(user);
+
+          const mapped = fetchedQuestions.reduce(
+            (acc: { [id: number]: number }, q) => {
+              acc[q.id] = user.personalScore ?? 0;
+              return acc;
+            },
+            {}
+          );
+
+          setScoreDict(mapped);
         }
-
-        // if (isMy) {
-        //   const homeData = await fetchHomeInfo();
-        //   const user = homeData.data.user;
-
-        //   setUser(user);
-
-        //   const mapped = fetchedQuestions.reduce(
-        //     (acc: { [id: number]: number }, q) => {
-        //       acc[q.id] = user.personalScore ?? 0;
-        //       return acc;
-        //     },
-        //     {}
-        //   );
-
-        //   setScoreDict(mapped);
-        // }
 
         if (isBookmark) {
           const bookmarked = await fetchBookmarkedAnswers();
