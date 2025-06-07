@@ -8,25 +8,13 @@ const serverInstance = axios.create({
     withCredentials: true,
 });
 
-// serverInstance.interceptors.request.use((config) => {
-//     const token = serverInstance.defaults.headers.common["Authorization"];
-//     if (token) {
-//         config.headers["Authorization"] = token;
-//     }
-//     return config;
-// });
-
 serverInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
-        console.log(originalRequest);
-        console.log(error.response);
-
         if (error.response?.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true;
-            console.log("진입");
 
             try {
                 const refreshRes = await axios.post(
@@ -34,10 +22,8 @@ serverInstance.interceptors.response.use(
                     {},
                     { withCredentials: true }
                 );
-                console.log(refreshRes);
-                const newAccessToken = refreshRes.data.accessToken;
+                const newAccessToken = refreshRes.data.data.accessToken;
 
-                console.log("새로운 어세스 토큰", newAccessToken);
                 // ✅ 메모리 기반으로 다시 등록
                 serverInstance.defaults.headers.common[
                     "Authorization"

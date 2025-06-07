@@ -53,8 +53,6 @@ const Header = () => {
         console.log(res);
     };
 
-    console.log(serverInstance.defaults.headers.common["Authorization"]);
-
     return (
         <HeaderWrapper>
             <Logo
