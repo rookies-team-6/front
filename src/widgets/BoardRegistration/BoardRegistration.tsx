@@ -1,11 +1,13 @@
 import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { postBoardCreate, putBoard, deleteBoard } from "@/shared/Apis/board";
 
 interface LocationState {
   title?: string;
   content?: string;
+  id?: string;
 }
 
 interface FormValues {
@@ -21,6 +23,7 @@ const BoardRegistration: React.FC<Props> = ({ isEditMode }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const state = (location.state as LocationState) || {};
+  const { postId } = useParams();
 
   const {
     register,
@@ -33,18 +36,37 @@ const BoardRegistration: React.FC<Props> = ({ isEditMode }) => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async(data: FormValues) => {
     if (isEditMode) {
-      alert("수정 되었습니다.");
+      const result = await putBoard(data);
+      if(result.data.success){
+        alert("수정 되었습니다.");
+        navigate("/home");
+      }else{
+        alert("수정에 문제가 있습니다."+result.data.error.message);
+      }
+      
     } else {
-      alert("등록 되었습니다.");
+      const result = await postBoardCreate(data);
+      if(result.data.success){
+        alert("등록 되었습니다.");
+        navigate("/home");
+      }else{
+        alert("수정에 문제가 있습니다."+result.data.error.message);
+      }
     }
     navigate("/home");
   };
 
-  const handleDelete = () => {
-    alert("삭제 되었습니다.");
-    navigate("/home");
+  const handleDelete = async() => {
+    const result = await deleteBoard(postId);
+    if(result.data.success){
+      alert("삭제 되었습니다.");
+      navigate("/home");
+    }else{
+      alert("삭제에 문제가 생겼습니다. "+result.data.error.message);
+    }
+    
   };
 
   const handleBackToList = () => {

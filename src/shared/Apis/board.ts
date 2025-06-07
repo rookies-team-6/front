@@ -1,4 +1,4 @@
-import { devServerInstance, serverInstance } from "@shared/apiInstance";
+import { serverInstance } from "@shared/apiInstance";
 
 interface BoardCreateRequestType {
     title: string;
@@ -11,13 +11,13 @@ interface PutBoardRequestType {
 }
 
 const getAllPosts = async (page: number) => {
-    const res = await devServerInstance.get('/api/board/?page=${page}&size=10');
+    const res = await serverInstance.get('/api/board/?page=${page}&size=10');
 
     return res.data;
 };
 
 const getPostDetail = async (id: number) => {
-    const res = await devServerInstance.get('/api/board/${id}');
+    const res = await serverInstance.get('/api/board/${id}');
 
     return res.data;
 };

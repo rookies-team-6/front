@@ -7,14 +7,17 @@ type Question = {
 }
 
 type QuestionStore = {
-  questions: Question[]
-  setQuestions: (newQuestions: Question[]) => void
-  reset: () => void
+  question: Question
+  setQuestion: (newQuestion: Question) => void
 }
 
+const initialQuestion: Question = {
+  id: 0,
+  question: '',
+  canSolve: false,
+}
 
 export const useQuestionStore = create<QuestionStore>((set) => ({
-  questions: [],
-  setQuestions: (newQuestions) => set({ questions: newQuestions }),
-  reset: () => set({ questions: [] }),
+  question: initialQuestion,
+  setQuestion: (newQuestion) => set({ question: newQuestion })
 }))

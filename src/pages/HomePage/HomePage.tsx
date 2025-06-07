@@ -4,20 +4,26 @@ import Header from "@widgets/Header/Header";
 import ScoreBar from "@widgets/GroupScoreBar/GroupScoreBar";
 import QuestionComponent from "@widgets/QuestionComponent/QuestionComponent";
 import BulletinBoard from "@widgets/BulletinBoard/BulletinBoard";
-import { getAllQuestionsData } from "@shared/Apis/answer";
+import { getMyQuestion } from "@shared/Apis/answer";
 import { useQuestionStore } from "@shared/zustand/question";
 
 type View = "question" | "board" | "none";
 
 const HomePage = () => {
     const [viewState, setViewState] = useState<View>("question");
-    const {setQuestions} = useQuestionStore();
+    const {setQuestion} = useQuestionStore();
 
     useEffect(() => {
         const fetchData = async () => {
             try{
-                const resultQuestion = await getAllQuestionsData();
-                setQuestions(resultQuestion);
+                const result = await getMyQuestion();
+                if(result.data.success){
+                    setQuestion(result.data);
+                }else{
+                    alert(result.data.error.message);
+                    setViewState("board");
+                }
+                
             }catch(err){
                 setViewState("board");
             }
