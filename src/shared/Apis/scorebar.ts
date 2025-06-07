@@ -1,13 +1,11 @@
 import { devServerInstance } from "@shared/apiInstance";
 
-interface ScoreItem {
-  team: string;
-  score: string;
+export interface ScoreItem {
+  groupNum: number;
+  groupScore: number;
 }
 
-const getScoreItems = async (): Promise<ScoreItem[]> => {
-    const res = await devServerInstance.get("/api/scores");
-    return res.data;
+export const getScoreItems = async (): Promise<ScoreItem[]> => {
+  const res = await devServerInstance.get("/api/home");
+  return res.data?.data?.groupScores ?? [];
 };
-
-export { getScoreItems }

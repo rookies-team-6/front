@@ -10,7 +10,6 @@ import {
     SignInSchema,
 } from "@/shared/schemas/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { serverInstance } from "@/shared/apiInstance";
 
 const LoginForm: React.FC = () => {
     const navigate = useNavigate();
@@ -25,19 +24,15 @@ const LoginForm: React.FC = () => {
         mode: "onChange",
     });
 
-    const handleLogin = async () => {
-        // // apiInstan
-        // const res = serverInstance.post("/auth/signin");
-        // if (res.code === 200) {
-        //     navigate("/");
-        // }else{
-        //     alert("")
-        // }
+    const handleLogin = async (data: SignInFormType) => {
+        const isSuccessed = await postSignIn(data);
+        if (isSuccessed) {
+            navigate("/home");
+        } else {
+            alert("이메일 또는 비밀번호가 올바르지 않습니다.");
+        }
     };
 
-    const handleRegister = () => {
-        navigate("/checkemplnum"); // ✅ 사원조회회 페이지로 이동
-    };
 
     return (
         <Wrapper onSubmit={handleSubmit(handleLogin)}>
@@ -89,7 +84,7 @@ const Input = styled.input`
     max-width: 300px;
     padding: 10px 15px;
     margin-bottom: 25px;
-    border: 1px solid #ccc;
+    border: 1px solid ${theme.gray.g300};
     border-radius: 8px;
     font-size: 12px;
     box-sizing: border-box;
@@ -112,14 +107,14 @@ const Button = styled.button<{ disabled: boolean }>`
     box-sizing: border-box;
 
     &:hover {
-        background-color: #e0a800;
+        background-color:${theme.orange.o500};
     }
 `;
 
 const RegisterButton = styled.button`
     margin-top: 15px;
     font-size: 12px;
-    color: #666;
+    color: ${theme.gray.g500};
     text-decoration: underline;
     cursor: pointer;
     background: none;
@@ -127,7 +122,7 @@ const RegisterButton = styled.button`
     padding: 0;
 
     &:hover {
-        color: #333;
+        color:#e0a800;
     }
 `;
 
@@ -135,7 +130,7 @@ const ErrorText = styled.p`
     width: 130%;
     max-width: 300px;
     font-size: 12px;
-    color: red;
+    color: ${theme.red.r500};
     margin-top: -20px;
     margin-bottom: 12px;
     text-align: left;

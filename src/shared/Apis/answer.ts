@@ -1,7 +1,16 @@
-import { devServerInstance } from "@shared/apiInstance";
+import { serverInstance } from "@shared/apiInstance";
+
+// const dataFilter = (data) => {
+//     if(data.success){
+
+//     }else{
+
+//     }
+// }
+
 
 const getAnswerData = async(id: number) => {
-    const res = await devServerInstance.get(
+    const res = await serverInstance.get(
         `/api/answer/${id}`
     )
 
@@ -10,13 +19,22 @@ const getAnswerData = async(id: number) => {
 }
 
 
-const getQuestionData = async(id: number) => {
-    const res = await devServerInstance.get(
-        `/api/question/${id}`
+// const getQuestionData = async(id: number) => {
+//     const res = await serverInstance.get(
+//         `/api/question/${id}`
+//     )
+
+//     return res.data
+
+// }
+
+
+const getAllQuestionsData = async() => {
+    return await serverInstance.get(
+        '/api/questions/all'
     )
 
-    return res.data
-
+    
 }
 
-export {getAnswerData, getQuestionData}
+export {getAnswerData, getAllQuestionsData}

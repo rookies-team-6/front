@@ -1,22 +1,13 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import logoImage from "@shared/assets/icon/logo.png";
 import theme from "@app/styles/theme";
 import { getEmployeeInfo } from "@shared/Apis/emregister";
-// import type { EmployeeInfo } from "@shared/Apis/emregister";
 import { useNavigate } from "react-router-dom";
 import useRegisterStore from "@shared/zustand/registerStore";
-import { getVerify } from "@/shared/Apis/auth";
 
 const EmRegister = () => {
-    // const [inputData, setInputData] = useState<EmployeeInfo>({
-    //     employeeNumber: "",
-    //     employeeName: ""
-    // });
-
     const { employeeNumber, employeeName, setEmployeeNumber, setEmployeeName } =
         useRegisterStore();
-
     const navigate = useNavigate();
 
     const handleSearch = async () => {
@@ -24,7 +15,34 @@ const EmRegister = () => {
             alert("사원 번호와 이름을 모두 입력해주세요.");
             return;
         }
-        getVerify(employeeNumber, employeeName);
+
+        try {
+            const res = await getEmployeeInfo({ employeeName, employeeNumber });
+
+            if (res.success) {
+                alert("확인 완료!");
+                navigate("/register", {
+                    state: {
+                        employeeNumber,
+                        employeeName,
+                    },
+                });
+            } else {
+                alert(res.error?.message || "조회 실패");
+            }
+        } catch (error: any) {
+            const message = error?.response?.data?.error?.message;
+
+            if (
+                message === "존재하지 않는 사번이거나 가입 완료된 사번입니다."
+            ) {
+                alert("이미 가입된 사번입니다. 로그인해주세요.");
+            } else {
+                alert("존재하지 않는 사번입니다.");
+            }
+
+            console.error("사원 조회 실패:", error);
+        }
     };
 
     return (
@@ -55,6 +73,8 @@ const EmRegister = () => {
         </PageWrapper>
     );
 };
+
+// 스타일 컴포넌트
 
 const PageWrapper = styled.div`
     display: flex;
@@ -99,7 +119,7 @@ const InputGroup = styled.div`
 
 const Label = styled.label`
     font-size: 13px;
-    color: black;
+    color: ${theme.black};
     margin-bottom: 3px;
     text-align: left;
     width: 100%;
@@ -109,7 +129,7 @@ const Input = styled.input`
     width: 100%;
     padding: 10px 15px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid ${theme.gray.g300};
     border-radius: 8px;
     font-size: 12px;
     box-sizing: border-box;
@@ -120,7 +140,7 @@ const Button = styled.button`
     margin-top: 15px;
     padding: 10px 15px;
     background-color: ${theme.orange.o500};
-    color: white;
+    color: ${theme.white};
     border: none;
     border-radius: 8px;
     font-weight: Regular;
@@ -129,7 +149,7 @@ const Button = styled.button`
     box-sizing: border-box;
 
     &:hover {
-        background-color: #e0a800;
+        background-color: ${theme.orange.o500};
     }
 `;
 

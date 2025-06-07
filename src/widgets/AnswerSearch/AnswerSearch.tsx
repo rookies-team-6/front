@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { getAnswerData, getQuestionData } from "@shared/Apis/answer";
 import Loading from "@widgets/Loading/Loading";
+import theme from "@app/styles/theme";
 
 const AnswerSearch: React.FC = () => {
   const [answer, setAnswer] = useState("");
@@ -55,7 +56,7 @@ const Wrapper = styled.div`
   border-radius: 8px;
   padding: 1.5rem;
   text-align: left;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: ${theme.gray.g100};
 `;
 
 const Title = styled.h2`
@@ -67,7 +68,7 @@ const Title = styled.h2`
 `;
 
 const QuestionBox = styled.div`
-  background-color: #fffcee;
+  background-color:${theme.yellow.y100};
   padding: 1.5rem;
   border-radius: 6px;
   font-size: 1.1rem;

@@ -5,8 +5,15 @@ interface EmployeeInfo {
   employeeName: string;
 }
 
-const getEmployeeInfo = async (): Promise<EmployeeInfo> => {
-    const res = await devServerInstance.get("/api/emregister");
+const getEmployeeInfo = async (info: EmployeeInfo): Promise<any> => {
+    const res = await devServerInstance.get("/auth/verify", {
+      params: {
+        username: info.employeeName,
+        employeeNum: info.employeeNumber,
+      },
+    });
+    console.log(res.data)
+
     return res.data;
 };
 
