@@ -8,33 +8,20 @@ import { serverInstance } from "@shared/apiInstance";
 //     }
 // }
 
+const getAnswerData = async (id: number) => {
+    const res = await serverInstance.get(`/api/answer/${id}`);
 
-const getAnswerData = async(id: number) => {
-    const res = await serverInstance.get(
-        `/api/answer/${id}`
-    )
+    return res.data;
+};
 
-    return res.data
+export const getQuestionData = async (id: number) => {
+    const res = await serverInstance.get(`/api/question/${id}`);
 
-}
+    return res.data;
+};
 
+const getAllQuestionsData = async () => {
+    return await serverInstance.get("/api/questions/all");
+};
 
-// const getQuestionData = async(id: number) => {
-//     const res = await serverInstance.get(
-//         `/api/question/${id}`
-//     )
-
-//     return res.data
-
-// }
-
-
-const getAllQuestionsData = async() => {
-    return await serverInstance.get(
-        '/api/questions/all'
-    )
-
-    
-}
-
-export {getAnswerData, getAllQuestionsData}
+export { getAnswerData, getAllQuestionsData };

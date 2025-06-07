@@ -66,8 +66,9 @@ const RegisterForm: React.FC = () => {
 
     const onSubmit = (data: RegisterFormValues) => {
         // resgister mutate
+
         const newData = {
-            employeeNum: "SK12345333",
+            employeeNum: employeeNumber,
             email: data.email,
             password: data.password,
             passwordCheck: data.passwordConfirm,

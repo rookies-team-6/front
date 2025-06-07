@@ -1,48 +1,63 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
-
 const serverInstance = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
     baseURL: `${import.meta.env.VITE_SERVER_ADDRESS}`,
+    withCredentials: true,
 });
 
-const devServerInstance = axios.create();
+// serverInstance.interceptors.request.use((config) => {
+//     const token = serverInstance.defaults.headers.common["Authorization"];
+//     if (token) {
+//         config.headers["Authorization"] = token;
+//     }
+//     return config;
+// });
 
-// 응답 인터셉터
-devServerInstance.interceptors.response.use(
-    (response) => {
-        const resData = response.data;
+serverInstance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
 
-        if (!resData.success) {
-            // 성공이 false일 경우, 에러 메시지 추출
-            const errorMessage =
-                resData.error?.message ||
-                resData.message ||
-                "요청에 실패했습니다.";
+        console.log(originalRequest);
+        console.log(error.response);
 
-            return Promise.reject(new Error(errorMessage));
+        if (error.response?.status === 403 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            console.log("진입");
+
+            try {
+                const refreshRes = await axios.post(
+                    `${import.meta.env.VITE_SERVER_ADDRESS}auth/refresh`,
+                    {},
+                    { withCredentials: true }
+                );
+                console.log(refreshRes);
+                const newAccessToken = refreshRes.data.accessToken;
+
+                console.log("새로운 어세스 토큰", newAccessToken);
+                // ✅ 메모리 기반으로 다시 등록
+                serverInstance.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${newAccessToken}`;
+
+                // ✅ 기존 요청에 새 토큰 주입 후 재시도
+                originalRequest.headers[
+                    "Authorization"
+                ] = `Bearer ${newAccessToken}`;
+                return serverInstance(originalRequest);
+            } catch (refreshError) {
+                // window.location.href = "/";
+                return Promise.reject(refreshError);
+            }
         }
 
-        // 성공 시 data 반환
-        return resData.data;
-    },
-    (error) => {
-        const status = error.response?.status;
-        const message =
-            error.response?.data?.error?.message ||
-            error.response?.data?.message ||
-            error.message ||
-            "알 수 없는 오류가 발생했습니다.";
-
-        console.error("API Error:", message);
-
-        return Promise.reject(
-            new Error(`${status || "Unknown"} Error: ${message}`)
-        );
+        return Promise.reject(error);
     }
 );
+
+const devServerInstance = axios.create();
 
 export { devServerInstance, serverInstance };
