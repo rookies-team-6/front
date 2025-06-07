@@ -33,27 +33,18 @@ const LoginForm: React.FC = () => {
         }
     };
 
-
     return (
         <Wrapper onSubmit={handleSubmit(handleLogin)}>
             <Logo src={logoImage} alt="제대로 보안니 로고" />
-            <Input
-                type="email"
-                placeholder="Email"
-                value={watch("email")}
-                {...register("email")}
-            />
-            {errors.email && (
-            <ErrorText>{errors.email?.message}</ErrorText>
-            )}
+            <Input type="email" placeholder="Email" {...register("email")} />
+            {errors.email && <ErrorText>{errors.email?.message}</ErrorText>}
             <Input
                 type="password"
                 placeholder="Password"
-                value={watch("password")}
                 {...register("password")}
             />
             {errors.password && (
-            <ErrorText>{errors.password?.message}</ErrorText>
+                <ErrorText>{errors.password?.message}</ErrorText>
             )}
             <Button type="submit" disabled={!isValid}>
                 Log In
@@ -109,7 +100,7 @@ const Button = styled.button<{ disabled: boolean }>`
     box-sizing: border-box;
 
     &:hover {
-        background-color:${theme.orange.o500};
+        background-color: ${theme.orange.o500};
     }
 `;
 
@@ -124,7 +115,7 @@ const RegisterButton = styled.button`
     padding: 0;
 
     &:hover {
-        color:#e0a800;
+        color: #e0a800;
     }
 `;
 

@@ -6,22 +6,21 @@ import List from "@widgets/List/List";
 import styled from "styled-components";
 
 const TeamAnswerPage = () => {
-  return (
-    <MainBackground>
-      <Header />
-      <ScoreBar />
-      <ContentWrapper>
-        <List type="team" />
-      </ContentWrapper>
-    </MainBackground>
-  );
+    return (
+        <MainBackground>
+            <Header />
+            <ScoreBar />
+            <ContentWrapper>
+                <List type="team" />
+            </ContentWrapper>
+        </MainBackground>
+    );
 };
 
-
 const ContentWrapper = styled.div`
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
 `;
 
 export default TeamAnswerPage;

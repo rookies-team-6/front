@@ -17,14 +17,14 @@ interface LoginRequestBody {
 }
 
 interface LoginResponse {
-  success: boolean;
-  code: number;
-  data: {
-    accessToken: string;
-  };
-  message: string;
-  timestamp: string;
-  requestId: string;
+    success: boolean;
+    code: number;
+    data: {
+        accessToken: string;
+    };
+    message: string;
+    timestamp: string;
+    requestId: string;
 }
 
 interface RegisterFormContent {
@@ -35,15 +35,8 @@ interface RegisterFormContent {
 }
 
 const postSignIn = async (body: LoginRequestBody): Promise<boolean> => {
-    const res = await devServerInstance.post("/auth/signin", body);
-    console.log(res)
-    if (res.data.success) {
-        const token = res.data.accessToken;
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; //앞으로 요청마다 헤더에 자동으로 token을 넣고 요청함
-    }
-
+    const res = await serverInstance.post("/auth/signin", body);
     // token localStorage, cookie 등에 저장하지 않는다!
-
     return res.data.success;
 };
 
@@ -57,7 +50,6 @@ const postSignIn = async (body: LoginRequestBody): Promise<boolean> => {
 const postSignUp = async (data: RegisterFormContent) => {
     const res = await serverInstance.post("/auth/signup", data);
 };
-
 
 export const getVerify = async (employeeNum: string, username: string) => {
     const res = await serverInstance.get("/auth/verify", {
