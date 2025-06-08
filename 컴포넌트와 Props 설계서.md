@@ -350,11 +350,10 @@
 ### Props 인터페이스
 | Props명 | 타입 | 필수여부 | 기본값 | 설명 |
 |---------|------|----------|--------|------|
-| [props1] | string | 필수 | - | [설명] |
-| [props2] | number | 선택 | 0 | [설명] |
-| [props3] | boolean | 선택 | false | [설명] |
-| [props4] | function | 선택 | - | [설명] |
-| [props5] | array | 선택 | [] | [설명] |
+| isEditMode | boolean | 필수 | - | 수정 모드 여부. true이면 수정 화면. |
+| type | "my" \| "team" \| "bookmark" \| "total" | 필수 | - | 리스트 타입 구분 값 |
+| isOpen | boolean | 필수 | - | 모달 열림 여부 |
+| onClose | () => void | 필수 | - | 모달 닫기 핸들러 함수 |
 
 ---
 
@@ -363,8 +362,20 @@
 ### 로컬 상태 (useState)
 | 상태명 | 타입 | 초기값 | 용도 |
 |--------|------|--------|------|
-| [state1] | string | "" | [용도 설명] |
-| [state2] | boolean | false | [용도 설명] |
+| posts | Post[] | `[]` | 게시글 목록 저장 |
+| page | number | `0` | 현재 페이지 번호 |
+| allPage | number | `0` | 전체 페이지 수 |
+| questions | Answer[] | `[]` | 내 답변 리스트 상태 |
+| totals | Total[] | `[]` | 전체 답변 리스트 상태 |
+| teams | Team[] | `[]` | 조별 답변 리스트 상태 |
+| bookmarks | Bookmark[]  | `[]` | 북마크한 답변 리스트 상태 |
+| isLoading | boolean | `false` | 로딩 여부 |
+| isModalOpen | boolean | `false` | 모달 열림 여부 |
+| scoreList | GroupScore[] | `[]` | 조별 점수 데이터 상태 |
+| user | HeaderInfo | 객체 초기값 | 로그인 유저 정보 |
+| content | string | `""` | 단일 게시글 내용 |
+| title | string | `""` | 단일 게시글 제목 |
+| isMine | boolean | `false` | 본인 여부 |
 
 ### Redux 상태 (해당시)
 | 액션 타입 | Payload | 설명 |
@@ -378,10 +389,19 @@
 ### 주요 컴포넌트 목록
 | 컴포넌트명 | 위치 | 역할 | 재사용성 |
 |------------|------|------|----------|
-| [PageComponent] | pages/ | 페이지 메인 | 낮음 |
-| [HeaderComponent] | layout/ | 헤더 | 높음 |
-| [DataTable] | common/ | 데이터 표시 | 높음 |
-| [FilterPanel] | features/ | 필터링 | 보통 |
+| Header | widgets/ | 상단 사용자 정보 및 로그아웃 표시 | 중간 |
+| BulletinBoard | widgets/ | 게시판 글 목록 조회 화면 | 낮음 |
+| BoardRegistration | widgets/ | 게시글 작성/수정 화면 | 낮음 |
+| AnswerSearch | widgets/ | 질문 상세 답변 확인 화면 | 낮음 |
+| UserModal | widgets/UserModal/ | 유저 확인 모달 | 중간 |
+| GroupScoreBar | widgets/ | 조별 점수 시각화 바 | 중간 |
+| List | widgets/ | 리스트형 콘텐츠 (답변, 북마크 등) 컴포넌트 | 높음 |
+| LoginForm | widgets/ | 로그인 입력 폼 | 낮음 |
+| EmRegister | widgets/ | 사번 인증 입력 폼 | 낮음 |
+| Loading | widgets/ | 로딩 인디케이터 | 높음 |
+| RegisterForm | widgets/ | 회원가입 입력 폼 | 낮음 |
+| PostDetail | widgets/ | 게시글 상세 보기 컴포넌트 | 낮음 |
+| QuestionComponent | widgets/ | 질문과 답변 구성 요소 | 중간 |
 
 ### API 연동
 | API 엔드포인트 | 메서드 | 용도 | 호출 시점 |
