@@ -6,8 +6,8 @@ import { getPostDetail } from '@shared/Apis/board';
 
 
 const PostDetail: React.FC = ({ postId }) => {
-  const [content, setContent] = useState("이 편지는 인도");
-  const [title, setTitle] = useState("테스트 제목");
+  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
   const [isMine, setIsMine] = useState(false);
   const navigate = useNavigate()
 
@@ -24,13 +24,14 @@ const PostDetail: React.FC = ({ postId }) => {
     navigate("/home")
   }
 
+
   useEffect(()=>{
     const getDetailData = async() => {
       const result = await getPostDetail(postId);
-      if(result.data.success){
-        setContent(result.data.data.title);
-        setTitle(result.data.data.contents);
-        setIsMine(result.data.data.mine);
+      if(result.success){
+        setContent(result.data.contents);
+        setTitle(result.data.title);
+        setIsMine(result.data.mine);
       }else{
         alert("게시물을 가져오는데 실패했습니다: "+result.error.message);
         navigate("/home")

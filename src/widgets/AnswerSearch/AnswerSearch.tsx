@@ -1,49 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { getAnswerData } from "@shared/Apis/answer";
-import Loading from "@widgets/Loading/Loading";
 import theme from "@app/styles/theme";
+import { useLocation } from "react-router-dom";
+
+interface LocationState {
+  title?: string;
+  content?: string;
+}
 
 const AnswerSearch: React.FC = () => {
-  const [answer, setAnswer] = useState("");
-  const [questionTitle, setQuestionTitle] = useState("")
-  const [isLoading, setLoading] = useState(false)
+  const location = useLocation();
+  const state = (location.state as LocationState) || {};
 
-  useEffect(()=>{
-    setLoading(true)
-    const fetchData = async () => {
-      // const resultQuestion = await getQuestionData(1);
-      // // console.log(resultQuestion)
-      // setQuestionTitle(resultQuestion.data.title)
-    };
-
-    fetchData();
-    setLoading(false)
-  },[])
-
-  useEffect(()=>{
-    const fetchData = async () => {
-      const resultAnswer = await getAnswerData(1);
-      // console.log(resultQuestion)
-      setAnswer(resultAnswer.data.content)
-    };
-
-    fetchData();
-  },[])
 
   return (
     <Wrapper>
-      {
-        isLoading ? 
-        <Loading />
-        :
-        <>
-          <Title>{questionTitle}</Title>
-          <QuestionBox>
-            {answer}
-          </QuestionBox>
-        </>
-      }
+      <Title>{state.title}</Title>
+      <QuestionBox>
+        {state.content}
+      </QuestionBox>
+
     </Wrapper>
   );
 };

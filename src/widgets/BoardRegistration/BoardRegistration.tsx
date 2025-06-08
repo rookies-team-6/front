@@ -12,7 +12,7 @@ interface LocationState {
 
 interface FormValues {
   title: string;
-  content: string;
+  contents: string;
 }
 
 interface Props {
@@ -32,14 +32,14 @@ const BoardRegistration: React.FC<Props> = ({ isEditMode }) => {
   } = useForm<FormValues>({
     defaultValues: {
       title: state.title || "",
-      content: state.content || "",
+      contents: state.content || "",
     },
   });
 
   const onSubmit = async(data: FormValues) => {
     if (isEditMode) {
-      const result = await putBoard(data);
-      if(result.data.success){
+      const result = await putBoard(postId, data);
+      if(result.success){
         alert("수정 되었습니다.");
         navigate("/home");
       }else{
@@ -48,11 +48,11 @@ const BoardRegistration: React.FC<Props> = ({ isEditMode }) => {
       
     } else {
       const result = await postBoardCreate(data);
-      if(result.data.success){
+      if(result.success){
         alert("등록 되었습니다.");
         navigate("/home");
       }else{
-        alert("수정에 문제가 있습니다."+result.data.error.message);
+        alert("수정에 문제가 있습니다."+result.error.message);
       }
     }
     navigate("/home");
@@ -60,11 +60,11 @@ const BoardRegistration: React.FC<Props> = ({ isEditMode }) => {
 
   const handleDelete = async() => {
     const result = await deleteBoard(postId);
-    if(result.data.success){
+    if(result.success){
       alert("삭제 되었습니다.");
       navigate("/home");
     }else{
-      alert("삭제에 문제가 생겼습니다. "+result.data.error.message);
+      alert("삭제에 문제가 생겼습니다. "+result.error.message);
     }
     
   };

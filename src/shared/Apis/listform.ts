@@ -15,6 +15,7 @@ export const fetchBookmarkedAnswers = async () => {
 // 전체답변조회
 export const fetchTotalAnswers = async () => {
   const res = await serverInstance.get("/api/group");
+  console.log(res)
   return res.data;
 };
 

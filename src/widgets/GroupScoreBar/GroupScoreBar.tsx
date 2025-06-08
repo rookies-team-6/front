@@ -86,7 +86,7 @@ const ScoreBar: React.FC = () => {
                     <NavButton onClick={scrollRight}>›</NavButton>
                 </>
             )}
-            <QueryButton onClick={() => navigate("/answerdetail")}>
+            <QueryButton onClick={() => navigate("/totallist")}>
                 전체 답변 조회
             </QueryButton>
         </Wrapper>

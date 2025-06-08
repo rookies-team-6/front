@@ -13,6 +13,7 @@ import BoardRegistrationPage from "@pages/BoardRegistrationPage/BoardRegistratio
 import BoardWritePage from "@pages/WritePage/WrigtePage";
 import MyAnswerPage from "@/pages/MyAnswerPage/MyAnswerPage";
 import BookMarkPage from "@/pages/BookMarkPage/BookMarkPage";
+import TotalAnswerPage from "@pages/TotalAnswerPage/TotalAnswerPage";
 
 
 export const router = createBrowserRouter([
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
     {
       path: "/bookmarked",
       element: <BookMarkPage/>
+    },
+    {
+      path: "/totallist",
+      element: <TotalAnswerPage/>
     }
 
 ]);
