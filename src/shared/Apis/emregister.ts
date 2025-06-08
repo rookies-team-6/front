@@ -1,4 +1,4 @@
-import { devServerInstance } from "@shared/apiInstance";
+import { serverInstance } from "@shared/apiInstance";
 
 interface EmployeeInfo {
     employeeNumber: string;
@@ -6,7 +6,7 @@ interface EmployeeInfo {
 }
 
 const getEmployeeInfo = async (info: EmployeeInfo): Promise<any> => {
-    const res = await devServerInstance.get("/auth/verify", {
+    const res = await serverInstance.get("/auth/verify", {
         params: {
             username: info.employeeName,
             employeeNum: info.employeeNumber,

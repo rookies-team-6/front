@@ -1,18 +1,21 @@
 import { serverInstance } from "@shared/apiInstance";
 
 
-const postAnswerData = async(query: string) => {
-    const res = await serverInstance.post(
-        "/api/chat/gpt",
+const postAnswerData = async(questionId:number, userAnswer: string) => {
+    return await serverInstance.post(
+        "/api/record",
         {
-            data:{
-                query: query
-            }
+            questionId: questionId,
+            userAnswer: userAnswer
         }
     )
 
-    // const results = res.data.results;
-    console.log(res.data)
+}
+
+const postGptResult = async() => {
+    return await serverInstance.post(
+        "/api/chat/gpt"
+    )
 }
 
 
@@ -23,4 +26,4 @@ const getMyQuestion = async() => {
     
 }
 
-export {getMyQuestion, postAnswerData}
+export {getMyQuestion, postAnswerData, postGptResult}

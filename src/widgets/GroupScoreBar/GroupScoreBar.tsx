@@ -168,7 +168,7 @@ const NavButton = styled.button`
 
 const QueryButton = styled.button`
     background-color: ${theme.gray.g200};
-    width: 120px;
+    padding: 10px;
     height: 60px;
     border: none;
     border-radius: 10px;

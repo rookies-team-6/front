@@ -4,7 +4,8 @@ import {
   fetchQuestions,
   fetchBookmarkedAnswers,
   fetchTotalAnswers,
-  fetchGroupAnswers
+  fetchGroupAnswers,
+  fetchUpdateAnswers
 } from "@shared/Apis/listform";
 import { toggleBookmark } from "@shared/Apis/bookmark";
 
@@ -18,10 +19,9 @@ import type { Dict } from "styled-components/dist/types";
 
 interface Answer {
     id: number;
-    title: string;
-    content: string;
-    date: string;
-    score: number;
+    gptAnswer: string;
+    question: Dict;
+    userAnswer: string;
 }
 
 interface Total {
@@ -34,7 +34,7 @@ interface Total {
 
 interface Bookmark {
     id: number;
-    userAnswer: string;
+    userAnswer?: string;
     gptAnswer: string;
     question: Dict;
     userId: number;
@@ -85,8 +85,8 @@ const List: React.FC<ListProps> = ({ type }) => {
       try {
         if (isMy) {
           const result = await fetchQuestions();
-          if(result.data.success){
-            setQuestions(result.data.data);
+          if(result.success){
+            setQuestions(result.data);
           }else{
             alert("내답변을 가져오는데 문제가 생겼습니다 "+result.error.message)
           }
@@ -96,25 +96,32 @@ const List: React.FC<ListProps> = ({ type }) => {
         if(isTotal){
           const result = await fetchTotalAnswers();
           if(result.success){
-            setTotals(result.data.data)
+            setTotals(result.data)
           }else{
             alert("전체답변을 가져오는데 문제가 생겼습니다 ")
           }
         }
 
         if(isTeam){
-          const result = await fetchGroupAnswers(selectedGroupNum);
-          if(result.data.success){
-            setTeams(result.data.data)
+          const groqResult = await fetchUpdateAnswers();
+          if(groqResult.success){
+            const result = await fetchGroupAnswers(selectedGroupNum);
+            if(result.success){
+              setTeams(result.data)
+            }else{
+              alert("조별답변을 가져오는데 문제가 생겼습니다 "+result.error.message)
+            }
           }else{
-            alert("조별답변을 가져오는데 문제가 생겼습니다 "+result.error.message)
+            alert("처리하는데 문제가 생겼습니다: "+groqResult.error.message)
           }
+
         }
 
         if (isBookmark) {
           const result = await fetchBookmarkedAnswers();
-          if(result.data.success){
-            const bookmarked = result.data.data;
+          if(result.success){
+            const bookmarked = result.data;
+            console.log(bookmarked)
             setBookmarks(bookmarked);
             setBookmarkedIds(bookmarked.map((q) => q.id));
           }else{
@@ -134,8 +141,11 @@ const List: React.FC<ListProps> = ({ type }) => {
 
   const handleBookmark = async (id: number) => {
     try {
-      await toggleBookmark(id);
-      toggleBookmarkState(id);
+      const isBookmark = await toggleBookmark(id);
+      if(isBookmark){
+        toggleBookmarkState(id);
+      }
+      
     } catch (e) {
       console.error("북마크 토글 실패", e);
     }
@@ -151,20 +161,19 @@ const List: React.FC<ListProps> = ({ type }) => {
                     key={q.id}
                     onClick={() => navigate("/answerdetail",{
                               state: {
-                                title: title,
-                                content: content,
+                                title: q.question.question,
+                                content: q.userAnswer,
                               },
                             })}
                   >
-                      <AnswerDate>{q.date}</AnswerDate>
 
                   <ContentRow>
-                    <AnswerContent>{truncateText(q.title)}</AnswerContent>
+                    <AnswerContent>{truncateText(q.question.question)}</AnswerContent>
                     <BookmarkButton
                       $active={bookmarkedIds.includes(q.id)}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleBookmark(q.id);
+                        handleBookmark(q.question.id);
                       }}
                     >
                       {bookmarkedIds.includes(q.id) ? "★" : "☆"}
@@ -181,7 +190,12 @@ const List: React.FC<ListProps> = ({ type }) => {
           {totals.map((q) => (
               <ListButton
                   key={q.id}
-                  onClick={() => navigate("/answerdetail")}
+                  onClick={() => navigate("/answerdetail",{
+                              state: {
+                                title: q.title,
+                                content: q.summary,
+                              },
+                            })}
                 >
                 <ContentRow>
                   <AnswerContent>{truncateText(q.title)}</AnswerContent>
@@ -198,7 +212,12 @@ const List: React.FC<ListProps> = ({ type }) => {
           {teams.map((q) => (
               <ListButton
                   key={q.id}
-                  onClick={() => navigate("/answerdetail")}
+                  onClick={() => navigate("/answerdetail",{
+                              state: {
+                                title: q.title,
+                                content: q.summary,
+                              },
+                            })}
                 >
                 <ContentRow>
                   <AnswerContent>{truncateText(q.title)}</AnswerContent>
@@ -215,10 +234,15 @@ const List: React.FC<ListProps> = ({ type }) => {
           {bookmarks.map((q) => (
               <ListButton
                   key={q.id}
-                  onClick={() => navigate("/answerdetail")}
+                  onClick={() => navigate("/answerdetail",{
+                              state: {
+                                title: q.question.question,
+                                content: q.userAnswer,
+                              },
+                            })}
                 >
                 <ContentRow>
-                  <AnswerContent>{truncateText(q.title)}</AnswerContent>
+                  <AnswerContent>{truncateText(q.question.question)}</AnswerContent>
                 </ContentRow>
               </ListButton>
           ))}

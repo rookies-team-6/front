@@ -8,20 +8,25 @@ export const fetchQuestions = async () => {
 
 // 북마크된 답변 목록
 export const fetchBookmarkedAnswers = async () => {
-  const res = await serverInstance.get("/api/record/bookmarked");
+  const res = await serverInstance.get("/api/record/solved/bookmarked");
   return res.data;
 };
 
 // 전체답변조회
 export const fetchTotalAnswers = async () => {
-  const res = await serverInstance.get("/api/group");
-  console.log(res)
+  const res = await serverInstance.post("/api/chat/groq/all");
   return res.data;
 };
 
 // 조별답변조회
 export const fetchGroupAnswers = async (groupNum: number) => {
   const res = await serverInstance.get(`/api/group/${groupNum}`);
+  return res.data;
+};
+
+// 조별답변조회 전에 미리 업데이트해야하는 api
+export const fetchUpdateAnswers = async () => {
+  const res = await serverInstance.post(`/api/chat/groq`);
   return res.data;
 };
 
