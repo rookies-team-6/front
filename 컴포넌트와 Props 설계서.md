@@ -1,6 +1,6 @@
 # React 컴포넌트 설계 문서 템플릿
 ## 문서 정보
-- **작성자**: [조우성]
+- **작성자**: [조우성, 성민주, 박아란]
 - **작성일**: [2025-06-07]
 - **버전**: [v1.0]
 - **검토자**: [박아란, 성민주, 조우성]
@@ -378,9 +378,21 @@
 | isMine | boolean | `false` | 본인 여부 |
 
 ### Redux 상태 (해당시)
-| 액션 타입 | Payload | 설명 |
-|-----------|---------|------|
-| [ACTION_TYPE] | object | [설명] |
+| Store 파일명 | 상태/액션명 | 타입 | 설명 |
+|-----------------------|---------------------------|------------------|--------------------------------------------------|
+| `useHomeStore.ts` | selectedGroupNum | number | 선택된 조 번호 상태 |
+|                   | setSelectedGroupNum | (num: number) => void | 선택된 조 번호 설정 함수 |
+| `registerStore.ts` | employeeNumber | string | 사원 번호 상태 |
+|                    | employeeName | string | 사원 이름 상태 |
+|                    | setEmployeeNumber | (num: string) => void | 사원 번호 설정 함수 |
+|                    | setEmployeeName | (name: string) => void | 사원 이름 설정 함수 |
+| `bookmarkStore.ts` | bookmarkedIds | number[] | 북마크된 ID 리스트 상태 |
+|                    | setBookmarkedIds | (ids: number[]) => void | 북마크 ID 배열 저장 함수 |
+|                    | toggleBookmark | (id: number) => void | ID 기반 북마크 토글 함수 |
+| `question.ts` | questions | Answer[] | 내 답변 리스트 상태 |
+|               | setQuestions | (q: Answer[]) => void | 내 답변 리스트 설정 함수 |
+| `teamStore.ts` | teamAnswers | Team[] | 조별 답변 리스트 상태 |
+|                | setTeamAnswers | (answers: Team[]) => void | 조별 리스트 설정 함수 |
 
 ---
 
