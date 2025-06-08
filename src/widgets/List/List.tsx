@@ -86,7 +86,6 @@ const List: React.FC<ListProps> = ({ type }) => {
                 if (isMy) {
                     setTimeout(async () => {
                         const result = await fetchQuestions();
-                        console.log(result);
 
                         if (result.success) {
                             setQuestions(result.data);
@@ -96,53 +95,59 @@ const List: React.FC<ListProps> = ({ type }) => {
                                     result.error.message
                             );
                         }
-                    }, 300);
+                    }, 500);
                 }
 
                 if (isTotal) {
-                    const result = await fetchTotalAnswers();
-                    if (result.success) {
-                        setTotals(result.data);
-                    } else {
-                        alert("전체답변을 가져오는데 문제가 생겼습니다 ");
-                    }
+                    setTimeout(async () => {
+                        const result = await fetchTotalAnswers();
+                        if (result.success) {
+                            setTotals(result.data);
+                        } else {
+                            alert("전체답변을 가져오는데 문제가 생겼습니다 ");
+                        }
+                    }, 500);
                 }
 
                 if (isTeam) {
-                    const groqResult = await fetchUpdateAnswers();
-                    if (groqResult.success) {
-                        const result = await fetchGroupAnswers(
-                            selectedGroupNum
-                        );
-                        if (result.success) {
-                            setTeams(result.data);
+                    setTimeout(async () => {
+                        const groqResult = await fetchUpdateAnswers();
+                        if (groqResult.success) {
+                            const result = await fetchGroupAnswers(
+                                selectedGroupNum
+                            );
+                            if (result.success) {
+                                setTeams(result.data);
+                            } else {
+                                alert(
+                                    "조별답변을 가져오는데 문제가 생겼습니다 " +
+                                        result.error.message
+                                );
+                            }
                         } else {
                             alert(
-                                "조별답변을 가져오는데 문제가 생겼습니다 " +
-                                    result.error.message
+                                "처리하는데 문제가 생겼습니다: " +
+                                    groqResult.error.message
                             );
                         }
-                    } else {
-                        alert(
-                            "처리하는데 문제가 생겼습니다: " +
-                                groqResult.error.message
-                        );
-                    }
+                    }, 500);
                 }
 
                 if (isBookmark) {
-                    const result = await fetchBookmarkedAnswers();
-                    if (result.success) {
-                        const bookmarked = result.data;
-                        console.log(bookmarked);
-                        setBookmarks(bookmarked);
-                        setBookmarkedIds(bookmarked.map((q) => q.id));
-                    } else {
-                        alert(
-                            "북마크를 가져오는데 문제가 생겼습니다 " +
-                                result.error.message
-                        );
-                    }
+                    setTimeout(async () => {
+                        const result = await fetchBookmarkedAnswers();
+                        if (result.success) {
+                            const bookmarked = result.data;
+                            console.log(bookmarked);
+                            setBookmarks(bookmarked);
+                            setBookmarkedIds(bookmarked.map((q) => q.id));
+                        } else {
+                            alert(
+                                "북마크를 가져오는데 문제가 생겼습니다 " +
+                                    result.error.message
+                            );
+                        }
+                    }, 500);
                 }
             } catch (e) {
                 console.error("데이터 로딩 실패", e);

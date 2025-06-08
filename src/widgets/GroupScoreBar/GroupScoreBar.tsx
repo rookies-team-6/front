@@ -23,9 +23,11 @@ const ScoreBar: React.FC = () => {
         const fetchScores = async () => {
             setLoading(true);
             try {
-                const res = await fetchHomeInfo();
-                const groupScores = res.data.groupScores;
-                setScoreList(groupScores);
+                setTimeout(async () => {
+                    const res = await fetchHomeInfo();
+                    const groupScores = res.data.groupScores;
+                    setScoreList(groupScores);
+                }, 300); //
             } catch (e) {
                 console.error("스코어 데이터 불러오기 실패", e);
             } finally {
