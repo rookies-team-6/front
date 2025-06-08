@@ -48,9 +48,17 @@ const Header = () => {
         fetchData();
     }, []);
 
-    const handleSignOut = () => {
-        const res = serverInstance.post("/auth/signout");
-        console.log(res);
+    const handleSignOut = async() => {
+        const res = await serverInstance.post("/auth/signout");
+        if(res.status===204){
+            serverInstance.defaults.headers.common[
+                        "Authorization"
+                    ] = '';
+            navigate('/')
+        }else{
+            alert('로그아웃에서 문제가 발생했습니다')
+        }
+
     };
 
     return (

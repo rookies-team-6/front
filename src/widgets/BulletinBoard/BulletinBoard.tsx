@@ -25,11 +25,13 @@ const BulletinBoard: React.FC = () => {
     useEffect(() => {
         const fetchPosts = async() => {
           const result = await getAllPosts(page)
+          console.log(result)
+
           if(result.data.success){
-            setPosts(result.data.content)
-            setAllPage(result.data.totalPages)
+            setPosts(result.data.data.content)
+            setAllPage(result.data.data.totalPages)
           }else{
-            alert("페이지 가져오는데 실패했습니다: "+result.data.error.message);
+            alert("페이지 가져오는데 실패했습니다: "+result.error.message);
           }
         }
 
