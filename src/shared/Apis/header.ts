@@ -1,4 +1,4 @@
-import { devServerInstance } from "@shared/apiInstance";
+import { serverInstance } from "@shared/apiInstance";
 
 interface HeaderInfo {
   userId: number;
@@ -9,7 +9,7 @@ interface HeaderInfo {
 }
 
 const getHeaderInfo = async (): Promise<HeaderInfo> => {
-  const res = await devServerInstance.get("/api/home");
+  const res = await serverInstance.get("/api/home");
   return res.data;
 };
 

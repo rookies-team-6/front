@@ -10,7 +10,7 @@ interface Post {
     id: string;
     role: string;
     title: string;
-    date?: string;
+    createdAt?: string;
     author?: string;
 }
 
@@ -25,8 +25,6 @@ const BulletinBoard: React.FC = () => {
     useEffect(() => {
         const fetchPosts = async() => {
           const result = await getAllPosts(page)
-          console.log(result)
-
           if(result.data.success){
             setPosts(result.data.data.content)
             setAllPage(result.data.data.totalPages)
@@ -63,11 +61,12 @@ const BulletinBoard: React.FC = () => {
           </tr>
         </Thead>
         <tbody>
-          {posts.map(post => (
+          {posts.map((post, index) => (
             <Tr key={post.id} onClick={() => onClickRow(post.id)} highlighted={post.author !== undefined}>
+              <Td>{index}</Td>
               <Td>{post.role}</Td>
               <Td>{post.title}</Td>
-              <Td>{post.date || ''}</Td>
+              <Td>{post.createdAt || ''}</Td>
               <Td>{post.author || ''}</Td>
             </Tr>
           ))}

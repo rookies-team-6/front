@@ -94,10 +94,10 @@ const BoardRegistration: React.FC<Props> = ({ isEditMode }) => {
         </TitleRow>
         {errors.title && <ErrorText>{errors.title.message}</ErrorText>}
         <ContentInput
-          {...register("content", { required: "내용을 입력해주세요" })}
+          {...register("contents", { required: "내용을 입력해주세요" })}
           placeholder="내용을 입력하세요"
         />
-        {errors.content && <ErrorText>{errors.content.message}</ErrorText>}
+        {errors.contents && <ErrorText>{errors.contents.message}</ErrorText>}
       </form>
       <BackButton onClick={handleBackToList}>목록으로 돌아가기</BackButton>
     </Container>

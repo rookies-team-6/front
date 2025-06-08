@@ -1,5 +1,4 @@
-import { devServerInstance, serverInstance } from "@shared/apiInstance";
-import axios from "axios";
+import { serverInstance } from "@shared/apiInstance";
 
 interface VerifyRequest {
     username: string;

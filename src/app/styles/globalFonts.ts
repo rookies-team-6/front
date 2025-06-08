@@ -1,12 +1,13 @@
 import { createGlobalStyle } from "styled-components";
-import DMSans from "@shared/assets/fonts/DMSans.ttf";
+import Gothic from "@shared/assets/fonts/NanumGothic-Regular.ttf";
 
 const GlobalFonts = createGlobalStyle`
-    @font-face{
-        font-family: 'DMSans';
-        src: local("DMSans"), url(${DMSans}) format('ttf');
-        font-weight: normal;
-    }
+  @font-face {
+    font-family: 'Gothic';
+    src: url(${Gothic}) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 `;
 
 export default GlobalFonts;

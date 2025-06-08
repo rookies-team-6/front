@@ -17,6 +17,12 @@ interface HeaderInfo {
     groupNum: number;
 }
 
+const roleType = {
+    TRAINEE: "수강생",
+    EMPLOYEE: "사원",
+    ADMIN: "관리자"
+}
+
 const Header = () => {
     const [user, setUser] = useState<HeaderInfo>({
         userId: 0,
@@ -37,7 +43,7 @@ const Header = () => {
                 setUser({
                     userId: data.userId,
                     name: data.name,
-                    employeeType: data.employeeType,
+                    employeeType: roleType[data.employeeType],
                     personalScore: `점수: ${data.personalScore}`,
                     groupNum: data.groupNum,
                 });
@@ -49,15 +55,21 @@ const Header = () => {
     }, []);
 
     const handleSignOut = async() => {
-        const res = await serverInstance.post("/auth/signout");
-        if(res.status===204){
-            serverInstance.defaults.headers.common[
-                        "Authorization"
-                    ] = '';
-            navigate('/')
-        }else{
-            alert('로그아웃에서 문제가 발생했습니다')
+        try{
+            const res = await serverInstance.post("/auth/signout");
+            if(res.status===204){
+                serverInstance.defaults.headers.common[
+                            "Authorization"
+                        ] = '';
+                navigate('/')
+            }else{
+                alert('로그아웃에서 문제가 발생했습니다')
+            }
         }
+        catch{
+            navigate('/')
+        }
+
 
     };
 
@@ -69,6 +81,7 @@ const Header = () => {
                 onClick={() => navigate("/home")}
             />
             <UserInfo>
+                {user.employeeType === "관리자" && <AdminButton onClick={()=>window.open("https://server.boaniserver.kro.kr/admin/users", "_blank")}>관리자페이지</AdminButton>}
                 <LogoutButton onClick={handleSignOut}>로그아웃</LogoutButton>
                 <InfoText>{user.name}</InfoText>
                 <InfoText>{user.employeeType}</InfoText>
@@ -125,6 +138,18 @@ const InfoText = styled.div`
     border-radius: 8px;
     font-size: 15px;
     color: ${theme.black.b500};
+`;
+
+const AdminButton = styled.button`
+    background-color: ${theme.white.w500};
+    border: 1px solid ${theme.white.w500};
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 13px;
+    color: ${theme.gray.g500};
+    height: 36px;
+
 `;
 
 const LogoutButton = styled.button`

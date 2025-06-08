@@ -3,12 +3,13 @@ import {
     AppRouterProvider,
     AppThemeProvider,
 } from "@app/providers/";
-import { GlobalStyle } from "@app/styles";
+import { GlobalStyle, GlobalFont } from "@app/styles";
 
 function App() {
     return (
         <AppThemeProvider>
             <QueryProvider>
+                <GlobalFont />
                 <GlobalStyle />
                 <AppRouterProvider />
             </QueryProvider>

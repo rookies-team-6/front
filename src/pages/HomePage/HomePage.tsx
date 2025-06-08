@@ -18,7 +18,7 @@ const HomePage = () => {
             try{
                 const result = await getMyQuestion();
                 if(result.data.success){
-                    setQuestion(result.data);
+                    setQuestion(result.data.data);
                 }else{
                     alert(result.data.error.message);
                     setViewState("board");
