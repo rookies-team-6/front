@@ -393,7 +393,7 @@
 | BulletinBoard | widgets/ | 게시판 글 목록 조회 화면 | 낮음 |
 | BoardRegistration | widgets/ | 게시글 작성/수정 화면 | 낮음 |
 | AnswerSearch | widgets/ | 질문 상세 답변 확인 화면 | 낮음 |
-| UserModal | widgets/UserModal/ | 유저 확인 모달 | 중간 |
+| UserModal | widgets/Modal/ | 유저 확인 모달 | 중간 |
 | GroupScoreBar | widgets/ | 조별 점수 시각화 바 | 중간 |
 | List | widgets/ | 리스트형 콘텐츠 (답변, 북마크 등) 컴포넌트 | 높음 |
 | LoginForm | widgets/ | 로그인 입력 폼 | 낮음 |
