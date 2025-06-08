@@ -12,7 +12,7 @@
 **[AnswerSearch]** 
 
 ### 목적 및 역할
-- **주요 목적**: 내 답변/팀 답변/북마크/전체에서 특정 질문의 결과를 필터링하여 출력하는 기능 제공
+- **주요 목적**: 대상(내 답변/팀 답변/북마크/전체)에 따른 응답에 대한 결과를 출력하는 기능 제공
 
 ### 기능 요구사항
 - [ ] [기능 1: 질문에 대한 답변의 요약 내용 표시]
@@ -20,7 +20,7 @@
 ### 컴포넌트 분류
 - **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ v ] 기능 컴포넌트 [ ] 공통 컴포넌트
 - **복잡도**: [ v ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ ] 복합 (100줄 이상)
-- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
+- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ v ] 상태 없음
 
 
 ### 컴포넌트명
@@ -30,13 +30,15 @@
 - **주요 목적**: 게시판에 글을 등록하거나 이전에 등록한 글을 수정 또는 삭제하는 기능 제공
 
 ### 기능 요구사항
-- [ ] [기능 1: 상황에 따른 버튼 표시]
+- [ ] [기능 1: `isEditMode`에 따라 등록 또는 수정 동작 분기 처리]
 - [ ] [기능 2: 클릭 이벤트 처리(이동)]
+- [ ] [기능 3: 기존 데이터(state)로 `defaultValues` 채움]
+- [ ] [기능 4: 목록으로 돌아가기 버튼 제공]
 
 ### 컴포넌트 분류
 - **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ v ] 기능 컴포넌트 [ ] 공통 컴포넌트
 - **복잡도**: [ ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ v ] 복합 (100줄 이상)
-- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
+- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ v ] 상태 없음
 
 
 ### 컴포넌트명
@@ -46,14 +48,15 @@
 - **주요 목적**: 게시된 글의 리스트를 보여주는 게시판
 
 ### 기능 요구사항
-- [ ] [기능 1: ]
-- [ ] [기능 2: ]
-- [ ] [기능 3: ]
+- [ ] [기능 1: 서버에서 게시글 리스트를 페이지 단위로 불러옴]
+- [ ] [기능 2: 각 row 클릭 시 해당 게시글 상세 페이지로 이동]
+- [ ] [기능 3: 페이지네이션 UI (`react-paginate`) 적용]
+- [ ] [기능 4: 연필 모양 클릭 시 글쓰기 페이지로 이동]
 
 ### 컴포넌트 분류
-- **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ ] 기능 컴포넌트 [ ] 공통 컴포넌트
-- **복잡도**: [ ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ ] 복합 (100줄 이상)
-- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
+- **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ v ] 기능 컴포넌트 [ ] 공통 컴포넌트
+- **복잡도**: [ ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ v ] 복합 (100줄 이상)
+- **상태 관리**: [ v ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
 
 
 ### 컴포넌트명
@@ -101,19 +104,20 @@
 ### 컴포넌트 분류
 - **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ v ] 기능 컴포넌트 [ ] 공통 컴포넌트
 - **복잡도**: [ ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ v ] 복합 (100줄 이상)
-- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
+- **상태 관리**: [ v ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
 
 
 ### 컴포넌트명
 **[List]** 
 
 ### 목적 및 역할
-- **주요 목적**: 내 답변/팀 답변/북마크/전체에 알맞은 리스트 제공
+- **주요 목적**: 사용자 유형(내 답변 / 팀 답변 / 북마크)에 따라 해당 질문 및 답변 리스트를 시각적으로 제공
 
 ### 기능 요구사항
-- [ ] [기능 1: ]
-- [ ] [기능 2: ]
-- [ ] [기능 3: ]
+- [ ] [기능 1: 내 답변 리스트 출력]
+- [ ] [기능 2: 조별 답변 출력]
+- [ ] [기능 3: 전체 답변 리스트 출력]
+- [ ] [기능 4: 북마크 리스트 출력 및 북마크 토글 기능]
 
 ### 컴포넌트 분류
 - **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ v ] 기능 컴포넌트 [ ] 공통 컴포넌트
@@ -125,15 +129,16 @@
 **[Loading]** 
 
 ### 목적 및 역할
-- **주요 목적**: 내용을 표시하는 것이 원활하지 않을 때 로딩되는 상태를 알림
+- **주요 목적**: 사용자에게 로딩 상태를 시각적으로 알림
 
 ### 기능 요구사항
-- [ ] [기능 1: ]
+- [ ] [기능 1: FadeLoader 스피너 표시]
+- [ ] [기능 2: 화면 중앙에 로딩 애니메이션 정렬]
 
 ### 컴포넌트 분류
-- **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ ] 기능 컴포넌트 [ ] 공통 컴포넌트
-- **복잡도**: [ ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ ] 복합 (100줄 이상)
-- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
+- **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ ] 기능 컴포넌트 [ v ] 공통 컴포넌트
+- **복잡도**: [ v ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ ] 복합 (100줄 이상)
+- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ v ] 상태 없음
 
 
 ### 컴포넌트명
@@ -149,7 +154,7 @@
 ### 컴포넌트 분류
 - **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ v ] 기능 컴포넌트 [ ] 공통 컴포넌트
 - **복잡도**: [ ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ v ] 복합 (100줄 이상)
-- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
+- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ v ] 상태 없음
 
 
 ### 컴포넌트명
@@ -164,7 +169,7 @@
 ### 컴포넌트 분류
 - **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ v ] 기능 컴포넌트 [ ] 공통 컴포넌트
 - **복잡도**: [ ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ v ] 복합 (100줄 이상)
-- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
+- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ v ] 상태 없음
 
 
 ### 컴포넌트명
@@ -180,7 +185,7 @@
 ### 컴포넌트 분류
 - **타입**: [ ] 페이지 컴포넌트 [ ] 레이아웃 컴포넌트 [ v ] 기능 컴포넌트 [ ] 공통 컴포넌트
 - **복잡도**: [ ] 단순 (50줄 이하) [ ] 보통 (50-100줄) [ v ] 복합 (100줄 이상)
-- **상태 관리**: [ ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
+- **상태 관리**: [ v ] 로컬 상태만 [ ] Redux(Zustand) 연결 [ ] 상태 없음
 
 
 ### 컴포넌트명
@@ -220,23 +225,124 @@
 
 ### 파일 구조
 ```
-src/
-├── pages/
-│   └── [PageName]/
-│       ├── index.jsx              # 메인 페이지 컴포넌트
-│       ├── components/            # 페이지 전용 컴포넌트
-│       │   ├── PageHeader.jsx
-│       │   ├── DataTable.jsx
-│       │   └── FilterPanel.jsx
-│       ├── hooks/                 # 페이지 전용 훅
-│       │   └── use[PageName].js
-│       ├── styles/                # 페이지 전용 스타일
-│       │   └── [PageName].module.css
-│       └── constants.js           # 페이지 관련 상수
-├── store/
-│   └── slices/[entitySlice].js    # Redux slice
-└── services/
-    └── [entityService].js         # API 서비스
+📁 public
+│   ├── mockServiceWorker.js
+│   └── vite.svg
+📁 src
+├── 📁 app
+│   ├── 📁 providers
+│   │   ├── AppRouterProvider.tsx
+│   │   ├── AppThemeProvider.tsx
+│   │   ├── QueryProvider.tsx
+│   │   └── index.ts
+│   ├── 📁 routes
+│   │   ├── Router.tsx
+│   │   └── index.ts
+│   ├── 📁 styles
+│   │   ├── globalFonts.ts
+│   │   ├── globalStyle.ts
+│   │   ├── globalStyle.ts
+│   │   └── theme.ts
+│   └── App.tsx
+│
+├── 📁 pages
+│   ├── 📁 404Page
+│   │   └── 404Page.tsx
+│   ├── 📁 AnswerDetailPage
+│   │   └── AnswerDetailPage.tsx
+│   ├── 📁 BoardDetail
+│   │   └── BoardDetail.tsx
+│   ├── 📁 BoardRegistrationPage
+│   │   └── BoardRegistrationPage.tsx
+│   ├── 📁 BookMarkPage
+│   │   └── BookMarkPage.tsx
+│   ├── 📁 CheckEmployeePage
+│   │   └── CheckEmployeePage.tsx
+│   ├── 📁 HomePage
+│   │   └── HomePage.tsx
+│   ├── 📁 LoginPage
+│   │   └── LoginPage.tsx
+│   ├── 📁 MyAnswerPage
+│   │   └── MyAnswerPage.tsx
+│   ├── 📁 RegisterPage
+│   │   └── RegisterPage.tsx
+│   ├── 📁 TeamAnswerPage
+│   │   └── TeamAnswerPage.tsx
+│   └── 📁 WritePage
+│       └── WritePage.tsx
+├── 📁 shared
+│   ├── 📁 Apis
+│   │   ├── answer.ts
+│   │   ├── auth.ts
+│   │   ├── board.ts
+│   │   ├── bookmark.ts
+│   │   ├── emregister.ts
+│   │   ├── header.ts
+│   │   ├── listform.ts
+│   │   └── scorebar.ts
+│   │
+│   ├── 📁 apiInstance
+│   │   └── index.ts
+│   ├── 📁 assets
+│   │   ├── 📁 fonts
+│   │   │   └── DMSans.ttf
+│   │   ├── 📁 icon
+│   │   │   ├── logo.png
+│   │   │   ├── pencil.png
+│   │   │   └── 📁 image
+│   │   │       └── notFound.svg
+│   │
+│   ├── 📁 mock
+│   │   ├── browser.ts
+│   │   ├── dataList.ts
+│   │   └── handler.ts
+│   │
+│   ├── 📁 schemas
+│   │   ├── registerSchema.ts
+│   │   └── signInSchema.ts
+│   │
+│   ├── 📁 ui
+│   │   ├── AuthBackground.tsx
+│   │   ├── Modal.tsx
+│   │   └── main_background.tsx
+│   │
+│   └── 📁 zustand
+│       ├── bookmarkStore.ts
+│       ├── question.ts
+│       ├── registerStore.ts
+│       ├── teamStore.ts
+│       └── useHomeStore.ts
+│
+└── 📁 widgets
+    ├── 📁 AnswerSearch
+    │   └── AnswerSearch.tsx
+    ├── 📁 BoardRegistration
+    │   └── BoardRegistration.tsx
+    ├── 📁 BulletinBoard
+    │   └── BulletinBoard.tsx
+    ├── 📁 EmRegister
+    │   └── EmRegister.tsx
+    ├── 📁 GroupScoreBar
+    │   └── GroupScoreBar.tsx
+    ├── 📁 Header
+    │   └── Header.tsx
+    ├── 📁 List
+    │   └── List.tsx
+    ├── 📁 Loading
+    │   └── Loading.tsx
+    ├── 📁 LoginForm
+    │   └── LoginForm.tsx
+    ├── 📁 Modal
+    │   └── UserModal
+    │       └── UserModal.tsx
+    ├── 📁 PostDetail
+    │   └── PostDetail.tsx
+    ├── 📁 QuestionComponent
+    │   └── QuestionComponent.tsx
+    └── 📁 RegisterForm
+        └── RegisterForm.tsx
+
+   
 ```
 
 ## React 컴포넌트 Props 설계
@@ -280,11 +386,27 @@ src/
 ### API 연동
 | API 엔드포인트 | 메서드 | 용도 | 호출 시점 |
 |----------------|--------|------|-----------|
-| [/api/users] | GET | 목록 조회 | 페이지 로드 |
-| [/api/users/:id] | GET | 상세 조회 | 항목 선택 |
-| [/api/users] | POST | 새 항목 생성 | 생성 버튼 |
-| [/api/users/:id] | PUT | 항목 수정 | 수정 버튼 |
-| [/api/users/:id] | DELETE | 항목 삭제 | 삭제 버튼 |
+| [/api/chat/gpt] | POST | 답변에 대한 gpt 요약 | 페이지 로드 |
+| [/api/questions/me] | GET | 질문 내용 받기 | 홈 로드 |
+| [/auth/signin] | POST | 로그인 | 로그인 버튼 |
+| [/auth/signup] | POST | 회원가입 | 회원가입 버튼 |
+| [/auth/verify] | GET | 사번 조회 | 사번 조회 버튼 |
+| [/auth/email/check?email=${email}] | GET | 이메일 중복 확인 | 중복 확인 버튼 |
+| [/auth/signout] | GET | 로그아웃 | 로그아웃 버튼 |
+| [/auth/refresh] | GET | 로그인 인증 확인 및 갱신 | 요청 실행 시 |
+| [/board?page=${page}&size=10] | GET | 게시글 불러오기 | 게시판 로드 |
+| [/board/${id}] | GET | 단일 게시글 조회 | 단일 게시글 로드 |
+| [/board/total-pages] | GET | 게시판 페이지 수 조회 | 게시판 로드 |
+| [/board] | POST | 게시글 등록 | 등록 버튼 |
+| [/board/${id}] | DELETE | 게시글 삭제 | 삭제 버튼 |
+| [/board/${id}] | PUT | 게시글 수정 | 수정 버튼 |
+| [/api/record/bookmarked] | POST | 북마크 | 북마크 버튼 |
+| [/api/home] | GET | 사용자 정보 표시 | 헤더 로드 |
+| [/api/record/solved] | GET | 내 질문/답변 목록 | 리스트 로드 |
+| [/api/record/bookmarked] | GET | 북마크된 답변 목록 | 리스트 로드 |
+| [/api/group] | GET | 전체 답변 목록 | 리스트 로드 |
+| [/api/group/${groupNum}] | GET | 조별 답변 목록 | 리스트 로드 |
+| [/api/home] | GET | 조별 점수 표시 | 스코어바 로드 |
 
 ### 성능 최적화
 - [ ] 컴포넌트 메모이제이션 (React.memo)
