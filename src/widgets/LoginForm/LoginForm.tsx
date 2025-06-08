@@ -25,10 +25,12 @@ const LoginForm: React.FC = () => {
     });
 
     const handleLogin = async (data: SignInFormType) => {
-        const isSuccessed = await postSignIn(data);
-        if (isSuccessed) {
-            navigate("/home");
-        } else {
+        try {
+            const isSuccessed = await postSignIn(data);
+            if (isSuccessed) {
+                navigate("/home");
+            }
+        } catch (e) {
             alert("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
     };

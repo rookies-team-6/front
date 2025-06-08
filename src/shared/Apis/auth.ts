@@ -35,7 +35,7 @@ interface RegisterFormContent {
 
 const postSignIn = async (body: LoginRequestBody): Promise<boolean> => {
     const res = await serverInstance.post("/auth/signin", body);
-    // token localStorage, cookie 등에 저장하지 않는다!
+
     return res.data.success;
 };
 
