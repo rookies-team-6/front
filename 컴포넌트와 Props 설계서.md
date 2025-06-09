@@ -446,6 +446,6 @@
 - [ x ] 상태 최적화 (useMutation)
 
 ### 외부 의존성
-- **라이브러리**: [@hookform/resolvers, @tanstack/react-query, axios, react, react-dom, react-hook-form, react-icons, react-paginate, react-router-dom, react-spinners, styled-components, styled-reset, zod, zustand]
+- **라이브러리**: [@hookform/resolvers, @tanstack/react-query, axios, react, react-dom, react-hook-form, react-icons, react-paginate, react-router-dom, react-spinners styled-components, styled-reset, zod, zustand, msw]
 - **API**: [(https://server.boaniserver.kro.kr)]
-- **유틸리티**: [사용할 유틸리티 함수]
+- **유틸리티**: [zodResolver, QueryClientProvider, QueryClient, axios, useMutation, ReactNode, useEffect, useState, useRef, useForm, IoChevronDown, ReactPaginate, useParams, useLocation, useNavigate, useLocation, RouterProvider, createRoot, FadeLoader, ThemeProvider, createGlobalStyle, keyframes, z, create, useRegisterStore, useBookmarkStore, useQuestionStore, useHomeStore, createBrowserRouter, RouterProvider, http, HttpResponse, setupWorker, FadeLoader, postSignUp, getMyQuestion]
