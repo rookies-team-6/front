@@ -443,7 +443,7 @@
 | [/api/record] | POST | 답변 데이터 전송 | 답변 제출 |
 
 ### 성능 최적화
-- [ x ] 상태 최적화 (useMutation)
+- [x] 상태 최적화 (useMutation)
 
 ### 외부 의존성
 - **라이브러리**: [@hookform/resolvers, @tanstack/react-query, axios, react, react-dom, react-hook-form, react-icons, react-paginate, react-router-dom, react-spinners styled-components, styled-reset, zod, zustand, msw]
